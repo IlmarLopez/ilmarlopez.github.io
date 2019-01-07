@@ -18,6 +18,7 @@
 
 .logo h2 {
   text-transform: capitalize;
+  margin-left: 20px;
 }
 
 @keyframes turn {
