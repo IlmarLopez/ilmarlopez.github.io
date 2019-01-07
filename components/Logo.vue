@@ -18,6 +18,7 @@
 
 .logo h2 {
   text-transform: capitalize;
+  margin-top: 20px;
   margin-left: 20px;
 }
 
