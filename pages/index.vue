@@ -1,3 +1,4 @@
+    
 <template>
   <section class="container">
     <header class="header">
@@ -21,7 +22,6 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
-
 export default {
   components: {
     Logo
@@ -36,7 +36,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 .header {
   position: absolute;
   top: 0;
@@ -45,11 +44,9 @@ export default {
   /* height: 50px; */
   overflow: hidden;
 }
-
 .header .logo {
   float: left;
 }
-
 .wrapper {
   display: flex;
   justify-content: center;
@@ -57,7 +54,6 @@ export default {
   width: 100%;
   height: 100%;
 }
-
 .wrapper-content {
   padding: 20px;
   text-align: center;
@@ -65,7 +61,6 @@ export default {
   opacity: 0;
   margin-top: -30px;
 }
-
 .welcome-text {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -78,7 +73,6 @@ export default {
   text-shadow: 0px 10px 10px rgba(0, 0, 0, 0.4);
   text-transform: uppercase;
 }
-
 .welcome-subtext {
   font-size: 14px;
   line-height: 24px;
@@ -88,7 +82,6 @@ export default {
   text-transform: uppercase;
   margin: 0 auto;
 }
-
 @keyframes dynamic-fade {
   100% {
     opacity: 1;

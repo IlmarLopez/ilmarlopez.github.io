@@ -1,30 +1,22 @@
 {
-  "name": "ilmarlopez.com",
+  "name": "official-website",
   "version": "1.0.0",
-  "description": "&#34;Official website&#34;",
+  "description": "Ilmar López | Official Website",
   "author": "Ilmar López",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "precommit": "npm run lint"
+    "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.0.0",
     "cross-env": "^5.2.0",
-    "nuxt": "^2.4.3"
+    "nuxt": "^2.4.0",
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/pwa": "^2.6.0"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.1",
-    "eslint": "^5.14.0",
-    "eslint-config-prettier": "^3.6.0",
-    "eslint-loader": "^2.1.2",
-    "eslint-plugin-prettier": "2.6.2",
-    "eslint-plugin-vue": "^4.0.0",
-    "nodemon": "^1.18.10",
-    "prettier": "1.14.3"
+    "nodemon": "^1.18.9"
   }
 }
