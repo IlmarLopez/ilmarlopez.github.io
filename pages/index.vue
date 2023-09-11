@@ -1,12 +1,11 @@
 <template>
-  <div>
-    <h1>Welcome 1</h1>
-  </div>
+  <Tutorial/>
 </template>
 
-<script>
-// This will work in both `<script setup>` and `<script>`
-definePageMeta({
-  layout: "default",
-});
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'IndexPage'
+})
 </script>
