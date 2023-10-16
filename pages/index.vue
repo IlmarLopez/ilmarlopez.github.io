@@ -10,21 +10,38 @@
             challenges, and continually expanding my knowledge.
           </p>
           <div class="text-center">
-            <button class="btn-contact shadow-2xl text-white px-10 py-4 uppercase">
+            <button class="btn-contact shadow-2xl text-white px-10 py-4 uppercase" @click="openContactFormModal">
               Say hi
             </button>
           </div>
         </div>
       </div>
     </section>
+    <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
 </NuxtLayout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
-  
+  setup() {
+    let showContactFormModal = ref(true);
+
+    function handleClose() {
+      showContactFormModal.value = false;
+    };
+
+    function openContactFormModal() {
+      showContactFormModal.value = true;
+    };
+
+    return {
+      showContactFormModal,
+      handleClose,
+      openContactFormModal,
+    };
+  },
 });
 </script>
 
