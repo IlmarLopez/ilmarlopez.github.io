@@ -26,7 +26,7 @@ import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   setup() {
-    let showContactFormModal = ref(true);
+    let showContactFormModal = ref(false);
 
     function handleClose() {
       showContactFormModal.value = false;

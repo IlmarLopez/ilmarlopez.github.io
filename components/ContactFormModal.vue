@@ -1,17 +1,17 @@
 <template>
   <transition name="modal-fade">
-    <div class="modal-overlay bg-white rounded-3xl p-4 opacity-90 shadow-2xl">
+    <div class="modal-overlay bg-white rounded-3xl p-4 shadow-2xl">
       <div class="flex justify-end">
         <Icon
           name="uil:x"
-          color="#ef4444"
+          color="#dc2626"
           size="30px"
           class="cursor-pointer brightness-100 hover:brightness-125"
           @click="$emit('close')"
         />
       </div>
       <div class="mt-4">
-        <h2 class="text-3xl">Let's talk</h2>
+        <h2 class="text-3xl text-[#F2664A]">Let's talk</h2>
         <p class="font-extralight mt-4 text-justify">
           If you would like to schedule a meeting for a conversation, whether
           it's for a coffee or any other purpose, please don't hesitate to get
@@ -19,22 +19,51 @@
           delighted to get in touch with you as soon as possible.
         </p>
       </div>
-      <div>
+      <div class="mt-6">
         <form @submit="(e) => e.preventDefault">
-          <div>
-            <label for="">Your Name</label>
-            <input type="text">
+          <div class="mt-6">
+            <label for="fullName" class="block text-lg text-primary-dark font-extralight"
+              >Your Name</label
+            >
+            <input
+              name="fullName"
+              type="text"
+              class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
+              v-model="fullName"
+            />
           </div>
-          <div>
-            <label for="">Your Email</label>
-            <input type="text">
+          <div class="mt-6">
+            <label for="email" class="block text-lg text-primary-dark font-extralight"
+              >Your Email</label
+            >
+            <input
+              name="email"
+              type="text"
+              class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
+              v-model="email"
+            />
           </div>
-          <div>
-            <label for="">Your Message</label>
-            <input type="text">
+          <div class="mt-6">
+            <label for="message" class="block text-lg text-primary-dark font-extralight"
+              >Your Message</label
+            >
+            <textarea
+              name="message"
+              cols="14"
+              rows="6"
+              aria-label="Message"
+              class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
+              v-model="message"
+            />
           </div>
-          <div>
-            <button type="submit" title="Send Message" @click="sendEmail" />
+          <div class="mt-6">
+            <button
+              type="submit"
+              title="Send Message"
+              aria-label="Send Message"
+              class="px-12 py-2.5 text-white tracking-wider bg-[#F2664A] hover:bg-orange-400 focus:ring-1 focus:ring-indigo-900 rounded-3xl duration-500 shadow-xl"
+              @click="submitForm"
+            >Send Message</button>
           </div>
         </form>
       </div>
@@ -50,7 +79,7 @@ const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 export default defineComponent({
   emits: ['close'],
   setup() {
-    let name = ref('');
+    let fullName = ref('');
     let email = ref('');
     let message = ref('');
 
@@ -63,7 +92,7 @@ export default defineComponent({
         },
         body: JSON.stringify({
           access_key: WEB3FORMS_ACCESS_KEY,
-          name: name.value,
+          name: fullName.value,
           email: email.value,
           message: message.value,
         }),
@@ -74,16 +103,11 @@ export default defineComponent({
       }
     }
 
-    function sendEmail() {
-      console.log('Email sended.');
-    }
-
     return {
-      name,
+      fullName,
       email,
       message,
       submitForm,
-      sendEmail
     };
   },
 });
@@ -92,10 +116,10 @@ export default defineComponent({
 <style scoped lang="sass">
 .modal-overlay
   position: fixed
-  top: 30%
+  top: 10%
   left: 50%
-  transform: translate(-50%, -50%)
-  max-width: 650px
+  transform: translate(-50%, -10%)
+  max-width: 500px
 
 .modal-fade-enter,
 .modal-fade-leave-to
