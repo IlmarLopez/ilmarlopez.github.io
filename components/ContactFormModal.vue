@@ -1,13 +1,15 @@
 <template>
   <transition name="modal-fade">
-    <div class="modal-overlay bg-white rounded-3xl p-4 shadow-2xl">
+    <div
+      class="fixed top-6 left-4 right-4 md:top-40 md:left-40 md:right-40 lg:right-1/3 lg:left-1/3 max-w-lg overflow-y-auto bg-white rounded-3xl p-4 shadow-2xl"
+    >
       <div class="flex justify-end">
         <Icon
           name="uil:x"
           color="#dc2626"
           size="30px"
           class="cursor-pointer brightness-100 hover:brightness-125"
-          @click="$emit('close')"
+          @click="handleCloseModal()"
         />
       </div>
       <div class="mt-4">
@@ -22,7 +24,9 @@
       <div class="mt-6">
         <form @submit="(e) => e.preventDefault">
           <div class="mt-6">
-            <label for="fullName" class="block text-lg text-primary-dark font-extralight"
+            <label
+              for="fullName"
+              class="block text-lg text-primary-dark font-extralight text-sm"
               >Your Name</label
             >
             <input
@@ -30,10 +34,13 @@
               type="text"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="fullName"
+              required
             />
           </div>
           <div class="mt-6">
-            <label for="email" class="block text-lg text-primary-dark font-extralight"
+            <label
+              for="email"
+              class="block text-lg text-primary-dark font-extralight text-sm"
               >Your Email</label
             >
             <input
@@ -41,10 +48,13 @@
               type="text"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="email"
+              required
             />
           </div>
           <div class="mt-6">
-            <label for="message" class="block text-lg text-primary-dark font-extralight"
+            <label
+              for="message"
+              class="block text-lg text-primary-dark font-extralight text-sm"
               >Your Message</label
             >
             <textarea
@@ -54,6 +64,7 @@
               aria-label="Message"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="message"
+              required
             />
           </div>
           <div class="mt-6">
@@ -63,7 +74,9 @@
               aria-label="Send Message"
               class="px-12 py-2.5 text-white tracking-wider bg-[#F2664A] hover:bg-orange-400 focus:ring-1 focus:ring-indigo-900 rounded-3xl duration-500 shadow-xl"
               @click="submitForm"
-            >Send Message</button>
+            >
+              Send Message
+            </button>
           </div>
         </form>
       </div>
@@ -72,55 +85,42 @@
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref, defineEmits } from 'vue';
 const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
-export default defineComponent({
-  emits: ['close'],
-  setup() {
-    let fullName = ref('');
-    let email = ref('');
-    let message = ref('');
+let fullName = ref('');
+let email = ref('');
+let message = ref('');
 
-    async function submitForm() {
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          name: fullName.value,
-          email: email.value,
-          message: message.value,
-        }),
-      });
-      const result = await response.json();
-      if (result.success) {
-        console.debug(result);
-      }
-    }
+const emit = defineEmits(['close']);
 
-    return {
-      fullName,
-      email,
-      message,
-      submitForm,
-    };
-  },
-});
+async function submitForm() {
+  const response = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      access_key: WEB3FORMS_ACCESS_KEY,
+      name: fullName.value,
+      email: email.value,
+      message: message.value,
+    }),
+  });
+  const result = await response.json();
+  if (result.success) {
+    handleCloseModal();
+  }
+}
+
+function handleCloseModal() {
+  emit('close');
+}
 </script>
 
 <style scoped lang="sass">
-.modal-overlay
-  position: fixed
-  top: 10%
-  left: 50%
-  transform: translate(-50%, -10%)
-  max-width: 500px
-
 .modal-fade-enter,
 .modal-fade-leave-to
   opacity: 0
