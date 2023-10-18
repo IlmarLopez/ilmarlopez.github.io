@@ -1,2 +1,2 @@
 [build]
-  command = "cd public && ls"
+  command = "yarn generate && mv dist/* ./"
