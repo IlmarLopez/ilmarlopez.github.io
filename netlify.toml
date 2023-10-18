@@ -1,2 +1,2 @@
 [build]
-  command = "mv dist/* ./"
+  command = "mv /opt/build/repo/dist/* ./"
