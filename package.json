@@ -8,7 +8,7 @@
     "generate": "nuxt generate && yarn copy-php",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "copy-php": "cp contact.php dist/contact.php"
+    "copy-php": "cp api/contact.php dist/contact.php"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
