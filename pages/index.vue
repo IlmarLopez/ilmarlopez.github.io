@@ -2,15 +2,20 @@
   <NuxtLayout>
     <section id="home" class="h-full w-full flex items-center justify-center">
       <div class="w-full">
-        <h1 class="font-bold text-4xl title text-center mb-6 hover:">Hi I'm Ilmar Lopez</h1>
+        <h1 class="font-bold text-4xl title text-center mb-6 hover:">
+          Hi I'm Ilmar Lopez
+        </h1>
         <div>
           <p class="lead-paragraph text-center mx-auto max-w-lg">
             I'm a dedicated full-stack developer focused on crafting innovative
             digital solutions. My passion is pushing boundaries, embracing new
             challenges, and continually expanding my knowledge.
           </p>
-          <div class="text-center mt-8">
-            <button class="btn-contact shadow-2xl text-white px-10 py-4 uppercase" @click="openContactFormModal">
+          <div class="hidden text-center mt-8">
+            <button
+              class="btn-contact shadow-2xl text-white px-10 py-4 uppercase"
+              @click="openContactFormModal"
+            >
               Say hi
             </button>
           </div>
@@ -18,31 +23,25 @@
       </div>
     </section>
     <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
-</NuxtLayout>
+  </NuxtLayout>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default defineComponent({
-  setup() {
-    let showContactFormModal = ref(false);
-
-    function handleClose() {
-      showContactFormModal.value = false;
-    };
-
-    function openContactFormModal() {
-      showContactFormModal.value = true;
-    };
-
-    return {
-      showContactFormModal,
-      handleClose,
-      openContactFormModal,
-    };
-  },
+useHead({
+  title: 'Ilmar Lopez | Official Website',
 });
+
+let showContactFormModal = ref(false);
+
+function handleClose() {
+  showContactFormModal.value = false;
+}
+
+function openContactFormModal() {
+  showContactFormModal.value = true;
+}
 </script>
 
 <style lang="sass">
