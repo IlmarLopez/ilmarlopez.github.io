@@ -5,4 +5,9 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon'
   ],
+  runtimeConfig: {
+		public: {
+			gtmContainerId: '',
+		},
+	},
 })
