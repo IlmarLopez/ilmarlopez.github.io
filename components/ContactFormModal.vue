@@ -22,7 +22,7 @@
         </p>
       </div>
       <div class="mt-6">
-        <form @submit="(e) => e.preventDefault">
+        <form @submit.prevent>
           <div class="mt-6">
             <label
               for="fullName"
