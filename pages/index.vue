@@ -2,7 +2,7 @@
   <NuxtLayout>
     <section id="home" class="h-full w-full flex items-center justify-center">
       <div class="w-full">
-        <h1 class="font-bold text-4xl title text-center mb-6 hover:">
+        <h1 class="font-bold text-4xl title text-center mb-4 hover:">
           Hi I'm Ilmar Lopez
         </h1>
         <div>
