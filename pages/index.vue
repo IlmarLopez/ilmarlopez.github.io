@@ -11,9 +11,10 @@
             digital solutions. My passion is pushing boundaries, embracing new
             challenges, and continually expanding my knowledge.
           </p>
-          <div class="hidden text-center mt-8">
+          <div class="grid justify-items-center mt-8">
+            <MouseScrollDownIcon v-if="scrollButtonVisible" />
             <button
-              class="btn-contact shadow-2xl text-white px-10 py-4 uppercase"
+              class="btn-contact shadow-2xl text-white px-10 py-4 uppercase hidden"
               @click="openContactFormModal"
             >
               Say hi
@@ -27,13 +28,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 useHead({
   title: 'Ilmar Lopez | Official Website',
 });
 
 let showContactFormModal = ref(false);
+let scrollButtonVisible = ref(false);
+
+const checkScroll = () => {
+  if (window.scrollY > 20) {
+    scrollButtonVisible.value = true;
+  } else {
+    scrollButtonVisible.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", checkScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", checkScroll);
+});
 
 function handleClose() {
   showContactFormModal.value = false;
