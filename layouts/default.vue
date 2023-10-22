@@ -8,10 +8,13 @@
         <div>
           <SocialInfo />
         </div>
-        <div class="flex items-center justify-end w-full">
-          <p class="text-gray-700">
-            Porfolio ©{{ new Date().getFullYear() }} <span class="text-red-600">&#x2665;&#xfe0f;</span>
-          </p>
+        <div class="flex justify-end w-full">
+          <div>
+            <NuxtLink :to="'mailto:me@ilmarlopez.com'" class="lead-paragraph">me@ilmarlopez.com</NuxtLink>
+            <p class="font-extralight text-xs">
+              Porfolio ©{{ new Date().getFullYear() }} <span class="text-red-600">&#x2665;&#xfe0f;</span>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
