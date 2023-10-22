@@ -107,10 +107,10 @@ function submitForm() {
     'email': email.value,
     'message': message.value
   })
-    .then(response => {
+    .then(() => {
       console.log('Correo enviado con éxito');
     })
-    .catch(error => {
+    .catch((error) => {
       console.error('Error al enviar el correo', error);
     });
 }
