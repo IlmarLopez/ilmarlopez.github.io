@@ -13,7 +13,7 @@
           </p>
           <div class="grid justify-items-center mt-8">
             <button
-              class="btn-contact shadow-2xl text-white px-10 py-4 uppercase hidden"
+              class="btn-contact shadow-2xl text-white px-10 py-4 uppercase"
               @click="openContactFormModal"
             >
               Say hi
