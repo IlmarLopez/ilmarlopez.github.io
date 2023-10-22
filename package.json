@@ -5,9 +5,10 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
+    "generate": "nuxt generate && yarn copy-php",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "copy-php": "cp contact.php dist/contact.php"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",

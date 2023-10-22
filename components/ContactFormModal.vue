@@ -22,7 +22,7 @@
         </p>
       </div>
       <div class="mt-6">
-        <form @submit.prevent>
+        <form method="POST" action="/contact.php">
           <div class="mt-6">
             <label
               for="fullName"
@@ -31,6 +31,7 @@
             >
             <input
               name="fullName"
+              id="fullName"
               type="text"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="fullName"
@@ -45,6 +46,7 @@
             >
             <input
               name="email"
+              id="email"
               type="text"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="email"
@@ -59,6 +61,7 @@
             >
             <textarea
               name="message"
+              id="message"
               cols="14"
               rows="6"
               aria-label="Message"
@@ -73,7 +76,6 @@
               title="Send Message"
               aria-label="Send Message"
               class="px-12 py-2.5 text-white tracking-wider bg-[#F2664A] hover:bg-orange-400 focus:ring-1 focus:ring-indigo-900 rounded-3xl duration-500 shadow-xl"
-              @click="submitForm"
             >
               Send Message
             </button>
@@ -87,33 +89,12 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
-const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
 let fullName = ref('');
 let email = ref('');
 let message = ref('');
 
 const emit = defineEmits(['close']);
-
-async function submitForm() {
-  const response = await fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      access_key: WEB3FORMS_ACCESS_KEY,
-      name: fullName.value,
-      email: email.value,
-      message: message.value,
-    }),
-  });
-  const result = await response.json();
-  if (result.success) {
-    handleCloseModal();
-  }
-}
 
 function handleCloseModal() {
   emit('close');
