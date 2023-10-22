@@ -72,7 +72,7 @@
               type="submit"
               title="Send Message"
               aria-label="Send Message"
-              class="px-12 py-2.5 text-white tracking-wider bg-[#F2664A] hover:bg-orange-400 focus:ring-1 focus:ring-indigo-900 rounded-3xl duration-500 shadow-xl"
+              class="hidden px-12 py-2.5 text-white tracking-wider bg-[#F2664A] hover:bg-orange-400 focus:ring-1 focus:ring-indigo-900 rounded-3xl duration-500 shadow-xl"
               @click="submitForm"
             >
               Send Message
