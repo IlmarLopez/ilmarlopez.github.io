@@ -1,7 +1,7 @@
 <template>
   <NuxtLayout>
-    <section id="home" class="h-full w-full flex items-center justify-center">
-      <div class="w-full">
+    <section id="home" class="h-full flex justify-center items-center">
+      <div>
         <h1 class="font-bold text-4xl title text-center mb-4 hover:">
           Hi I'm Ilmar Lopez
         </h1>
@@ -12,7 +12,6 @@
             challenges, and continually expanding my knowledge.
           </p>
           <div class="grid justify-items-center mt-8">
-            <MouseScrollDownIcon v-if="scrollButtonVisible" />
             <button
               class="btn-contact shadow-2xl text-white px-10 py-4 uppercase hidden"
               @click="openContactFormModal"
@@ -28,30 +27,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref } from 'vue';
 
 useHead({
   title: 'Ilmar Lopez | Official Website',
 });
 
 let showContactFormModal = ref(false);
-let scrollButtonVisible = ref(false);
-
-const checkScroll = () => {
-  if (window.scrollY > 20) {
-    scrollButtonVisible.value = true;
-  } else {
-    scrollButtonVisible.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", checkScroll);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", checkScroll);
-});
 
 function handleClose() {
   showContactFormModal.value = false;
