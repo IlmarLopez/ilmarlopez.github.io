@@ -22,7 +22,7 @@
         </p>
       </div>
       <div class="mt-6">
-        <form method="POST" action="/contact.php">
+        <form @submit.prevent="submitForm">
           <div class="mt-6">
             <label
               for="fullName"
@@ -89,6 +89,7 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
+const { $api } = useNuxtApp()
 
 let fullName = ref('');
 let email = ref('');
@@ -99,6 +100,21 @@ const emit = defineEmits(['close']);
 function handleCloseModal() {
   emit('close');
 }
+
+function submitForm() {
+  $api.post('/contact.php', {
+    'fullName': fullName.value,
+    'email': email.value,
+    'message': message.value
+  })
+    .then(response => {
+      console.log('Correo enviado con éxito');
+    })
+    .catch(error => {
+      console.error('Error al enviar el correo', error);
+    });
+}
+
 </script>
 
 <style scoped lang="sass">
