@@ -9,7 +9,7 @@
           <p class="lead-paragraph text-center mx-auto max-w-lg">
             I'm a dedicated full-stack developer focused on crafting innovative
             digital solutions. My passion is pushing boundaries, embracing new
-            challenges, and continually expanding my knowledge.
+            challenges, and continually expanding my knowledge..
           </p>
           <div class="grid justify-items-center mt-8">
             <button
