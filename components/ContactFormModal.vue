@@ -114,7 +114,6 @@ function submitForm() {
       console.error('Error al enviar el correo', error);
     });
 }
-
 </script>
 
 <style scoped lang="sass">
