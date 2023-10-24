@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
+        node: [18]
 
     steps:
       - name: Checkout
@@ -20,7 +20,7 @@ jobs:
       - name: Setup node env
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: ${{ matrix.node }}
 
       - name: Install dependencies
         run: yarn
