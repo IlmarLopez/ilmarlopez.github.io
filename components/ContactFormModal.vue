@@ -101,8 +101,10 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
-import { useToast } from "vue-toastification/composition/nuxt";
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
 
+const { $api } = useNuxtApp();
 const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
 let fullName = ref('');
@@ -114,7 +116,7 @@ let emailIsRequiredErr = ref(false);
 let messageIsRequiredErr = ref(false);
 let emailIsNotValid = ref(false);
 
-const toast = useToast();
+const $toast = useToast();
 const emit = defineEmits(['close']);
 
 function handleCloseModal() {
@@ -137,25 +139,28 @@ function submitForm() {
     sendEmail();
 }
 
-async function sendEmail() {
-  const response = await fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
+function sendEmail() {
+  try {
+    $api.post('https://api.web3forms.com/submit', {
       access_key: WEB3FORMS_ACCESS_KEY,
       name: fullName.value,
       email: email.value,
       message: message.value,
-    }),
-  });
-  const result = await response.json();
-  if (result.success) {
-    handleCloseModal();
-    toast.success("Email sent successfully");
-  } else toast.error("Error sending your message")
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+    .then(() => {
+      $toast.success("Email sent successfully");
+    })
+    .catch(() => {
+      $toast.error("Error sending your message");
+    });
+  } catch (error) {
+    $toast.error("Error sending your message");
+  }
 }
 
 function validEmail(email: string): boolean {

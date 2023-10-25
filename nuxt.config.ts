@@ -3,8 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@nuxtjs/tailwindcss',
-    'nuxt-icon',
-    'vue-toastification/nuxt'
+    'nuxt-icon'
   ],
   runtimeConfig: {
 		public: {
