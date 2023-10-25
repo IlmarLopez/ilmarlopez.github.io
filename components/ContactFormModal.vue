@@ -101,6 +101,7 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
+import { useToast } from "vue-toastification/composition/nuxt";
 
 const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
@@ -113,6 +114,7 @@ let emailIsRequiredErr = ref(false);
 let messageIsRequiredErr = ref(false);
 let emailIsNotValid = ref(false);
 
+const toast = useToast();
 const emit = defineEmits(['close']);
 
 function handleCloseModal() {
@@ -152,7 +154,8 @@ async function sendEmail() {
   const result = await response.json();
   if (result.success) {
     handleCloseModal();
-  }
+    toast.success("Email sent successfully");
+  } else toast.error("Error sending your message")
 }
 
 function validEmail(email: string): boolean {
