@@ -89,7 +89,9 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
-const { $api } = useNuxtApp()
+const { $api } = useNuxtApp();
+
+const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
 let fullName = ref('');
 let email = ref('');
@@ -102,16 +104,19 @@ function handleCloseModal() {
 }
 
 function submitForm() {
-  $api.post('/contact.php', {
-    'fullName': fullName.value,
-    'email': email.value,
-    'message': message.value
-  })
-    .then(() => {
-      console.log('Correo enviado con éxito');
+  $api
+    .post('https://api.web3forms.com/submit', {
+      access_key: WEB3FORMS_ACCESS_KEY,
+      name: fullName.value,
+      email: email.value,
+      message: message.value,
     })
-    .catch((error) => {
-      console.error('Error al enviar el correo', error);
+    .then((resp) => {
+      console.log('Correo enviado con éxito', resp);
+      handleCloseModal();
+    })
+    .catch((err) => {
+      console.error('Error al enviar el correo', err);
     });
 }
 </script>
