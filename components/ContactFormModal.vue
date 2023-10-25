@@ -125,7 +125,7 @@ function handleCloseModal() {
 
 function submitForm() {
   if (!fullName.value) fullNameIsRequiredErr.value = true;
-  if (!messageIsRequiredErr.value) messageIsRequiredErr.value = true;
+  if (!message.value) messageIsRequiredErr.value = true;
   if (!email.value) {
     emailIsRequiredErr.value = true;
   } else if (!validEmail(email.value)) emailIsNotValid.value = true;
@@ -153,6 +153,7 @@ function sendEmail() {
       },
     })
     .then(() => {
+      handleCloseModal();
       $toast.success("Email sent successfully");
     })
     .catch(() => {
