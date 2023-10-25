@@ -103,21 +103,24 @@ function handleCloseModal() {
   emit('close');
 }
 
-function submitForm() {
-  $api
-    .post('https://api.web3forms.com/submit', {
+async function submitForm() {
+  const response = await fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
       access_key: WEB3FORMS_ACCESS_KEY,
       name: fullName.value,
       email: email.value,
       message: message.value,
-    })
-    .then((resp) => {
-      console.log('Correo enviado con éxito', resp);
-      handleCloseModal();
-    })
-    .catch((err) => {
-      console.error('Error al enviar el correo', err);
-    });
+    }),
+  });
+  const result = await response.json();
+  if (result.success) {
+    handleCloseModal();
+  }
 }
 </script>
 
