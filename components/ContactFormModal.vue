@@ -37,6 +37,9 @@
               v-model="fullName"
               required
             />
+            <span v-if="fullNameIsRequiredErr" class="text-sm text-red-600"
+              >Full name is required.</span
+            >
           </div>
           <div class="mt-6">
             <label
@@ -47,11 +50,17 @@
             <input
               name="email"
               id="email"
-              type="text"
+              type="email"
               class="w-full px-5 py-2 border border-gray-300 border-opacity-50 text-primary-dark bg-ternary-light rounded-md shadow-sm text-md"
               v-model="email"
               required
             />
+            <span v-if="emailIsRequiredErr" class="text-sm text-red-600"
+              >Email is required.</span
+            >
+            <span v-else-if="emailIsNotValid" class="text-sm text-red-600"
+              >Email is not valid.</span
+            >
           </div>
           <div class="mt-6">
             <label
@@ -69,6 +78,9 @@
               v-model="message"
               required
             />
+            <span v-if="messageIsRequiredErr" class="text-sm text-red-600"
+              >Message is required.</span
+            >
           </div>
           <div class="mt-6">
             <button
@@ -89,7 +101,6 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
-const { $api } = useNuxtApp();
 
 const WEB3FORMS_ACCESS_KEY = '661f609d-7c79-4cfd-8325-9da6c4b4d14e';
 
@@ -97,13 +108,34 @@ let fullName = ref('');
 let email = ref('');
 let message = ref('');
 
+let fullNameIsRequiredErr = ref(false);
+let emailIsRequiredErr = ref(false);
+let messageIsRequiredErr = ref(false);
+let emailIsNotValid = ref(false);
+
 const emit = defineEmits(['close']);
 
 function handleCloseModal() {
   emit('close');
 }
 
-async function submitForm() {
+function submitForm() {
+  if (!fullName.value) fullNameIsRequiredErr.value = true;
+  if (!messageIsRequiredErr.value) messageIsRequiredErr.value = true;
+  if (!email.value) {
+    emailIsRequiredErr.value = true;
+  } else if (!validEmail(email.value)) emailIsNotValid.value = true;
+
+  if (
+    !fullNameIsRequiredErr.value &&
+    !emailIsRequiredErr.value &&
+    !messageIsRequiredErr.value &&
+    !emailIsNotValid.value
+  )
+    sendEmail();
+}
+
+async function sendEmail() {
   const response = await fetch('https://api.web3forms.com/submit', {
     method: 'POST',
     headers: {
@@ -121,6 +153,12 @@ async function submitForm() {
   if (result.success) {
     handleCloseModal();
   }
+}
+
+function validEmail(email: string): boolean {
+  var re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
 }
 </script>
 
