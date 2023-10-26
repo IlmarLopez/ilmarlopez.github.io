@@ -2,10 +2,10 @@
   <div class="grid grid-rows-[1fr,auto] min-h-screen bg-[#F5F3EB]">
     <main class="container mx-auto z-0 px-4 py-6 lg:px-0">
       <slot />
-      <SocialInfo class="fixed bottom-2 left-2" />
     </main>
     <footer class="flex justify-items-start p-3">
-      <div class="flex justify-end w-full">
+      <div class="flex justify-between w-full">
+        <SocialInfo />
         <div>
           <NuxtLink :to="'mailto:me@ilmarlopez.com'" class="lead-paragraph"
             >me@ilmarlopez.com</NuxtLink
