@@ -3,11 +3,11 @@
     <section id="home" class="h-full">
       <div class="flex flex-col md:flex-row md:justify-center md:items-center w-full h-full">
         <div class="order-last md:order-first md:w-1/3">
-          <h1 class="font-bold text-4xl title mb-4 hover:">
+          <h1 class="sm:text-center md:text-left font-bold text-4xl title mb-2 p-2 max-w-sm">
             Hey, I'm Ilmar Lopez
           </h1>
-          <div>
-            <p class="lead-paragraph max-w-sm mr-2">
+          <div class="max-w-sm p-2">
+            <p class="lead-paragraph text-justify">
               I'm a dedicated Full Stack Developer focused on crafting innovative
               digital solutions. My passion is pushing boundaries, embracing new
               challenges, and continually expanding my knowledge.
@@ -22,11 +22,11 @@
             </div>
           </div>
         </div>
-        <div class="relative mb-6 md:mb-0">
+        <div class="relative mb-6 md:mb-0 w-96">
           <img
             src="/img/hero/me.jpg"
             alt="Ilmar Lopez coding and programming as a Full Stack Developer."
-            class="h-auto rounded-lg shadow-xl object-fill h-120 w-96 bg-[#F2664A]"
+            class="h-auto rounded-lg shadow-xl object-fill h-120  bg-[#F2664A]"
           />
           <div class="absolute bottom-0 px-4 py-3 bg-gray-500/50 w-full">
             <p class="text-gray-200 text-center">
