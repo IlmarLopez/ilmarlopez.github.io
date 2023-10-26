@@ -7,7 +7,7 @@
         </h1>
         <div>
           <p class="lead-paragraph text-center mx-auto max-w-lg">
-            I'm a dedicated full-stack developer focused on crafting innovative
+            I'm a dedicated Full Stack Developer focused on crafting innovative
             digital solutions. My passion is pushing boundaries, embracing new
             challenges, and continually expanding my knowledge.
           </p>
@@ -31,6 +31,26 @@ import { ref } from 'vue';
 
 useHead({
   title: 'Ilmar Lopez | Official Website',
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        'name': 'Ilmar Lopez',
+        'url': 'https://ilmarlopez.com/',
+        'sameAs': [
+          'https://github.com/IlmarLopez',
+          'https://mx.linkedin.com/in/ilmarlopez',
+          'https://www.facebook.com/ilmar.lopezr',
+          'https://wa.me/526647291355'
+        ],
+        'jobTitle': "Full Stack Developer",
+        'email': 'me@ilmarlopez.com',
+        'image': 'https://ilmarlopez.com/img/hero/me.jpg'
+      }),
+    },
+  ],
 });
 
 let showContactFormModal = ref(false);
