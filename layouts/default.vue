@@ -19,3 +19,25 @@
     </footer>
   </div>
 </template>
+
+<script setup lang="ts">
+useHead({
+  script: [
+    {
+      type: 'text/javascript',
+      src: 'https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/lib/countly.min.js',
+    },
+    {
+      type: 'text/javascript',
+      innerHTML: `
+        Countly.init({
+          app_key: "013abb4c65fe3eb1e51d46c8b2098dcadefdb64f",
+          url: "ilmarlopez-6cb0ea1ea6450.flex.countly.com"
+        });
+        Countly.track_sessions();
+        Countly.track_pageview();
+      `
+    }
+  ]
+})
+</script>
