@@ -26,7 +26,7 @@
           <img
             src="/img/hero/me.jpg"
             alt="Ilmar Lopez coding and programming as a Full Stack Developer."
-            class="h-auto rounded-lg shadow-xl object-fill h-120 w-96"
+            class="h-auto rounded-lg shadow-xl object-fill h-120 w-96 bg-[#F2664A]"
           />
           <div class="absolute bottom-0 px-4 py-3 bg-gray-500/50 w-full">
             <p class="text-gray-200 text-center">
