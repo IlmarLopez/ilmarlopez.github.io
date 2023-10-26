@@ -2185,11 +2185,6 @@ cosmiconfig@^7.0.0:
     path-type "^4.0.0"
     yaml "^1.10.0"
 
-countly-sdk-web@^23.6.2:
-  version "23.6.2"
-  resolved "https://registry.yarnpkg.com/countly-sdk-web/-/countly-sdk-web-23.6.2.tgz#70ed3e5a47c03706a5b436b5951c553d9104cf01"
-  integrity sha512-H/ADDuCjJUn0jBz/y7JLfDyfN2KLCiDsZAZhtRDbvVObYS75A+rosm9+yfjKcBitXPpUkVdVy3xFtE6PTJqMiw==
-
 crc-32@^1.2.0:
   version "1.2.2"
   resolved "https://registry.npmjs.org/crc-32/-/crc-32-1.2.2.tgz"
