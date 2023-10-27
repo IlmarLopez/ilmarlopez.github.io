@@ -4,7 +4,7 @@
       <div class="flex flex-col md:flex-row md:justify-center md:items-center w-full h-full">
         <div class="order-last md:order-first md:w-1/3">
           <h1 class="sm:text-center md:text-left font-bold text-4xl title mb-2 p-2 max-w-sm">
-            Hey, I'm Ilmar Lopez
+            Hey! 👋, I'm Ilmar Lopez
           </h1>
           <div class="max-w-sm p-2">
             <p class="lead-paragraph text-justify">
