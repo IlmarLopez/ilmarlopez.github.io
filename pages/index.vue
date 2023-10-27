@@ -58,6 +58,7 @@ useHead({
           'https://mx.linkedin.com/in/ilmarlopez',
           'https://www.facebook.com/ilmar.lopezr',
           'https://wa.me/526647291355',
+          'https://www.twitch.tv/ilmarlopez',
         ],
         jobTitle: 'Full Stack Developer',
         email: 'me@ilmarlopez.com',
