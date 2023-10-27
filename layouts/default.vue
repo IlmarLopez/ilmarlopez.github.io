@@ -1,6 +1,6 @@
 <template>
   <div class="grid grid-rows-[1fr,auto] min-h-screen bg-[#F5F3EB]">
-    <main class="container mx-auto z-0 px-4 py-6 lg:px-0">
+    <main class="container mx-auto z-0">
       <slot />
     </main>
     <footer class="flex justify-items-start p-3">
