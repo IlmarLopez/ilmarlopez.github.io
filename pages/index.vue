@@ -59,6 +59,8 @@ useHead({
           'https://www.facebook.com/ilmar.lopezr',
           'https://wa.me/526647291355',
           'https://www.twitch.tv/ilmarlopez',
+          'https://codepen.io/ilmarlopez',
+          'https://dev.to/ilmarlopez'
         ],
         jobTitle: 'Full Stack Developer',
         email: 'me@ilmarlopez.com',
