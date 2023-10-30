@@ -1,27 +1,31 @@
 <template>
   <NuxtLayout>
     <section id="home" class="h-full">
-      <div class="flex flex-col md:flex-row md:justify-center md:items-center w-full h-full">
+      <div
+        class="flex flex-col md:flex-row md:justify-center md:items-center w-full h-full"
+      >
         <div class="order-last md:order-first md:w-1/3">
-          <h1 class="sm:text-center md:text-left font-bold text-4xl title mb-2 p-2 max-w-sm">
+          <h1
+            class="sm:text-center md:text-left font-bold text-4xl title mb-2 p-2 max-w-sm"
+          >
             Hi 👋, I'm Ilmar Lopez
           </h1>
           <div class="max-w-sm p-2">
             <p class="lead-paragraph text-justify">
-              I'm a dedicated Full Stack Developer focused on crafting innovative
-              digital solutions. My passion is pushing boundaries, embracing new
-              challenges, and continually expanding my knowledge.
+              I'm a dedicated Full Stack Developer focused on crafting
+              innovative digital solutions. My passion is pushing boundaries,
+              embracing new challenges, and continually expanding my knowledge.
             </p>
-            <div class="text-center md:text-left">
+            <div class="flex justify-between mt-8">
               <button
-                  class="btn-contact shadow-2xl text-white px-10 py-4 uppercase mt-8"
-                  @click="openContactFormModal"
-                >
-                  Say hi
-                </button>
-                <span>
-                  Download CV
-                </span>
+                class="btn-contact shadow-2xl text-white px-10 py-4 uppercase"
+                @click="openContactFormModal"
+              >
+                Say hi
+              </button>
+              <div class="flex items-end">
+                <button class="underline" @click="isShowModal = true">View CV</button>
+              </div>
             </div>
           </div>
         </div>
@@ -29,24 +33,37 @@
           <img
             src="/img/hero/me.jpg"
             alt="Ilmar Lopez coding and programming as a Full Stack Developer."
-            class="h-auto rounded-lg shadow-xl object-fill h-120  bg-[#F2664A]"
+            class="h-auto rounded-lg shadow-xl object-fill h-120 bg-[#F2664A]"
           />
           <div class="absolute bottom-0 px-4 py-3 bg-gray-500/50 w-full">
             <p class="text-gray-200 text-center">
-              I aspire to create <span class="bg-[#F2664A] p-1 rounded-sm">impactful contributions</span>.
+              I aspire to create
+              <span class="bg-[#F2664A] p-1 rounded-sm"
+                >impactful contributions</span
+              >.
             </p>
           </div>
         </div>
       </div>
     </section>
     <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
-    <Modal>
+    <Modal v-if="isShowModal" :close-modal="isShowModal">
       <template #body>
+        <div :style="{ width: screenWidth + 'px' }">
+          <embed
+            src="/files/cv-en.pdf"
+            :width="screenWidth + 'px'"
+            height="700px"
+            class="mx-auto"
+          />
+        </div>
       </template>
-      
       <template #footer>
-        <button>
-          footer
+        <button
+          @click="handleCloseModal"
+          class="mb-2 md:mb-0 bg-[#F2664A] border border-[#F2664A] px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-[#241f21] hover:border-[#241f21]"
+        >
+          Close
         </button>
       </template>
     </Modal>
@@ -54,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 useHead({
   title: 'Ilmar Lopez | Official Website',
@@ -73,7 +90,7 @@ useHead({
           'https://wa.me/526647291355',
           'https://www.twitch.tv/ilmarlopez',
           'https://codepen.io/ilmarlopez',
-          'https://dev.to/ilmarlopez'
+          'https://dev.to/ilmarlopez',
         ],
         jobTitle: 'Full Stack Developer',
         email: 'me@ilmarlopez.com',
@@ -81,6 +98,26 @@ useHead({
       }),
     },
   ],
+});
+
+const screenWidth = ref(0);
+const isShowModal = ref(false);
+
+const updateScreenWidth = () => {
+  if (window.innerWidth < 1080) {
+    screenWidth.value = window.innerWidth - 30;
+  } else {
+    screenWidth.value = 1080;
+  }
+};
+
+onMounted(() => {
+  updateScreenWidth();
+  window.addEventListener('resize', updateScreenWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenWidth);
 });
 
 let showContactFormModal = ref(false);
@@ -93,7 +130,9 @@ function openContactFormModal() {
   showContactFormModal.value = true;
 }
 
-
+function handleCloseModal() {
+  isShowModal.value = false;
+}
 </script>
 
 <style lang="sass">
