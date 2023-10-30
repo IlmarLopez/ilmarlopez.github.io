@@ -19,6 +19,9 @@
                 >
                   Say hi
                 </button>
+                <span>
+                  Download CV
+                </span>
             </div>
           </div>
         </div>
@@ -37,6 +40,16 @@
       </div>
     </section>
     <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
+    <Modal>
+      <template #body>
+      </template>
+      
+      <template #footer>
+        <button>
+          footer
+        </button>
+      </template>
+    </Modal>
   </NuxtLayout>
 </template>
 
@@ -79,6 +92,8 @@ function handleClose() {
 function openContactFormModal() {
   showContactFormModal.value = true;
 }
+
+
 </script>
 
 <style lang="sass">
