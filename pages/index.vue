@@ -16,14 +16,14 @@
               innovative digital solutions. My passion is pushing boundaries,
               embracing new challenges, and continually expanding my knowledge.
             </p>
-            <div class="flex justify-between mt-8">
+            <div class="flex flex-col items-center md:items-end mt-8 md:flex-row md:justify-between">
               <button
                 class="btn-contact shadow-2xl text-white px-10 py-4 uppercase"
                 @click="openContactFormModal"
               >
                 Say hi
               </button>
-              <div class="flex items-end">
+              <div class="flex items-end mt-2 md:mt-0">
                 <button class="underline" @click="isShowModal = true">View CV</button>
               </div>
             </div>
@@ -149,4 +149,6 @@ function handleCloseModal() {
     color: #f5f2ea
     background-color: #241f21
     border-color: #241f21
+.text-none
+  text-align: none
 </style>
