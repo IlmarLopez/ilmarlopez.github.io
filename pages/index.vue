@@ -24,7 +24,7 @@
                 Say hi
               </button>
               <div class="flex items-end mt-2 md:mt-0">
-                <button class="underline" @click="isShowModal = true">View CV</button>
+                <button class="underline" @click="isCVVitaeModal = true">View CV</button>
               </div>
             </div>
           </div>
@@ -47,31 +47,12 @@
       </div>
     </section>
     <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
-    <Modal v-if="isShowModal" :close-modal="isShowModal">
-      <template #body>
-        <div :style="{ width: screenWidth + 'px' }">
-          <iframe
-            src="/files/cv-en.pdf"
-            :width="screenWidth + 'px'"
-            height="700px"
-            class="mx-auto"
-          />
-        </div>
-      </template>
-      <template #footer>
-        <button
-          @click="handleCloseModal"
-          class="mb-2 md:mb-0 bg-[#F2664A] border border-[#F2664A] px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-[#241f21] hover:border-[#241f21]"
-        >
-          Close
-        </button>
-      </template>
-    </Modal>
+    <LazyCVVitaeModal :show="isCVVitaeModal" @close="isCVVitaeModal = false" />
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 
 useHead({
   title: 'Ilmar Lopez | Official Website',
@@ -100,27 +81,9 @@ useHead({
   ],
 });
 
-const screenWidth = ref(0);
-const isShowModal = ref(false);
+const isCVVitaeModal = ref(false);
 
-const updateScreenWidth = () => {
-  if (window.innerWidth < 1080) {
-    screenWidth.value = window.innerWidth - 30;
-  } else {
-    screenWidth.value = 1080;
-  }
-};
-
-onMounted(() => {
-  updateScreenWidth();
-  window.addEventListener('resize', updateScreenWidth);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', updateScreenWidth);
-});
-
-let showContactFormModal = ref(false);
+const showContactFormModal = ref(false);
 
 function handleClose() {
   showContactFormModal.value = false;
@@ -130,9 +93,6 @@ function openContactFormModal() {
   showContactFormModal.value = true;
 }
 
-function handleCloseModal() {
-  isShowModal.value = false;
-}
 </script>
 
 <style lang="sass">
@@ -149,6 +109,4 @@ function handleCloseModal() {
     color: #f5f2ea
     background-color: #241f21
     border-color: #241f21
-.text-none
-  text-align: none
 </style>

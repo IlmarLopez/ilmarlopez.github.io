@@ -32,7 +32,7 @@ const props = defineProps({
   closeModal: Boolean,
 });
 
-let isOpen = ref(true);
+let isOpen = ref(false);
 
 let isModalVisible = computed(() => {
   return isOpen.value;
