@@ -50,7 +50,7 @@
     <Modal v-if="isShowModal" :close-modal="isShowModal">
       <template #body>
         <div :style="{ width: screenWidth + 'px' }">
-          <embed
+          <iframe
             src="/files/cv-en.pdf"
             :width="screenWidth + 'px'"
             height="700px"
