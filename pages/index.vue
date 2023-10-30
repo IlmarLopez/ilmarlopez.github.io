@@ -46,7 +46,7 @@
         </div>
       </div>
     </section>
-    <ContactFormModal v-if="showContactFormModal" @close="handleClose" />
+    <LazyContactFormModal v-if="showContactFormModal" @close="handleClose" />
     <LazyCVVitaeModal :show="isCVVitaeModal" @close="isCVVitaeModal = false" />
   </NuxtLayout>
 </template>
