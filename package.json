@@ -1,5 +1,7 @@
 {
-  "name": "nuxt-app",
+  "name": "ilmarlopez.com",
+  "version": "1.0.0",
+  "description": "Ilmar Lopez's official website",
   "private": true,
   "type": "module",
   "scripts": {
