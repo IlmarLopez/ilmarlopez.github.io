@@ -25,8 +25,8 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: `node -v` ≥ 22.22.3 y `npm install` sin avisos de `engines`.
 
 - [x] **T-03 · Commit de spec y referencia de diseño** · 20 min · [A] · RV-07, AC-23
-  Crear la rama `feat/foundation` desde `v2`; commitear `specs/`, `design.md` y `design/`. **El CV** (`public/files/Ilmar-Lopez-CV.pdf` y el borrado de `public/files/cv-en.pdf`) **va en un segundo commit**, aparte del principal, que registra el renombrado (Q10a, confirmado por Ilmar el 2026-11-24).
-  Verifica: el commit principal no incluye el PDF; el segundo commit muestra `cv-en.pdf → Ilmar-Lopez-CV.pdf` como renombrado; el árbol queda sin archivos del diseño sin trackear.
+  Crear la rama `feat/foundation` desde `v2`; commitear `specs/`, `design.md` y `design/`. **El CV** (`public/files/Ilmar-Lopez-CV.pdf` y el borrado de `public/files/cv-en.pdf`) **va en un segundo commit**, aparte del principal, junto con el redirect de `netlify.toml` (Q10a, confirmado por Ilmar el 2026-11-24).
+  Verifica: el commit principal no incluye el PDF; el segundo commit borra `cv-en.pdf` y añade `Ilmar-Lopez-CV.pdf` (contenido distinto, por eso Git no lo marca como renombrado) y trae el redirect; el árbol queda sin archivos del diseño sin trackear.
   Depende de: T-01.
 
 - [ ] **T-04 · Dependencias** · 40 min · [A] · RNF-11, spec §8.1

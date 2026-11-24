@@ -15,7 +15,7 @@ Spec: [`spec.md`](./spec.md) (actualizada con `f/`) · Tareas: [`tasks.md`](./ta
   | Q7 Analítica | Ninguna en 2.0. |
   | Q8 Aviso en v1 | Inyección de snippet de Netlify si el plan la ofrece; si no, sin aviso (T-17). |
   | Q9 Fechas de `/versions` | `TODO(ilmar)` hasta T-75, donde las da Ilmar. |
-  | Q10 Árbol de trabajo | `.gitignore` y commit de `design.md` y `design/` van en T-01 y T-03. El CV ya se llama `Ilmar-Lopez-CV.pdf`: **Ilmar confirmó el 2026-11-24 que se commitea en un commit aparte** (T-03), que registra el renombrado desde `cv-en.pdf`. |
+  | Q10 Árbol de trabajo | `.gitignore` y commit de `design.md` y `design/` van en T-01 y T-03. El CV ya se llama `Ilmar-Lopez-CV.pdf`: **Ilmar confirmó el 2026-11-24 que se commitea en un commit aparte** (T-03). Es un archivo distinto del anterior (47 057 b frente a 66 902 b), así que Git registra el borrado de `cv-en.pdf` y el alta del nuevo. |
   | Q11 GSAP | **No se instala** (decidido por Ilmar el 2026-11-24): el vuelo y la pila de Work van con CSS y un script de DOM plano, y la tarjeta «This portfolio» deja de decir «GSAP motion» (T-04, T-55, T-59). |
   | Q12 Título del PDF | Los metadatos del PDF no tienen título; lo re-exporta Ilmar con «Ilmar Lopez, Senior Software Engineer, CV». No bloquea nada. |
 
@@ -82,7 +82,7 @@ Reglas:
 
 1. **Este plan.**
 2. Acciones solo de Ilmar: actualizar Node (T-02), secretos de Netlify (T-13), DNS y dominios (T-16), prueba en iPhone (T-71), lanzamiento y tags (T-77).
-3. ~~Confirmar el CV renombrado~~ Resuelto el 2026-11-24: se commitea en T-03, en un commit aparte.
+3. ~~Confirmar el CV nuevo~~ Resuelto el 2026-11-24: se commitea en T-03, en un commit aparte.
 4. Aprobar cada pieza de diseño de la pasada de Hallmark y los cambios a `design.md` (T-18 a T-21).
 5. **Puerta de JS (T-33).** Si la home supera 120 KB gzip, me detengo y propongo opciones antes de seguir con M4.
 6. Cualquier cambio a la tabla de motion (T-50) o a la spec.
