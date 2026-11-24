@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilmar Lopez, Senior Software Engineer</title>
+<meta name="description" content="Senior Software Engineer at Stori. Serverless APIs in Go and Python on AWS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&family=Rethink+Sans:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-switch" type="button" id="theme">Dark</button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero" aria-labelledby="h1">
+    <div class="container">
+      <div class="hero-copy">
+        <h1 id="h1">Hi, I’m Ilmar Lopez.</h1>
+        <p class="lead">Senior engineer at Stori, building serverless APIs in Go and Python.</p>
+        <div class="actions">
+          <a class="btn" href="mailto:me@ilmarlopez.com">Say hi</a>
+          <a class="btn btn--quiet" href="/files/cv-en.pdf" download>View CV</a>
+        </div>
+      </div>
+      <figure class="resp" id="resp">
+        <div class="deck" id="deck" role="img" aria-label="An example API response that describes Ilmar: Senior Software Engineer at Stori, working in Go, Python and TypeScript on AWS Lambda, API Gateway and EventBridge.">
+          <div class="sheet sheet--head" style="--i:0;--d:380ms" aria-hidden="true">
+            <span class="ln" style="--n:1"><b>200 OK</b></span>
+            <span class="ln" style="--n:2"><i>content-type</i> application/json</span>
+          </div>
+          <div class="sheet sheet--body" style="--i:1;--d:470ms" aria-hidden="true">
+            <span class="ln" style="--n:1"><i>{</i></span>
+            <span class="ln in" style="--n:2"><i>&quot;name&quot;:</i> &quot;Ilmar Lopez&quot;,</span>
+            <span class="ln in" style="--n:3"><i>&quot;role&quot;:</i> &quot;Senior Software Engineer&quot;,</span>
+            <span class="ln in" style="--n:4"><i>&quot;company&quot;:</i> &quot;Stori&quot;,</span>
+            <span class="ln in" style="--n:5"><i>&quot;languages&quot;:</i> [&quot;Go&quot;, &quot;Python&quot;, &quot;TypeScript&quot;],</span>
+            <span class="ln in" style="--n:6"><i>&quot;cloud&quot;:</i> [&quot;AWS Lambda&quot;, &quot;API Gateway&quot;, &quot;EventBridge&quot;],</span>
+            <span class="ln in" style="--n:7"><i>&quot;contact&quot;:</i> &quot;me@ilmarlopez.com&quot;</span>
+            <span class="ln" style="--n:8"><i>}</i></span>
+          </div>
+          <div class="sheet sheet--req" style="--i:2;--d:0ms" aria-hidden="true">
+            <span class="ln" style="--n:0"><b>GET</b> /v1/ilmar<span class="caret"></span></span>
+          </div>
+        </div>
+        <figcaption><button class="link replay" type="button" id="replay">Send the request again</button></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section about" aria-labelledby="about-h">
+    <div class="container">
+      <h2 id="about-h">About.</h2>
+      <div class="copy">
+        <p>I’m a Senior Software Engineer at Stori, a Mexican fintech, on the architecture team. I design APIs and serverless services with Clean Architecture in Go and Python on AWS.</p>
+        <p>Before Stori I was a full stack developer and technical lead building educational platforms. I aspire to create impactful contributions.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const root = document.documentElement, btn = document.getElementById('theme');
+const dark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+const sync = () => { btn.textContent = dark() ? 'Light' : 'Dark'; };
+btn.addEventListener('click', () => { root.dataset.theme = dark() ? 'light' : 'dark'; sync(); });
+sync();
+
+const deck = document.getElementById('deck'), parts = deck.querySelectorAll('.sheet, .ln');
+document.getElementById('replay').addEventListener('click', () => {
+  parts.forEach((el) => { el.style.animation = 'none'; });
+  void deck.offsetWidth;
+  parts.forEach((el) => { el.style.animation = ''; });
+});
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const hero = document.getElementById('hero');
+  let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+  const frame = () => {
+    cx += (tx - cx) * 0.1; cy += (ty - cy) * 0.1;
+    deck.style.setProperty('--rx', cx.toFixed(2) + 'deg');
+    deck.style.setProperty('--ry', cy.toFixed(2) + 'deg');
+    raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.02 ? requestAnimationFrame(frame) : 0;
+  };
+  const kick = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  if (matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      ty = ((e.clientX - r.left) / r.width - 0.5) * 20;
+      tx = -((e.clientY - r.top) / r.height - 0.5) * 12;
+      kick();
+    });
+    hero.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
+  }
+  const onScroll = () => {
+    const p = Math.min(1, Math.max(0, scrollY / hero.offsetHeight));
+    hero.style.setProperty('--p', p.toFixed(3));
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+</script>
+</body>
+</html>

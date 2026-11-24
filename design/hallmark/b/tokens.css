@@ -1,0 +1,33 @@
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(3.5rem, 9vw, 8.5rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  /* Light: cool paper for reading, the brand coral as the one committed field. */
+  --color-paper: oklch(96.5% 0.012 250); --color-paper-2: oklch(93% 0.018 250); --color-paper-3: oklch(89% 0.022 250);
+  --color-ink: oklch(21% 0.05 266); --color-ink-2: oklch(32% 0.05 266); --color-muted: oklch(42% 0.04 266);
+  --color-rule: oklch(80% 0.025 250);
+  --color-accent: oklch(70% 0.17 38); --color-accent-ink: oklch(21% 0.05 266); --color-focus: oklch(48% 0.2 33);
+  --color-field: oklch(70% 0.17 38); --color-field-ink: oklch(21% 0.05 266); --color-field-muted: oklch(30% 0.06 266);
+  --font-display: "Erode", ui-serif, Georgia, serif; --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif; --font-outlier: var(--font-display);
+  --radius-card: 4px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: -0.02em;
+}
+/* Dark: derived. Deep navy ground, the coral stays the field so the page keeps its colour. */
+:root[data-theme="dark"] {
+  --color-paper: oklch(18% 0.04 266); --color-paper-2: oklch(22% 0.045 266); --color-paper-3: oklch(27% 0.05 266);
+  --color-ink: oklch(95% 0.012 250); --color-ink-2: oklch(86% 0.02 250); --color-muted: oklch(75% 0.03 250);
+  --color-rule: oklch(34% 0.05 266);
+  --color-accent: oklch(72% 0.17 38); --color-focus: oklch(78% 0.16 40);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --color-paper: oklch(18% 0.04 266); --color-paper-2: oklch(22% 0.045 266); --color-paper-3: oklch(27% 0.05 266);
+  --color-ink: oklch(95% 0.012 250); --color-ink-2: oklch(86% 0.02 250); --color-muted: oklch(75% 0.03 250);
+  --color-rule: oklch(34% 0.05 266);
+  --color-accent: oklch(72% 0.17 38); --color-focus: oklch(78% 0.16 40);
+} }

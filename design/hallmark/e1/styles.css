@@ -1,0 +1,54 @@
+/* Hallmark · shape: Type in Depth · genre: modern-minimal · theme: custom · job: hire · idea: "The name is the object: set so large that it needs depth, and the depth is built from the same letters." · vibe: "precise, bold, quiet, dimensional, alive"
+ * paper: oklch(97.5% 0.006 250) · accent: oklch(66% 0.19 33) · display: Rethink Sans · body: Hanken Grotesk · hero: the name at poster scale as a stack of identical letter layers that fan out on load, turn toward the pointer and pull apart as you scroll, then one sentence and two actions beneath · nav: wordmark left, links and theme switch right · footer: graphite field, wordmark, edition note, links, year · imagery: the owner's photograph once, in the about section · signature: the name extruded from its own letters, front layer in ink with a coral full stop
+ * axes: light/grotesk-sans/warm · posture: Restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: S, a single big idea with no supporting picture, so the first screen depends on the type alone; near Bloom on hue only, graphite ink and layered letters separate them */
+@import url("./tokens.css");
+@import url("./base.css");
+@import url("./common.css");
+
+/* Hero: the name as an object. Layers are clones of the face, added by script. */
+.hero { padding-block: var(--space-lg) var(--section-gap-s); overflow: clip; }
+.hero .container { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--gap-columns); align-items: end; }
+.stage { perspective: 1500px; perspective-origin: 30% 38%; padding-block: var(--space-xl) var(--space-lg); }
+.type3d { transform-style: preserve-3d; font-size: clamp(3.25rem, 10.6vw, 9.5rem); font-weight: 700; line-height: 0.96; letter-spacing: -0.045em; }
+.sway, .orbit, .block { display: block; transform-style: preserve-3d; }
+.sway { animation: sway 9s var(--ease-in-out) infinite alternate; }
+.orbit { transform-origin: 30% 50%; transform: rotateX(calc(11deg + var(--rx, 0deg) + var(--sx, 0deg))) rotateY(calc(-23deg + var(--ry, 0deg))); }
+.block { --gap: 5px; position: relative; }
+.face { display: block; position: relative; color: var(--color-ink); }
+.dot { color: var(--color-accent); }
+.lyr { display: block; position: absolute; inset: 0; pointer-events: none; color: color-mix(in oklch, var(--scene-soft-top) calc(var(--i) / var(--n) * 100%), var(--scene-soft-side)); transform: translateZ(calc(var(--i) * var(--gap) * var(--spread, 1) * -1)); }
+.lyr .dot { color: inherit; }
+.js .lyr { animation: extrude 720ms var(--ease-out) backwards; animation-delay: calc((var(--n) - var(--i)) * 14ms); }
+
+.hero-copy { max-width: 32rem; padding-bottom: var(--space-xl); }
+.hero .lead { font-size: var(--text-lead); max-width: 30ch; color: var(--color-ink-2); }
+.hero-copy > * { animation: settle var(--dur-long) var(--ease-out) both; animation-delay: 420ms; }
+.hero-copy > :nth-child(2) { animation-delay: 480ms; }
+
+/* About: the section below, so the scroll has something to move into. */
+.section { padding-block: var(--section-gap-s); border-top: var(--rule-hair) solid var(--color-rule); }
+.section .container { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap-columns); align-items: start; }
+.section h2 { font-size: var(--text-section); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em; max-width: 12ch; }
+.about { min-height: 100svh; }
+.about .copy { display: grid; gap: var(--space-lg); }
+.about .copy p { font-size: var(--text-lead); max-width: 52ch; }
+.about .copy p:first-child { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); letter-spacing: -0.02em; line-height: 1.25; max-width: 36ch; }
+
+@keyframes extrude { from { transform: translateZ(0); } }
+@keyframes sway { from { transform: rotateY(-2.5deg) rotateX(0.8deg); } to { transform: rotateY(2.5deg) rotateX(-0.8deg); } }
+@keyframes settle { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 60rem) {
+  .hero .container, .section .container { grid-template-columns: minmax(0, 1fr); }
+  .hero-copy { padding-bottom: 0; }
+}
+@media (max-width: 40rem) {
+  .type3d { font-size: clamp(3rem, 17vw, 5.5rem); }
+  .orbit { transform: rotateX(calc(7deg + var(--sx, 0deg))) rotateY(-12deg); }
+  .block { --gap: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sway, .js .lyr, .hero-copy > * { animation: none; }
+  .orbit { transform: rotateX(11deg) rotateY(-23deg); }
+}
