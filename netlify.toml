@@ -4,8 +4,5 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# The CV file was renamed to Ilmar-Lopez-CV.pdf. Links already out there (LinkedIn, recruiters, old applications) keep working.
-[[redirects]]
-  from = "/files/cv-en.pdf"
-  to = "/files/Ilmar-Lopez-CV.pdf"
-  status = 301
+# Redirects do not go here. Nitro writes `_redirects` with a catch-all `/* /404.html 404`, Netlify applies
+# `_redirects` before this file, and a rule in this file would never match. They live in nuxt.config.ts (routeRules).

@@ -16,6 +16,7 @@
     "verify:reduced": "node scripts/verify/reduced.mjs",
     "verify:a11y": "node scripts/verify/a11y.mjs",
     "verify:js": "node scripts/verify/js.mjs",
+    "verify:redirects": "node scripts/verify/redirects.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
