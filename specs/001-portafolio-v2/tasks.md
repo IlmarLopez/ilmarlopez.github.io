@@ -34,7 +34,7 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: `npm ls --depth=0` sin errores ni *peer* sin resolver; `npm run postinstall` pasa; las versiones quedan en el lockfile.
   Depende de: T-02.
 
-- [ ] **T-05 · `nuxt.config.ts` y TypeScript estricto** · 45 min · [A] · RNF-12, AC-01
+- [x] **T-05 · `nuxt.config.ts` y TypeScript estricto** · 45 min · [A] · RNF-12, AC-01
   Configuración de spec §8.2 (`ssr: true`, módulos, `css`, `components` sin prefijo de ruta, plugin de Vite de Tailwind, `experimental.viewTransition` y `prerenderErrorPages`, prerender con `crawlLinks` y rutas, `runtimeConfig.public.web3formsKey`). Scripts `typecheck`, `generate` y `preview`. Consultar Context7 antes de fijar cada opción.
   Verifica: `npm run typecheck` y `npm run generate` terminan sin errores; existen `dist/index.html` y `dist/404.html`.
   Depende de: T-04.

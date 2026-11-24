@@ -281,7 +281,7 @@ Objetivo: cualquier visitante ve v1, v2… y la más reciente.
 | `motion-v`, shader, `@nuxtjs/seo`, `@nuxt/content`, `NuxtIsland` | Opcionales | **No se usan** | Nada los necesita. `hydrate-never` sustituye a las islas. El contenido es pequeño y tipado en `app/data/*.ts`. |
 | Sitemap | Opcional | Archivo estático de 2 URLs | Un módulo no se justifica para 2 rutas. |
 
-### 8.2 Borrador de configuración (a validar en el plan)
+### 8.2 Configuración (validada en T-05)
 
 ```ts
 // nuxt.config.ts
@@ -295,12 +295,12 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', pathPrefix: false }],
   vite: { plugins: [tailwindcss()] },
   experimental: { viewTransition: true, prerenderErrorPages: true },
-  nitro: { prerender: { crawlLinks: true, routes: ['/', '/versions', '/200.html', '/404.html'] } },
+  prerender: { crawlLinks: true, routes: ['/', '/versions'] },
   runtimeConfig: { public: { web3formsKey: '' } },
 })
 ```
 
-`nuxt generate` ya prerenderiza las rutas descubiertas. `routeRules: { '/**': { prerender: true } }` queda como red de seguridad opcional. Por defecto `404.html` sale como un cascarón vacío, por eso se activa `prerenderErrorPages` (Context7). Salida: `dist` en Netlify.
+**Ajustes de T-05, validados contra Nuxt 4.7 y Context7:** `prerender` va en el primer nivel porque `nitro.prerender.{routes,ignore,crawlLinks}` está obsoleto; `/200.html` y `/404.html` no hacen falta en `routes` (`nuxt generate` los emite); `css` se añade en T-07, cuando existe `main.css`; `/versions` entra a `routes` en T-43, cuando existe la página; y `viewTransition: true` (no `'always'`) respeta `prefers-reduced-motion`. `nuxt generate` ya prerenderiza las rutas descubiertas. `routeRules: { '/**': { prerender: true } }` queda como red de seguridad opcional. Por defecto `404.html` sale como un cascarón vacío, por eso se activa `prerenderErrorPages` (Context7). Salida: `dist` en Netlify.
 
 ### 8.3 Estructura de carpetas
 
