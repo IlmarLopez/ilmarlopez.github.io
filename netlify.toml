@@ -3,3 +3,9 @@
   publish = "dist"
 [build.environment]
   NODE_VERSION = "22"
+
+# The CV file was renamed to Ilmar-Lopez-CV.pdf. Links already out there (LinkedIn, recruiters, old applications) keep working.
+[[redirects]]
+  from = "/files/cv-en.pdf"
+  to = "/files/Ilmar-Lopez-CV.pdf"
+  status = 301
