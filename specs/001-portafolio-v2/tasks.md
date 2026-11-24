@@ -39,7 +39,7 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: `npm run typecheck` y `npm run generate` terminan sin errores; existen `dist/index.html` y `dist/404.html`.
   Depende de: T-04.
 
-- [ ] **T-06 · Tokens** · 60 min · [A] · RF-12, AC-06
+- [x] **T-06 · Tokens** · 60 min · [A] · RF-12, AC-06
   Crear `app/assets/css/tokens.css` con `@theme static` (roles `--color-*` incluido `--color-error-text`, `--font-*`, escala de texto, radios, easings, puntos de corte) y `:root` plano (`--space-*`, `--dur-*` más `--dur-stack`, contenedor, gutter, z-index), con `light-dark()` y `color-scheme` según spec §4.5. Sin `--spacing-*`, sin `--scene-soft-side`, `--color-error` ni `--color-success`.
   Verifica: en Playwright los colores calculados coinciden con la tabla de spec §4.1 en claro y en oscuro; con el sistema en oscuro y sin `data-theme`, `--scene-soft-top` es el oscuro (defecto B1); `--color-error-text` oscuro es oklch(76% 0.15 27); `--color-red-500` ya no existe.
   Depende de: T-05.
