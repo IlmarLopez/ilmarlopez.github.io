@@ -8,6 +8,13 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "typecheck": "nuxt typecheck",
+    "verify": "node scripts/verify/all.mjs",
+    "verify:selftest": "node scripts/verify/selftest.mjs",
+    "verify:theme": "node scripts/verify/theme.mjs",
+    "verify:layout": "node scripts/verify/layout.mjs",
+    "verify:nojs": "node scripts/verify/nojs.mjs",
+    "verify:reduced": "node scripts/verify/reduced.mjs",
+    "verify:a11y": "node scripts/verify/a11y.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {

@@ -66,9 +66,10 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Resultado: `app/data/{profile,experience,projects,tools,socials,cv,versions}.ts`. `Role` es una unión discriminada (`education` no admite `from`/`to`). `versions.ts` deja `date: null` con `TODO(ilmar)` (Q9) en vez de un texto que se vería en la página. `short` sigue la regla de profundidad de RF-04 («California Web»), así que la gráfica de T-79 pasa de «California» a «California Web» y T-79 comprueba que cabe. `cv.ts` lleva un `detail` por entrada («PDF, 1 page»). Verificado con `.tmp/verify-data.mjs` (duraciones 5 yrs 2 mos, 4 yrs 2 mos y 4 mos; 5 enlaces de repos del conjunto verificado) y `typecheck`.
   Depende de: T-05.
 
-- [ ] **T-11 · Arnés de verificación** · 60 min · [A] · AC-01, AC-02, AC-03, AC-04, AC-05, AC-15
+- [x] **T-11 · Arnés de verificación** · 60 min · [A] · AC-01, AC-02, AC-03, AC-04, AC-05, AC-15
   `scripts/verify/` con Playwright y axe: servir `dist`, helpers de viewports (360, 768, 1280, 1920), JS apagado, reduced-motion y tema; scripts npm `verify:*`.
   Verifica: corre contra la home vacía y falla con un mensaje legible cuando se fuerza una aserción incorrecta.
+  Resultado: `lib/{serve,browser,check,routes}.mjs` y las suites `theme`, `layout`, `nojs`, `reduced`, `a11y` y `selftest`, con `npm run verify` para correrlas todas contra `dist/` (o contra `VERIFY_BASE`, para un servidor de desarrollo o un Deploy Preview). Códigos de salida: 0 todo verde, 1 falla un check, 2 no pudo correr (sin `dist/` o sin Chromium). `verify:selftest` prueba el arnés (una aserción incorrecta falla con *expected* y *received*; el servidor responde 200, 404 con `404.html` y rechaza `/../`). Cada suite es la primera rebanada de la tarea que la completa: T-63 (`layout`), T-64 (`nojs`, `reduced`, `theme` y `verify:keyboard`), T-65 (`a11y`) y T-83 (`flight`, `cards`, `stack`). **Hallazgo:** `verify:a11y` detectó que la home no tenía `<title>` (`document-title`, WCAG 2.4.2); el shell ahora trae un título de respaldo y T-45 lo fija por ruta. Chromium debe estar instalado con `npx playwright install chromium`.
   Depende de: T-05.
 
 - [ ] **T-12 · Evidencia y línea base de JS** · 30 min · [A] · RNF-03, AC-13
@@ -264,12 +265,12 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 
 - [ ] **T-43 · `/versions`** · 60 min · [A] · RF-15, AC-11, AC-01
   Página y `VersionEntry` según el diseño de T-19, con v2 (current) y v1 (archived) desde `versions.ts`.
-  Verifica: orden inverso, un solo `h1`, el enlace de v1 apunta a `https://v1.ilmarlopez.com`, `dist/versions/index.html` tiene contenido.
+  Verifica: orden inverso, un solo `h1`, el enlace de v1 apunta a `https://v1.ilmarlopez.com`, `dist/versions/index.html` tiene contenido. Añade `/versions` a `scripts/verify/lib/routes.mjs` para que `verify:a11y` la audite.
   Depende de: T-19, T-42.
 
 - [ ] **T-44 · Página 404** · 45 min · [A] · RF-16, AC-10, AC-01
   `error.vue` según T-19, `prerenderErrorPages` y `noindex`.
-  Verifica: `dist/404.html` contiene el texto de la página; en la preview `curl -I` a una URL inexistente devuelve 404.
+  Verifica: `dist/404.html` contiene el texto de la página; en la preview `curl -I` a una URL inexistente devuelve 404. Añade `/404.html` a `scripts/verify/lib/routes.mjs` para que `verify:a11y` la audite en claro y oscuro.
   Depende de: T-19.
 
 - [ ] **T-45 · Metadatos por ruta y JSON-LD** · 60 min · [A] · RF-18, RNF-06, AC-16
