@@ -18,6 +18,10 @@ logs
 .fleet
 .idea
 
+# Local tooling (browser captures and scratch data, never committed)
+.playwright-mcp/
+.tmp/
+
 # Local env files
 .env
 .env.*
