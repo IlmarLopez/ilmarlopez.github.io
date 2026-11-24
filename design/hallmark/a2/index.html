@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilmar Lopez, Senior Software Engineer</title>
+<meta name="description" content="Senior Software Engineer at Stori. Serverless APIs in Go and Python on AWS.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=excon@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-switch" type="button" id="theme">Dark</button></li>
+      </ul>
+    </nav>
+  </div>
+  <span class="progress" aria-hidden="true"></span>
+</header>
+
+<main id="top">
+  <section class="hero" aria-labelledby="h1">
+    <div class="container">
+      <h1 id="h1"><span class="line"><span>Hi, I’m</span></span><span class="line"><span>Ilmar Lopez.</span></span></h1>
+      <div class="hero-row">
+        <div>
+          <p class="lead">Senior engineer at Stori, building serverless APIs in Go and Python.</p>
+          <div class="actions">
+            <button class="btn" type="button" data-open="say-hi">Say hi</button>
+            <a class="btn btn--quiet" href="/files/cv-en.pdf" download>View CV</a>
+          </div>
+        </div>
+        <div class="portrait-wrap">
+          <div class="portrait" data-slot="portrait" data-alt="Ilmar Lopez in a navy and butter-yellow shirt">
+            <img src="../../../public/img/hero/me.jpg" alt="Ilmar Lopez in a navy and butter-yellow shirt" width="1224" height="1632" fetchpriority="high">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about" aria-labelledby="about-h">
+    <div class="container">
+      <h2 id="about-h">Stable at the core, swappable at the edge.</h2>
+      <div class="body">
+        <p>I’m a Senior Software Engineer at Stori, a Mexican fintech, on the architecture team. I design APIs and serverless services with Clean Architecture in Go and Python on AWS, and I lead projects that cut costs and automate how we build and ship software.</p>
+        <p>Before Stori I was a full stack developer and technical lead building educational platforms. I aspire to create impactful contributions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience" aria-labelledby="exp-h">
+    <div class="container">
+      <h2 id="exp-h">Where I’ve built.</h2>
+      <div class="body">
+        <ul class="rows">
+          <li><span class="who">Stori Card</span><span class="what">Senior Software Engineer. Serverless APIs, Python to Go migration, external providers, monitoring. Now on the architecture team.</span><span class="when">Oct 2021 to now</span></li>
+          <li><span class="who">Home &amp; Media Products</span><span class="what">Full Stack Developer and Technical Lead. Architecture, code quality, reviews and database design for educational platforms.</span><span class="when">Sep 2017 to Oct 2021</span></li>
+          <li><span class="who">California Web Design</span><span class="what">Frontend Developer.</span><span class="when">Apr 2017 to Jul 2017</span></li>
+          <li><span class="who">Universidad Tecnológica de Tijuana</span><span class="what">Information Technology Engineering.</span><span class="when">Education</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section projects" id="projects" aria-labelledby="proj-h">
+    <div class="container">
+      <h2 id="proj-h">Selected work.</h2>
+      <div class="body">
+        <article class="project project--lead">
+          <div><h3>Python to Go, with Clean Architecture</h3><p class="where">Stori</p></div>
+          <div><p>APIs migrated from Python to Go, with business rules kept apart from the AWS serverless plumbing around them.</p><ul class="tags"><li>Go</li><li>AWS</li><li>Serverless</li></ul></div>
+        </article>
+        <article class="project">
+          <div><h3>Weekly feature flag cleanup</h3><p class="where">Stori</p></div>
+          <div><p>A Go job on AWS EventBridge Scheduler sends a weekly Slack report with Block Kit and a CSV, so teams can pay down technical debt.</p><ul class="tags"><li>Go</li><li>EventBridge Scheduler</li><li>Slack</li></ul></div>
+        </article>
+        <article class="project">
+          <div><h3>Services for new fintech products</h3><p class="where">Stori</p></div>
+          <div><p>Serverless REST services and external provider integrations for new products.</p><ul class="tags"><li>REST</li><li>Serverless</li><li>Go</li><li>Python</li></ul></div>
+        </article>
+        <article class="project">
+          <div><h3>Educational platforms</h3><p class="where">Home &amp; Media Products</p></div>
+          <div><p>Led architecture and design as technical lead, across the full stack.</p><ul class="tags"><li>Full stack</li></ul></div>
+        </article>
+        <article class="project">
+          <div><h3>This portfolio, v1 to v2</h3><p class="where">Public</p></div>
+          <div><p>Rebuilt with prerendering, kept alive as versions. <a class="link" href="https://github.com/IlmarLopez/ilmarlopez.github.io">Source on GitHub</a></p><ul class="tags"><li>Nuxt</li><li>Tailwind</li><li>GSAP</li></ul></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stack" id="stack" aria-labelledby="stack-h">
+    <div class="container">
+      <h2 id="stack-h">What I use.</h2>
+      <div class="body">
+        <p class="rule-line">Dependencies point inward. Tools change, principles stay.</p>
+        <div class="cols">
+          <div><h3>Principles</h3><ul><li>Clean Architecture</li><li>REST APIs</li><li>Unit testing</li><li>Observability and metrics</li><li>Database design</li></ul></div>
+          <div><h3>Tools</h3><ul><li>Go, Python, TypeScript</li><li>Vue, Nuxt, Tailwind CSS</li><li>AWS Lambda, API Gateway, EventBridge</li></ul></div>
+        </div>
+        <p class="lang">Spanish, native. English, technical.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contact-h">
+    <div class="container">
+      <h2 id="contact-h">Let’s talk.</h2>
+      <div class="body">
+        <p class="big">Have something to build?</p>
+        <p><a class="mail link" href="mailto:me@ilmarlopez.com">me@ilmarlopez.com</a></p>
+        <div class="actions"><button class="btn" type="button" data-open="say-hi">Say hi</button></div>
+        <ul class="socials"><li><a class="link" href="https://github.com/IlmarLopez">GitHub</a></li><li><a class="link" href="https://www.linkedin.com/in/ilmarlopez">LinkedIn</a></li><li><a class="link" href="https://dev.to/ilmarlopez">DEV</a></li><li><a class="link" href="https://codepen.io/ilmarlopez">CodePen</a></li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <ul><li><a class="link" href="/versions">Versions</a></li><li><a class="link" href="https://v1.ilmarlopez.com">Version 1, archived</a></li></ul>
+    <small>© 2026 Ilmar Lopez</small>
+  </div>
+</footer>
+
+<dialog id="say-hi" aria-labelledby="hi-h">
+  <form method="dialog" id="hi-form">
+    <h2 id="hi-h" style="font-size: var(--text-xl)">Say hi</h2>
+    <label>Name<input name="name" autocomplete="name" required></label>
+    <label>Email<input name="email" type="email" autocomplete="email" required></label>
+    <label>Message<textarea name="message" rows="4" required></textarea></label>
+    <div class="actions" style="margin-top: 0">
+      <button class="btn" type="submit" disabled title="TODO(ilmar): wire to Web3Forms with NUXT_PUBLIC_WEB3FORMS_KEY">Send</button>
+      <button class="btn btn--quiet" type="button" data-close>Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const root = document.documentElement, btn = document.getElementById('theme');
+const dark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+const sync = () => { btn.textContent = dark() ? 'Light' : 'Dark'; };
+btn.addEventListener('click', () => { root.dataset.theme = dark() ? 'light' : 'dark'; sync(); });
+sync();
+document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
+document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => b.closest('dialog').close()));
+</script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+/* Hallmark · shape: Depth Is Time · genre: modern-minimal · theme: custom · job: hire · idea: "Depth is time: the newest work stands in front, and scrolling flies the camera back through the roles that built it." · vibe: "precise, quiet, dimensional, alive, patient"
+ * paper: oklch(97.5% 0.006 250) · accent: oklch(66% 0.19 33) · display: Rethink Sans · body: Hanken Grotesk · hero: the name, one sentence and two actions on the left, and behind them the next roles receding as framed planes toward a vanishing point, which scroll brings forward one by one · nav: wordmark left, links and theme switch right · footer: graphite field, wordmark, edition note, links, year · imagery: none yet, the owner's photograph arrives with the About design pass · signature: planes of real roles receding in depth, a coral line marking how far back you have flown
+ * axes: light/grotesk-sans/warm · posture: Restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: R, the flight needs a tall scroll runway and a static fallback that shows the same roles as a plain list, and the cards behind the hero fade low so they read as depth first and content second; near Bloom on hue only, graphite ink and planes in depth separate them */
+/* Hallmark · answered F4 · .btn and .btn[aria-busy="true"], plus the two hero anchors · the sending state only repeats the coral fill of the hover state on the same button, and in the hero Say hi is the one filled action while View CV is the outlined btn--quiet variant */
+@import url("./tokens.css");
+@import url("./base.css");
+
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-paper); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); min-height: var(--space-2xl); }
+.wordmark { font-family: var(--font-outlier); font-weight: 700; font-size: var(--text-lg); letter-spacing: -0.02em; text-decoration: none; }
+.nav ul { display: flex; align-items: center; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; }
+.nav a, .link { text-decoration: none; padding-block: var(--space-xs); background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0 2px no-repeat; transition: background-size var(--dur-short) var(--ease-out); }
+.nav a:focus-visible, .link:focus-visible { background-size: 100% 2px; }
+@media (hover: hover) { .nav a:hover, .link:hover { background-size: 100% 2px; } }
+.theme-switch { font-size: var(--text-sm); color: var(--color-ink); background: none; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-pill); padding: var(--space-xs) var(--space-md); cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+@media (hover: hover) { .theme-switch:hover { background: var(--color-paper-2); } }
+.theme-switch:active { transform: scale(0.97); }
+/* The line under the link of the section on screen. JS gives it a position (--nx, --ny) and a width (--nw). */
+.nav nav { position: relative; }
+.js .nav-ind { position: absolute; left: 0; top: 0; width: 1px; height: 2px; background: var(--color-accent); transform-origin: 0 0; transform: translate(var(--nx, 0px), var(--ny, 0px)) scaleX(var(--nw, 0)); opacity: 0; pointer-events: none; transition: opacity var(--dur-micro) var(--ease-out); }
+.js .nav-ind[data-on] { opacity: 1; }
+.js .nav-ind[data-ready] { transition: transform var(--dur-short) var(--ease-out), opacity var(--dur-micro) var(--ease-out); }
+/* Anchor links glide, and the theme crossfades. */
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-short); animation-timing-function: var(--ease-out); }
+/* Sections arrive once: each block rises in behind the one before it. */
+.js [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out); transition-delay: calc(var(--i, 0) * 60ms); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--space-2xl); padding-inline: var(--space-xl); font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); border-radius: var(--radius-pill); border: var(--rule-hair) solid var(--color-ink); background: var(--color-ink); color: var(--color-paper); text-decoration: none; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn[aria-busy="true"] { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+@media (hover: hover) { .btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); } }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn--quiet { background: transparent; color: var(--color-ink); border-color: var(--color-rule); }
+@media (hover: hover) { .btn--quiet:hover { background: var(--color-paper-2); border-color: var(--color-ink); color: var(--color-ink); } }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); }
+/* Sections */
+.section { padding-block: var(--section-gap-s); border-top: var(--rule-hair) solid var(--color-rule); }
+.section .container { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap-columns); }
+.section h2 { font-size: var(--text-section); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em; max-width: 12ch; }
+.section .body { display: grid; gap: var(--space-lg); align-content: start; }
+.about .container { align-items: start; }
+.about .copy { display: grid; gap: var(--space-lg); }
+.about .copy p { font-size: var(--text-lead); max-width: 52ch; }
+.about .copy p:first-child { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); letter-spacing: -0.02em; line-height: 1.25; max-width: 36ch; }
+/* Work: a stack inspector. Pick a project, its layers pull apart in 3D. */
+.work .container { grid-template-columns: minmax(0, 1fr); }
+.work h2 { margin-bottom: var(--space-2xl); }
+.wk { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: start; }
+.wk-list { list-style: none; padding: 0; margin: 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.wk-tab { white-space: nowrap; display: grid; grid-template-columns: 3rem 1fr; column-gap: var(--space-sm); width: 100%; padding: var(--space-lg) var(--space-sm); text-align: left; font: inherit; color: var(--color-muted); background: transparent; border: 0; border-bottom: var(--rule-hair) solid var(--color-rule); cursor: pointer; transition: color var(--dur-short) var(--ease-out); }
+@media (hover: hover) { .wk-tab:hover { color: var(--color-ink); } }
+.wk-tab[aria-selected="true"] { color: var(--color-ink); box-shadow: inset 3px 0 0 var(--color-accent); }
+.wk-tab .no { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: var(--text-xl); letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.wk-tab .nm { white-space: normal; font-family: var(--font-display); font-weight: 700; font-size: var(--text-title); letter-spacing: -0.02em; line-height: 1.15; }
+.wk-tab .tg { font-size: var(--text-sm); }
+.wk-stage { --pu: 13rem; --gap: 54px; --lead: 0.3; position: relative; height: 24rem; perspective: 2600px; display: grid; place-items: center; }
+.wk-stack { position: relative; width: var(--pu); height: var(--pu); transform: translateY(2.5rem) rotateX(58deg) rotateZ(-42deg); transform-style: preserve-3d; }
+.plate { --z: calc(var(--i) * 6px); position: absolute; inset: 0; transform-style: preserve-3d; transform: translateZ(var(--z)); transition: transform 700ms var(--ease-out) calc(var(--i) * 60ms); }
+.is-open .plate { --z: calc(var(--i) * var(--gap)); }
+/* The drawing is the diamond, a guide and the widest label. Where it fits the stage it keeps its size and place; where it does not, it shrinks to fit and slides left.
+   --tag is the width of the widest label (126px at 16px, 8rem); a longer label means a bigger --tag. The shift is 0 or negative and the 0.71875 is half the width of the rotated diamond. */
+@supports (width: 1cqw) {
+  .wk-stage { container-type: inline-size; --tag: 8rem; }
+  .wk-stack { --pu: clamp(5rem, (100cqw - var(--space-xs) * 2 - var(--space-sm) - var(--tag)) / (1.4375 + var(--lead)), 13rem); transform: translateX(min(0px, calc(50cqw - var(--space-xs) - (0.71875 + var(--lead)) * var(--pu) - var(--space-sm) - var(--tag)))) translateY(2.5rem) rotateX(58deg) rotateZ(-42deg); }
+}
+.plate i { position: absolute; inset: 0; background: var(--color-paper-3); border: var(--rule-hair) solid var(--color-ink); border-radius: var(--radius-card); }
+.plate--top i { background: var(--scene-soft-top); }
+.plate .tag { position: absolute; left: 100%; top: 100%; padding-left: calc(var(--pu) * var(--lead) + var(--space-sm)); white-space: nowrap; font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); color: var(--color-ink); transform-origin: 0 0; transform: rotateZ(42deg) rotateX(-58deg) translateY(-50%); }
+.js .plate .tag { opacity: 0; transition: opacity var(--dur-long) var(--ease-out) 300ms; }
+.js .is-open .plate .tag { opacity: 1; }
+.plate .tag::before { content: ""; position: absolute; left: 0; top: 50%; width: calc(var(--pu) * var(--lead)); border-top: var(--rule-hair) dashed var(--color-muted); }
+.wk-detail { max-width: 34rem; }
+.wk-detail h3 { font-size: var(--text-title); font-weight: 700; letter-spacing: -0.02em; margin-bottom: var(--space-sm); }
+.wk-detail p { color: var(--color-ink-2); margin-bottom: var(--space-sm); }
+.wk-detail .links { font-size: var(--text-sm); }
+.wk-view { display: grid; }
+/* With script the panels share one cell: the outgoing one fades fast, the incoming one follows and its text settles line by line. */
+.js .wk-view > .wk-panel { grid-area: 1 / 1; min-width: 0; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity var(--dur-micro) var(--ease-in), visibility 0s linear var(--dur-micro); }
+.js .wk-view > .wk-panel[data-active] { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity var(--dur-short) var(--ease-out) var(--dur-micro), visibility 0s; }
+.js .wk-detail > * { opacity: 0; transform: translateY(8px); transition: opacity var(--dur-micro) var(--ease-in), transform var(--dur-micro) var(--ease-in); }
+.js .wk-panel[data-active] .wk-detail > * { opacity: 1; transform: none; transition: opacity var(--dur-short) var(--ease-out) calc(var(--dur-micro) + var(--k, 0) * 40ms), transform var(--dur-short) var(--ease-out) calc(var(--dur-micro) + var(--k, 0) * 40ms); }
+.wk-detail > :nth-child(2) { --k: 1; }
+.wk-detail > :nth-child(n+3) { --k: 2; }
+/* The marker rides along the list; it has no slide on its first placement. */
+.wk-list { position: relative; }
+.js .wk-list::after { content: ""; position: absolute; left: 0; top: 0; width: 3px; height: 1px; background: var(--color-accent); transform-origin: 0 0; transform: translateY(var(--ty, 0px)) scaleY(var(--th, 0)); }
+.js .wk-list.is-ready::after { transition: transform var(--dur-short) var(--ease-out); }
+.js .wk-tab[aria-selected="true"] { box-shadow: none; }
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-md); list-style: none; padding: 0; margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+.card .links { font-size: var(--text-sm); }
+
+/* Tools: a plain spec sheet. */
+.tools .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap-columns); }
+.tools h3 { font-family: var(--font-body); font-weight: 400; font-size: var(--text-sm); color: var(--color-muted); padding-bottom: var(--space-sm); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.tools ul { list-style: none; margin: var(--space-md) 0 0; padding: 0; display: grid; gap: var(--space-xs); font-size: var(--text-lg); font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+.tools .lang { margin-top: var(--space-xl); color: var(--color-muted); }
+
+.contact .big { font-family: var(--font-display); font-weight: 700; font-size: var(--text-display-s); line-height: 1; letter-spacing: -0.04em; max-width: 12ch; }
+.contact .mail { font-family: var(--font-display); font-weight: 600; font-size: var(--text-xl); }
+.socials { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); list-style: none; padding: 0; margin: 0; }
+.socials small { margin-inline-start: var(--space-2xs); font-size: var(--text-sm); color: var(--color-muted); }
+
+
+.footer { padding-block: var(--space-xl); background: var(--color-field); color: var(--color-field-ink); }
+.footer .container { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--space-md) var(--space-xl); }
+.footer ul { display: flex; flex-wrap: wrap; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; font-size: var(--text-sm); }
+.footer small { color: var(--color-field-muted); font-size: var(--text-sm); }
+.footer :focus-visible { outline-color: var(--color-accent); }
+.footer .link { background-image: linear-gradient(var(--color-accent), var(--color-accent)); }
+
+/* Journey: static first. The hero, then the roles as a plain list. */
+.hero-copy { padding-block: var(--space-xl) var(--space-2xl); }
+.hero-copy h1 { font-size: var(--text-display); font-weight: 700; line-height: 1; letter-spacing: -0.04em; max-width: 12ch; }
+.hero-copy .lead { font-size: var(--text-lead); margin-top: var(--space-lg); max-width: 30ch; color: var(--color-ink-2); }
+.hero-copy > :not(h1) { animation: settle var(--dur-long) var(--ease-out) both; }
+.hero-copy > :nth-child(2) { animation-delay: 140ms; }
+.hero-copy > :nth-child(3) { animation-delay: 200ms; }
+/* The name rises out from under a line, one line after the other. */
+.hero-copy h1 .ln { display: block; overflow: clip; padding: 0.12em 0.08em; margin: -0.12em -0.08em; }
+.hero-copy h1 .ln > span { display: block; animation: rise var(--dur-long) var(--ease-out) both; }
+.hero-copy h1 .ln:nth-child(2) > span { animation-delay: 70ms; }
+.exp-head { width: min(44rem, calc(100% - var(--gutter) * 2)); margin: var(--space-xl) auto var(--space-lg); font-size: var(--text-section); font-weight: 700; line-height: 1.02; letter-spacing: -0.035em; }
+.card { display: block; width: min(44rem, calc(100% - var(--gutter) * 2)); margin: 0 auto var(--space-xl); padding: var(--space-xl); background: var(--color-paper); color: var(--color-ink); border: var(--rule-hair) solid var(--color-ink); border-radius: var(--radius-card); }
+.card h3 { font-size: var(--text-section); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; }
+/* Each company gets a type-set monogram; the newest wears the filled one, so the stack still reads newest in front. */
+/* The card reads as a drawing sheet: the name and role on top, a readout block below it, and a scale bar for the years. */
+.card { --mark: 3.5rem; }
+.card-head { display: flex; align-items: flex-start; gap: var(--space-md); }
+.card-title { min-width: 0; flex: 1; }
+/* The name of the role that is still running links to the company. A quiet underline says it is a link; coral and a thicker line answer hover and focus. */
+.card h3 a { text-decoration: underline; text-decoration-thickness: var(--rule-hair); text-underline-offset: 0.14em; text-decoration-color: color-mix(in oklch, var(--color-ink) 35%, transparent); transition: text-decoration-color var(--dur-short) var(--ease-out), text-decoration-thickness var(--dur-short) var(--ease-out); }
+.card h3 a:focus-visible { text-decoration-color: var(--color-accent); text-decoration-thickness: 0.08em; }
+@media (hover: hover) { .card h3 a:hover { text-decoration-color: var(--color-accent); text-decoration-thickness: 0.08em; } }
+.card .role { margin-top: var(--space-xs); font-size: var(--text-lg); color: var(--color-ink); }
+.card .state { flex: none; margin: 0; padding-top: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); white-space: nowrap; }
+.card .state[data-live] { color: var(--color-ink); }
+/* The one dot on the page that means live: it sits on the role that is still running. */
+.card .state[data-live]::before { content: ""; display: inline-block; width: 0.5rem; height: 0.5rem; margin-right: var(--space-xs); border-radius: 50%; background: var(--color-accent); vertical-align: 0.05em; }
+.card .about { margin-top: var(--space-md); font-size: var(--text-md); color: var(--color-ink-2); max-width: 52ch; }
+.card .readout { display: grid; grid-template-columns: 1fr auto; column-gap: var(--gap-columns); align-items: end; margin: var(--space-lg) 0 0; padding-top: var(--space-md); border-top: var(--rule-hair) solid var(--color-rule); }
+.card .readout > div:last-child { text-align: right; }
+.card .readout dt { font-size: var(--text-sm); color: var(--color-muted); }
+.card .readout dd { margin: var(--space-2xs) 0 0; }
+.card .when { font-size: var(--text-lg); font-weight: 600; font-variant-numeric: tabular-nums; }
+.card .dur { position: relative; font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.card .dur small { font-family: var(--font-body); font-weight: 400; font-size: var(--text-sm); letter-spacing: 0; color: var(--color-muted); margin-inline: 0.2em 0.5em; }
+.card .dur small:last-child { margin-inline-end: 0; }
+.card .dur .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mark { flex: none; display: grid; place-items: center; width: var(--mark); height: var(--mark); margin-top: calc((var(--text-section) * 1.05 - var(--mark)) / 2); border: var(--rule-hair) solid var(--color-ink); border-radius: var(--radius-card); font-family: var(--font-display); font-weight: 700; font-size: var(--text-lg); letter-spacing: -0.03em; line-height: 1; color: var(--color-ink); }
+.mark[data-now] { background: var(--color-ink); color: var(--color-paper); }
+/* The timeline: every role on one shared scale, 2017 to today, newest first. The role this card is about is in ink with its name in bold; the rest is grey context.
+   JS builds the rows from each card's data-from, data-to and data-label, and sets --a (start), --w (length), --x (year position) and --k (draw order). */
+.tenure { display: none; }
+.js .tenure { --name: 6.5rem; --row: 1.375rem; display: grid; grid-template-columns: var(--name) minmax(0, 1fr); column-gap: var(--space-sm); position: relative; margin-top: var(--space-lg); padding-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); font-variant-numeric: tabular-nums; }
+.tenure .row { display: contents; }
+.tenure .name { grid-column: 1; height: var(--row); line-height: var(--row); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tenure .track { grid-column: 2; position: relative; height: var(--row); }
+.tenure .bar { position: absolute; left: var(--a, 0%); top: 50%; width: max(var(--w, 0%), 6px); height: 6px; translate: 0 -50%; border-radius: 3px; background: color-mix(in oklch, var(--color-ink) 32%, var(--color-paper)); transform-origin: 0 50%; transition: transform var(--dur-long) var(--ease-out) calc(120ms + var(--k, 0) * 80ms); }
+.tenure .row[data-self] .name { color: var(--color-ink); font-weight: 600; }
+.tenure .row[data-self] .bar { height: 10px; border-radius: 5px; background: var(--color-ink); }
+/* One hairline per January behind the bars, and a coral line for today at the right edge. */
+.tenure .grid { position: absolute; left: calc(var(--name) + var(--space-sm)); right: 0; top: var(--space-md); bottom: var(--row); pointer-events: none; background: repeating-linear-gradient(90deg, var(--color-rule) 0 var(--rule-hair), transparent var(--rule-hair) var(--yr, 10%)); }
+.tenure .grid::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: var(--rule-hair); background: var(--color-accent); transition: opacity var(--dur-short) var(--ease-out) 450ms; }
+.tenure .axis { grid-column: 2; position: relative; height: var(--row); border-top: var(--rule-hair) solid var(--color-ink); }
+.tenure .axis span { position: absolute; top: 0; line-height: var(--row); }
+.tenure .year { left: var(--x); transform: translateX(-50%); }
+.tenure .year { display: none; }
+.tenure .year.y2 { display: block; }
+.tenure .now { right: 0; color: var(--color-ink); font-weight: 600; }
+/* In flight the bars are drawn when the role arrives, and the line for today lands last. */
+.flight .tenure .bar { transform: scaleX(0); }
+.flight .tenure .grid::after { opacity: 0; }
+.flight .plane[data-reached] .tenure .bar { transform: none; }
+.flight .plane[data-reached] .tenure .grid::after { opacity: 1; }
+/* The readout wakes when the camera arrives: its two cells come in one after the other, while the strip draws. Cards still behind show only the sheet. */
+.readout > :nth-child(2) { --k: 1; }
+.js.flight .readout > div { opacity: 0; transform: translateY(6px); transition: opacity var(--dur-micro) var(--ease-in), transform var(--dur-micro) var(--ease-in); }
+.js.flight .plane[data-reached] .readout > div { opacity: 1; transform: none; transition: opacity var(--dur-short) var(--ease-out) calc(100ms + var(--k, 0) * 60ms), transform var(--dur-short) var(--ease-out) calc(100ms + var(--k, 0) * 60ms); }
+.depth { display: none; }
+
+/* The flight. Script sets --x, --y, --z, --o and --po on every plane while you scroll. */
+.flight .journey { height: 480svh; }
+.flight .viewport { position: sticky; top: var(--space-2xl); height: calc(100svh - var(--space-2xl)); overflow: clip; perspective: 1100px; perspective-origin: 76% 34%; }
+.flight .world { position: absolute; inset: 0; transform-style: preserve-3d; }
+.flight .exp-head { position: absolute; width: 1px; height: 1px; margin: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.flight .plane { position: absolute; left: 50%; top: 50%; margin: 0; transform: translate3d(calc(-50% + var(--x, 0px)), calc(-50% + var(--y, 0px)), calc(var(--z, 0px) + var(--zi, 0px))); opacity: calc(var(--po, 1) * var(--pi, 1)); }
+.flight .card { border-color: color-mix(in oklch, var(--color-ink) calc(var(--o, 1) * 100%), var(--color-paper)); }
+.flight .card > * { opacity: var(--o, 1); }
+.flight .plane--hero { width: 100%; }
+.flight .plane--hero .hero-copy { padding-block: 0; }
+.flight .plane--hero[data-passed] .actions { visibility: hidden; }
+.flight .depth { display: block; position: absolute; inset: auto var(--gutter) var(--space-lg); }
+.depth .bar { display: block; height: var(--rule-hair); background: var(--color-rule); }
+.depth .fill { display: block; height: 3px; margin-top: -1px; background: var(--color-accent); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+.depth ol { display: flex; justify-content: space-between; margin: var(--space-xs) 0 0; padding: 0; list-style: none; font-size: var(--text-sm); color: var(--color-muted); }
+/* The label of the role in front of the camera takes the ink; the ones already flown past soften. */
+.depth li { transition: color var(--dur-short) var(--ease-out); }
+.depth li[data-past] { color: var(--color-ink-2); }
+.depth li[data-on] { color: var(--color-ink); }
+/* On load the roles arrive from depth, nearest first, and the ruler comes in last. --zi and --pi are the arrival offsets, animated apart from the scroll-driven --z and --po. */
+@property --zi { syntax: "<length>"; inherits: false; initial-value: 0px; }
+@property --pi { syntax: "<number>"; inherits: false; initial-value: 1; }
+.flight .plane:not(.plane--hero) { animation: arrive 700ms var(--ease-out) calc(200ms + var(--i, 1) * 80ms) both; }
+.flight .depth { animation: fade-in var(--dur-long) var(--ease-out) 700ms both; }
+
+@keyframes settle { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { transform: translateY(105%); } to { transform: none; } }
+@keyframes arrive { from { --zi: -700px; --pi: 0; } to { --zi: 0px; --pi: 1; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 70rem) { .tools .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--space-xl); } }
+@media (max-width: 60rem) {
+  .wk { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .wk-stage { --pu: 10rem; --gap: 44px; height: 21rem; }
+  .plate .tag { font-size: var(--text-sm); }
+  @supports (width: 1cqw) {
+    .wk-stage { --lead: 0.2; --tag: 7rem; }
+    .wk-stack { --pu: clamp(5rem, (100cqw - var(--space-xs) * 2 - var(--space-sm) - var(--tag)) / (1.4375 + var(--lead)), 10rem); transform: translateX(calc((var(--lead) * var(--pu) + var(--space-sm) + var(--tag)) / -2)) translateY(2.5rem) rotateX(58deg) rotateZ(-42deg); }
+  }
+  .section .container { grid-template-columns: minmax(0, 1fr); }
+  .nav ul li:not(:last-child) { display: none; }
+  .nav-ind { display: none; }
+}
+@media (max-width: 40rem) {
+  .btn { width: 100%; }
+  .tools .cols { grid-template-columns: minmax(0, 1fr); }
+  .flight .viewport { perspective: 900px; perspective-origin: 60% 36%; }
+  .card { --mark: 2.75rem; position: relative; padding: var(--space-lg); }
+  .card .role { font-size: var(--text-md); }
+  .card .about { margin-top: var(--space-sm); font-size: var(--text-sm); }
+  .card .readout { margin-top: var(--space-md); padding-top: var(--space-sm); }
+  .card .when { font-size: var(--text-md); }
+  .card .dur { font-size: var(--text-xl); }
+  /* On a phone the names get a narrower column, the rows a little less height, and the years are labelled every third year. */
+  .js .tenure { --name: 5.5rem; --row: 1.25rem; margin-top: var(--space-md); padding-top: var(--space-sm); font-size: var(--text-xs); }
+  .tenure .grid { top: var(--space-sm); }
+  .tenure .year.y2 { display: none; }
+  .tenure .year.y3 { display: block; }
+  .mark { font-size: var(--text-md); }
+  .card-head { gap: var(--space-sm); }
+  .depth li:nth-child(n+3):nth-child(-n+4) { display: none; }
+}
+@media (max-width: 40rem) and (max-height: 46rem) {
+  .hero-copy .btn { width: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy > *, .hero-copy h1 .ln > span { animation: none; }
+  .plate, .wk-tab, .depth li, .nav-ind, .wk-list::after, .tenure .bar, .tenure .grid::after { transition: none; }
+  .js .wk-view > .wk-panel, .js .wk-view > .wk-panel[data-active], .js .wk-detail > *, .js .wk-panel[data-active] .wk-detail > * { transition: none; }
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* Say hi. The dialog arrives from slightly behind; once sent, the form recedes into depth toward the hero's vanishing point and the confirmation comes forward. */
+html { scrollbar-gutter: stable; }
+html:has(dialog[open]) { overflow: hidden; }
+.hi [hidden] { display: none !important; }
+.hi { --hi-error: var(--color-error-text); position: fixed; inset: 0; box-sizing: border-box; width: min(35rem, calc(100% - var(--space-lg))); max-width: none; height: fit-content; max-height: min(92dvh, 46rem); margin: auto; padding: 0; overflow: auto; overscroll-behavior: contain; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink); }
+
+/* Open and close. Enter is slower than exit; sending successfully makes the exit a recede. */
+.hi { opacity: 0; transform: perspective(1100px) translate3d(0, 0, -60px); transition: opacity var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out), overlay var(--dur-micro) allow-discrete, display var(--dur-micro) allow-discrete; }
+.hi[open] { opacity: 1; transform: none; transition-duration: var(--dur-short); }
+@starting-style { .hi[open] { opacity: 0; transform: perspective(1100px) translate3d(0, 0, -60px); } }
+.hi.is-sent:not([open]) { transform: perspective(1100px) translate3d(0, 0, -240px); transition-duration: var(--dur-short); }
+.hi::backdrop { background: color-mix(in oklab, var(--color-field) 70%, transparent); opacity: 0; transition: opacity var(--dur-micro) var(--ease-out), overlay var(--dur-micro) allow-discrete, display var(--dur-micro) allow-discrete; }
+.hi[open]::backdrop { opacity: 1; transition-duration: var(--dur-short); }
+@starting-style { .hi[open]::backdrop { opacity: 0; } }
+.hi.is-sent:not([open])::backdrop { transition-duration: var(--dur-short); }
+
+/* Progress: the same coral line as the depth ruler, along the top edge while the request is in flight. */
+.hi-progress { position: absolute; inset: 0 0 auto; height: 3px; overflow: hidden; }
+.hi-progress i { display: block; height: 100%; background: var(--color-accent); transform-origin: 0 50%; transform: scaleX(0); transition: transform var(--dur-short) var(--ease-out); }
+.hi[data-state="sending"] .hi-progress i { transform: scaleX(0.82); transition-duration: 1600ms; }
+.hi[data-state="sent"] .hi-progress i { transform: scaleX(1); }
+
+.hi-body { padding: var(--space-xl) var(--space-xl) 0; perspective: 900px; perspective-origin: 76% 34%; }
+.hi-stage { display: grid; }
+.hi-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); }
+.hi-head h2 { font-size: var(--text-2xl); font-weight: 700; line-height: 1.05; letter-spacing: -0.035em; }
+.hi-close { position: relative; padding: var(--space-xs) 0; font: inherit; font-size: var(--text-sm); color: var(--color-muted); background: none; border: 0; cursor: pointer; transition: color var(--dur-micro) var(--ease-out); }
+.hi-close::before { content: ""; position: absolute; inset: -8px -12px; }
+@media (hover: hover) { .hi-close:hover { color: var(--color-ink); } }
+.hi-intro { margin-top: var(--space-sm); color: var(--color-ink-2); }
+.hi-intro p { margin: 0; max-width: 46ch; }
+.hi-intro .hi-note { margin-top: var(--space-2xs); font-size: var(--text-sm); color: var(--color-muted); }
+
+/* Fields: a visible label, a reserved helper line that the error replaces, a 52px control. */
+.hi form { display: grid; gap: var(--space-xs); margin-top: var(--space-lg); }
+.hi-row { display: grid; gap: var(--space-xs) var(--space-md); }
+@media (min-width: 40rem) { .hi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hi-field { display: grid; align-content: start; gap: var(--space-2xs); }
+.hi-field label { font-size: var(--text-sm); font-weight: 500; color: var(--color-ink-2); }
+.hi-help { min-height: 1lh; margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+.hi-field[data-invalid] .hi-help { color: var(--hi-error); }
+.hi .hi-field input, .hi .hi-field textarea { width: 100%; box-sizing: border-box; min-height: 52px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-muted); border-radius: var(--radius-card); background: var(--color-paper); color: var(--color-ink); font: inherit; font-size: var(--text-md); outline: 2px solid transparent; outline-offset: -3px; transition: background-color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out); }
+.hi .hi-field textarea { min-height: 7rem; padding-block: var(--space-sm); line-height: 1.5; resize: vertical; }
+@media (hover: hover) { .hi input:hover, .hi textarea:hover { background: var(--color-paper-2); } }
+.hi input:focus-visible, .hi textarea:focus-visible { outline-color: var(--color-ink); outline-offset: -3px; border-color: var(--color-ink); }
+.hi .hi-field [aria-invalid="true"] { border-color: var(--hi-error); }
+.hi .hi-field [readonly] { color: var(--color-muted); }
+.hi-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.hi-status { margin: 0; font-size: var(--text-sm); color: var(--color-ink-2); }
+.hi-status:not(:empty) { padding: var(--space-sm) var(--space-md); border: var(--rule-hair) solid var(--hi-error); border-radius: var(--radius-card); }
+.hi-status a { text-decoration: underline; text-underline-offset: 3px; }
+.hi-actions { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md) var(--space-lg); padding: var(--space-sm) 0 var(--space-xl); background: var(--color-paper); }
+.hi .btn { min-height: 52px; min-width: 9rem; padding-inline: var(--space-lg); }
+.hi .btn[aria-busy="true"] { cursor: progress; }
+.hi-spin { display: none; width: 1em; height: 1em; margin-right: var(--space-xs); border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: hi-spin 700ms linear infinite; }
+.hi [aria-busy="true"] .hi-spin { display: inline-block; }
+.hi-alt { margin: 0; font-size: var(--text-sm); color: var(--color-muted); }
+.hi-alt a { color: var(--color-ink); }
+.hi[data-state="sending"] .hi-field { opacity: 0.7; transition: opacity var(--dur-short) var(--ease-out); }
+
+/* Sent: the form goes back, the confirmation comes forward. Each plane leaves with a small stagger. */
+.hi [data-fly] { transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out); transition-delay: calc(var(--i, 0) * 40ms); }
+.js .hi[data-state="sent"] [data-fly] { opacity: 0; transform: translate3d(0, -6px, -220px); }
+.hi-sent { display: grid; align-content: center; justify-items: start; gap: var(--space-md); margin-top: var(--space-lg); transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out); }
+.js .hi-sent { opacity: 0; transform: translate3d(0, 0, -140px); }
+.hi-sent:focus { outline: 0; }
+.js .hi-sent.is-in { opacity: 1; transform: none; }
+.hi-sent p { margin: 0; max-width: 34ch; color: var(--color-ink-2); }
+.hi-sent .hi-sent__title { font-family: var(--font-display); font-size: var(--text-display-s); font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); }
+.hi-sent strong { font-weight: 600; color: var(--color-ink); overflow-wrap: anywhere; }
+.hi-sent .btn { margin-top: var(--space-sm); }
+
+@keyframes hi-spin { to { transform: rotate(360deg); } }
+
+/* Phones: a sheet from the bottom edge that rides above the keyboard (--kb and --vvh come from visualViewport). */
+@media (max-width: 40rem) {
+  .hi { inset: auto 0 var(--kb, 0px); width: 100%; height: auto; max-height: calc(var(--vvh, 100dvh) - var(--space-lg)); margin: 0; border-bottom: 0; border-radius: var(--radius-card) var(--radius-card) 0 0; opacity: 1; transform: translateY(100%); transition: transform var(--dur-short) var(--ease-out), overlay var(--dur-short) allow-discrete, display var(--dur-short) allow-discrete; }
+  .hi[open] { transform: none; }
+  @starting-style { .hi[open] { transform: translateY(100%); } }
+  .hi.is-sent:not([open]) { transform: translateY(100%); }
+  .hi-body { padding: var(--space-lg) var(--space-md) 0; }
+  .hi-actions { padding-bottom: max(var(--space-lg), env(safe-area-inset-bottom)); }
+  .hi-actions .btn { width: 100%; }
+}

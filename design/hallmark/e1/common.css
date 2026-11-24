@@ -1,0 +1,18 @@
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-paper); border-bottom: var(--rule-hair) solid var(--color-rule); }
+.nav .container { display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); min-height: var(--space-2xl); }
+.wordmark { font-family: var(--font-outlier); font-weight: 700; font-size: var(--text-lg); letter-spacing: -0.02em; text-decoration: none; }
+.nav ul { display: flex; align-items: center; gap: var(--space-lg); list-style: none; margin: 0; padding: 0; }
+.nav a, .link { text-decoration: none; padding-block: var(--space-xs); background: linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 0 2px no-repeat; transition: background-size var(--dur-short) var(--ease-out); }
+.nav a:hover, .link:hover { background-size: 100% 2px; }
+.theme-switch { font-size: var(--text-sm); color: var(--color-ink); background: none; border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-pill); padding: var(--space-xs) var(--space-md); cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out); }
+.theme-switch:hover { background: var(--color-paper-2); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: var(--space-2xl); padding-inline: var(--space-xl); font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); border-radius: var(--radius-pill); border: var(--rule-hair) solid var(--color-ink); background: var(--color-ink); color: var(--color-paper); text-decoration: none; cursor: pointer; transition: background-color var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out), border-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn--quiet { background: transparent; color: var(--color-ink); border-color: var(--color-rule); }
+.btn--quiet:hover { background: var(--color-paper-2); border-color: var(--color-ink); color: var(--color-ink); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--space-md); margin-top: var(--space-xl); }
+@media (max-width: 60rem) { .nav ul li:not(:last-child) { display: none; } }
+@media (max-width: 40rem) { .btn { width: 100%; } }

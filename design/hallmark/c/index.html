@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilmar Lopez, Senior Software Engineer</title>
+<meta name="description" content="Senior Software Engineer at Stori. Serverless APIs in Go and Python on AWS.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=gambetta@600,700&f[]=switzer@400,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#index">Index</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-switch" type="button" id="theme">Dark</button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero" aria-labelledby="h1">
+    <div class="hero-sticky">
+      <div class="container">
+        <div class="hero-copy">
+          <h1 id="h1">Hi, I’m Ilmar Lopez.</h1>
+          <p class="lead">Senior engineer at Stori, building serverless APIs in Go and Python.</p>
+          <div class="actions">
+            <button class="btn" type="button" data-open="say-hi">Say hi</button>
+            <a class="btn btn--quiet" href="/files/cv-en.pdf" download>View CV</a>
+          </div>
+        </div>
+        <div class="stage" aria-hidden="true">
+          <div class="book">
+            <div class="back"></div>
+            <div class="page">
+              <h2>Contents</h2>
+              <ul>
+                <li><a href="#experience" tabindex="-1">Experience</a></li>
+                <li><a href="#work" tabindex="-1">Work</a></li>
+                <li><a href="#index" tabindex="-1">Index</a></li>
+                <li><a href="#contact" tabindex="-1">Contact</a></li>
+              </ul>
+            </div>
+            <div class="edge"></div>
+            <div class="spine"></div>
+            <div class="cover">
+              <div class="front">
+                <div class="portrait" data-slot="portrait" data-alt="">
+                  <img src="../../../public/img/hero/me.jpg" alt="" width="1224" height="1632" fetchpriority="high">
+                </div>
+                <div><p class="title">Ilmar Lopez</p><p class="sub">Portfolio, second edition</p></div>
+              </div>
+              <div class="inside">
+                <p>Second edition, 2026.</p>
+                <p>The first edition is archived at v1.ilmarlopez.com.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section about" aria-labelledby="about-h">
+    <div class="container">
+      <h2 id="about-h">About.</h2>
+      <div class="body">
+        <p>I’m a Senior Software Engineer at Stori, a Mexican fintech, on the architecture team. I design APIs and serverless services with Clean Architecture in Go and Python on AWS.</p>
+        <p>Before Stori I was a full stack developer and technical lead building educational platforms. I aspire to create impactful contributions.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="experience" aria-labelledby="exp-h">
+    <div class="container">
+      <h2 id="exp-h">Where I’ve built.</h2>
+      <div class="body">
+        <ul class="rows">
+          <li><span class="who">Stori Card</span><span class="what">Senior Software Engineer. Serverless APIs with Clean Architecture, testing and monitoring. Now on the architecture team.</span><span class="when">Oct 2021 to now</span></li>
+          <li><span class="who">Home &amp; Media Products</span><span class="what">Full Stack Developer and Technical Lead. Architecture, code quality, reviews and database design for educational platforms.</span><span class="when">Sep 2017 to Oct 2021</span></li>
+          <li><span class="who">California Web Design</span><span class="what">Frontend Developer.</span><span class="when">Apr 2017 to Jul 2017</span></li>
+          <li><span class="who">Universidad Tecnológica de Tijuana</span><span class="what">Information Technology Engineering.</span><span class="when">Education</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section work" id="work" aria-labelledby="work-h">
+    <div class="container">
+      <h2 id="work-h">Selected work.</h2>
+      <ul class="shelf">
+        <li><figure class="vol" style="margin:0">
+          <div class="vol-book" aria-hidden="true"><div class="face"><span class="no">01</span><div><h3>Self-hosted analytics on AWS</h3></div></div><div class="spine-v"></div><div class="edge-v"></div></div>
+          <figcaption><p>Infrastructure as code to deploy and manage a self-hosted Umami Analytics instance on AWS.</p><ul class="tags"><li>Go</li><li>AWS CDK</li></ul><a class="link" href="https://github.com/IlmarLopez/umami-cloud-go">Source on GitHub</a></figcaption>
+        </figure></li>
+        <li><figure class="vol" style="margin:0">
+          <div class="vol-book" aria-hidden="true"><div class="face"><span class="no">02</span><div><h3>Serverless transaction notifications</h3></div></div><div class="spine-v"></div><div class="edge-v"></div></div>
+          <figcaption><p>A serverless application deployed as code with CloudFormation and automated with CI/CD tools on AWS.</p><ul class="tags"><li>Python</li><li>CloudFormation</li></ul><a class="link" href="https://github.com/IlmarLopez/serverless-transaction-notifications">Source on GitHub</a></figcaption>
+        </figure></li>
+        <li><figure class="vol" style="margin:0">
+          <div class="vol-book" aria-hidden="true"><div class="face"><span class="no">03</span><div><h3>Building access control</h3></div></div><div class="spine-v"></div><div class="edge-v"></div></div>
+          <figcaption><p>A web client and a RESTful API that control access to a university building.</p><ul class="tags"><li>Vue</li><li>Go</li></ul><span><a class="link" href="https://github.com/IlmarLopez/utt-access-control-client">Client</a> and <a class="link" href="https://github.com/IlmarLopez/utt-access-control-server">API</a> on GitHub</span></figcaption>
+        </figure></li>
+        <li><figure class="vol" style="margin:0">
+          <div class="vol-book" aria-hidden="true"><div class="face"><span class="no">04</span><div><h3>This portfolio</h3></div></div><div class="spine-v"></div><div class="edge-v"></div></div>
+          <figcaption><p>Prerendered and versioned, with every edition kept alive.</p><ul class="tags"><li>Nuxt</li><li>Tailwind</li><li>GSAP</li></ul><a class="link" href="https://github.com/IlmarLopez/ilmarlopez.github.io">Source on GitHub</a></figcaption>
+        </figure></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section index" id="index" aria-labelledby="idx-h">
+    <div class="container">
+      <h2 id="idx-h">Index.</h2>
+      <div class="body">
+        <div class="groups">
+          <div class="group"><span class="letter" aria-hidden="true">A</span><ul><li>API Gateway</li><li>AWS Lambda</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">C</span><ul><li>Clean Architecture</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">D</span><ul><li>Database design</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">E</span><ul><li>EventBridge</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">G</span><ul><li>Go</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">N</span><ul><li>Nuxt</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">O</span><ul><li>Observability and metrics</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">P</span><ul><li>Python</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">R</span><ul><li>REST APIs</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">T</span><ul><li>Tailwind CSS</li><li>TypeScript</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">U</span><ul><li>Unit tests</li></ul></div>
+          <div class="group"><span class="letter" aria-hidden="true">V</span><ul><li>Vue</li></ul></div>
+        </div>
+        <p class="lang">Spanish, native. English, technical.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section contact" id="contact" aria-labelledby="contact-h">
+    <div class="container">
+      <h2 id="contact-h">Say hi.</h2>
+      <div class="body">
+        <p class="big">Have something to build?</p>
+        <p><a class="mail link" href="mailto:me@ilmarlopez.com">me@ilmarlopez.com</a></p>
+        <div class="actions"><button class="btn" type="button" data-open="say-hi">Say hi</button></div>
+        <ul class="socials"><li><a class="link" href="https://github.com/IlmarLopez">GitHub</a></li><li><a class="link" href="https://www.linkedin.com/in/ilmarlopez">LinkedIn</a></li><li><a class="link" href="https://dev.to/ilmarlopez">DEV</a></li><li><a class="link" href="https://codepen.io/ilmarlopez">CodePen</a></li></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <ul><li><a class="link" href="/versions">All editions</a></li><li><a class="link" href="https://v1.ilmarlopez.com">First edition, archived</a></li></ul>
+    <small>Second edition, 2026</small>
+  </div>
+</footer>
+
+<dialog id="say-hi" aria-labelledby="hi-h">
+  <form method="dialog">
+    <h2 id="hi-h" style="font-size: var(--text-xl)">Say hi</h2>
+    <label>Name<input name="name" autocomplete="name" required></label>
+    <label>Email<input name="email" type="email" autocomplete="email" required></label>
+    <label>Message<textarea name="message" rows="4" required></textarea></label>
+    <div class="actions">
+      <button class="btn" type="submit" disabled title="TODO(ilmar): wire to Web3Forms with NUXT_PUBLIC_WEB3FORMS_KEY">Send</button>
+      <button class="btn btn--quiet" type="button" data-close>Cancel</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const root = document.documentElement, btn = document.getElementById('theme');
+const dark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+const sync = () => { btn.textContent = dark() ? 'Light' : 'Dark'; };
+btn.addEventListener('click', () => { root.dataset.theme = dark() ? 'light' : 'dark'; sync(); });
+sync();
+const hero = document.getElementById('hero');
+if (matchMedia('(min-width: 60rem)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  root.classList.add('js');
+  let smooth = 0, target = 0, running = false;
+  const read = () => { const r = hero.getBoundingClientRect(), span = hero.offsetHeight - innerHeight; target = Math.min(1, Math.max(0, (-r.top / span) * 1.6)); };
+  const paint = () => { smooth += (target - smooth) * 0.14; hero.style.setProperty('--p', smooth.toFixed(4)); if (Math.abs(target - smooth) > 0.001) requestAnimationFrame(paint); else running = false; };
+  const onScroll = () => { read(); if (!running) { running = true; requestAnimationFrame(paint); } };
+  addEventListener('scroll', onScroll, { passive: true }); addEventListener('resize', onScroll); onScroll();
+}
+document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => document.getElementById(b.dataset.open).showModal()));
+document.querySelectorAll('[data-close]').forEach((b) => b.addEventListener('click', () => b.closest('dialog').close()));
+</script>
+</body>
+</html>

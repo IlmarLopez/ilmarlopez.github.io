@@ -1,0 +1,122 @@
+/*
+  Design tokens for ilmarlopez.com v2. Source of truth: design/hallmark/f/tokens.css (spec 4.1 to 4.5).
+
+  Roles that Tailwind turns into utilities (color, font, text, radius, ease, breakpoint) live in
+  `@theme static`: `static` keeps the variables in the output because plain CSS uses them too.
+  Everything else (space, duration, layout, z-index) is a flat variable on :root.
+
+  Every color is defined once with light-dark(), so the system preference and the manual toggle
+  (data-theme) resolve the same way. This is what fixes defect B1 of the reference.
+*/
+
+@theme static {
+  /* Clear Tailwind's defaults: `bg-red-500` and friends must not compile. Only tokens exist. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --ease-*: initial;
+  --font-*: initial;
+  --breakpoint-*: initial;
+
+  /* Color (OKLCH). light-dark(light, dark). Coral is the only signal. */
+  --color-paper: light-dark(oklch(97.5% 0.006 250), oklch(16% 0.015 260));
+  --color-paper-2: light-dark(oklch(94.5% 0.01 250), oklch(20% 0.018 260));
+  --color-paper-3: light-dark(oklch(90% 0.015 250), oklch(26% 0.02 260));
+  --color-ink: light-dark(oklch(20% 0.02 260), oklch(96% 0.006 250));
+  --color-ink-2: light-dark(oklch(32% 0.025 260), oklch(86% 0.012 250));
+  --color-muted: light-dark(oklch(45% 0.025 260), oklch(74% 0.02 255));
+  --color-rule: light-dark(oklch(86% 0.012 250), oklch(30% 0.02 260));
+  --color-accent: light-dark(oklch(66% 0.19 33), oklch(70% 0.18 35));
+  --color-accent-ink: oklch(20% 0.02 260);
+  --color-focus: light-dark(oklch(50% 0.2 33), oklch(76% 0.17 38));
+  --color-field: light-dark(oklch(19% 0.02 260), oklch(12% 0.012 260));
+  --color-field-ink: oklch(97.5% 0.006 250);
+  --color-field-muted: oklch(78% 0.02 255);
+  --color-error-text: light-dark(oklch(52% 0.19 27), oklch(76% 0.15 27));
+
+  /* Type */
+  --font-display: "Rethink Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5625rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem);
+  --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem);
+  --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+
+  /* Shape. No shadows anywhere. */
+  --radius-card: 4px;
+  --radius-pill: 999px;
+
+  /* Easing */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Breakpoints. The reference is desktop-first with max-width (<=); Tailwind's max-* uses <. */
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 60rem;
+  --breakpoint-lg: 70rem;
+}
+
+:root {
+  /* Follow the system by default; data-theme below overrides it. */
+  color-scheme: light dark;
+
+  /* Space: no --spacing-* on purpose. Use it as p-(--space-md). */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+  --space-4xl: 144px;
+
+  /* Duration. --dur-stack is the one the reference left as a literal (Work stack, plane arrival). */
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --dur-stack: 700ms;
+
+  /* Layout. The responsive overrides of gutter and section gaps live in base.css. */
+  --container: 1440px;
+  --gutter: 64px;
+  --gap-columns: 32px;
+  --section-gap-s: 120px;
+  --section-gap: 144px;
+  --section-gap-l: 176px;
+
+  --rule-hair: 1px;
+  --tracking-display: -0.02em;
+
+  /* Top layer of the Work stack. Defined once, so the system-dark case is not missed (B1). */
+  --scene-soft-top: light-dark(oklch(88% 0.04 255), oklch(38% 0.06 255));
+
+  /* z-index scale */
+  --z-base: 1;
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-sticky-nav: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}

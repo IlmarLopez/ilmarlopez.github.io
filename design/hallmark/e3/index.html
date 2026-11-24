@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ilmar Lopez, Senior Software Engineer</title>
+<meta name="description" content="Senior Software Engineer at Stori. Serverless APIs in Go and Python on AWS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&family=Rethink+Sans:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<header class="nav">
+  <div class="container">
+    <a class="wordmark" href="#top">Ilmar Lopez</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-switch" type="button" id="theme">Dark</button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="journey" id="journey" aria-labelledby="h1">
+    <div class="viewport">
+      <div class="world" id="world">
+        <div class="plane plane--hero" style="--i:0">
+          <div class="container">
+            <div class="hero-copy">
+              <h1 id="h1">Hi, I’m Ilmar Lopez.</h1>
+              <p class="lead">Senior engineer at Stori, building serverless APIs in Go and Python.</p>
+              <div class="actions">
+                <a class="btn" href="mailto:me@ilmarlopez.com">Say hi</a>
+                <a class="btn btn--quiet" href="/files/cv-en.pdf" download>View CV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <article class="plane card" style="--i:1" id="experience">
+          <h2>Stori Card</h2>
+          <p class="when">Oct 2021 to now</p>
+          <p>Senior Software Engineer. Serverless APIs with Clean Architecture, testing and monitoring. Now on the architecture team.</p>
+        </article>
+        <article class="plane card" style="--i:2">
+          <h2>Home &amp; Media Products</h2>
+          <p class="when">Sep 2017 to Oct 2021</p>
+          <p>Full Stack Developer and Technical Lead. Architecture, code quality, reviews and database design for educational platforms.</p>
+        </article>
+        <article class="plane card" style="--i:3">
+          <h2>California Web Design</h2>
+          <p class="when">Apr 2017 to Jul 2017</p>
+          <p>Frontend Developer.</p>
+        </article>
+        <article class="plane card" style="--i:4">
+          <h2>Universidad Tecnológica de Tijuana</h2>
+          <p class="when">Education</p>
+          <p>Information Technology Engineering.</p>
+        </article>
+      </div>
+      <div class="depth" aria-hidden="true">
+        <span class="bar"><i class="fill"></i></span>
+        <ol>
+          <li>Now</li>
+          <li>Stori</li>
+          <li>Home &amp; Media</li>
+          <li>California Web</li>
+          <li>UTT</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const root = document.documentElement, btn = document.getElementById('theme');
+const dark = () => root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+const sync = () => { btn.textContent = dark() ? 'Light' : 'Dark'; };
+btn.addEventListener('click', () => { root.dataset.theme = dark() ? 'light' : 'dark'; sync(); });
+sync();
+
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  root.classList.add('flight');
+  const journey = document.getElementById('journey'), pin = journey.querySelector('.viewport'), planes = [...document.querySelectorAll('.plane')], last = planes.length - 1;
+  const STEP = 820;
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const draw = () => {
+    const run = journey.offsetHeight - pin.offsetHeight;
+    const stick = parseFloat(getComputedStyle(pin).top) || 0;
+    const p = run > 0 ? clamp((stick - journey.getBoundingClientRect().top) / run, 0, 1) : 0;
+    const narrow = innerWidth < 640;
+    const sx = innerWidth * (narrow ? 0.1 : 0.21), sy = innerHeight * (narrow ? 0.26 : 0.1);
+    // Each plane dwells near the camera for a moment before the next one comes forward.
+    const s = p * last, f = Math.floor(s), e = clamp((s - f - 0.22) / 0.56, 0, 1);
+    const flown = f + e * e * (3 - 2 * e);
+    journey.style.setProperty('--p', p.toFixed(4));
+    planes.forEach((el, i) => {
+      const d = i - flown;
+      // Planes still ahead stay opaque so nearer ones hide them; only their ink fades. Passed planes fade as a whole.
+      const o = d >= 0 ? clamp(1 - d * 0.3, 0, 1) : 1;
+      const po = d >= 0 ? 1 : clamp(1 + d * 2.8, 0, 1);
+      el.style.setProperty('--x', (d * sx).toFixed(1) + 'px');
+      el.style.setProperty('--y', (-d * sy).toFixed(1) + 'px');
+      el.style.setProperty('--z', (-d * STEP).toFixed(1) + 'px');
+      el.style.setProperty('--o', o.toFixed(3));
+      el.style.setProperty('--po', po.toFixed(3));
+      el.style.pointerEvents = o > 0.6 && po > 0.6 ? '' : 'none';
+    });
+  };
+  addEventListener('scroll', draw, { passive: true });
+  addEventListener('resize', draw);
+  draw();
+}
+</script>
+</body>
+</html>
