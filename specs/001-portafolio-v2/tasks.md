@@ -20,7 +20,7 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Añadir al `.gitignore` `.playwright-mcp/` y `.tmp/`; crear `.env.example` con `NUXT_PUBLIC_WEB3FORMS_KEY=` vacía; crear `.nvmrc` con `22` y `engines.node` en `package.json` igual al de Nuxt 4.7.
   Verifica: `git status` ya no lista `.playwright-mcp/`; `.env.example` no contiene valores; `cat .nvmrc` devuelve `22`.
 
-- [ ] **T-02 · Actualizar Node local** · 15 min · [I] · RNF-11
+- [x] **T-02 · Actualizar Node local** · 15 min · [I] · RNF-11
   Subir Node local a ≥ 22.22.3 (hoy 20.16.0, que no cumple los `engines` de Nuxt 4.7).
   Verifica: `node -v` ≥ 22.22.3 y `npm install` sin avisos de `engines`.
 
