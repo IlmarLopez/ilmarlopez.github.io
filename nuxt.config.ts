@@ -47,6 +47,15 @@ export default defineNuxtConfig({
   // Top-level `prerender` replaces the deprecated `nitro.prerender.{routes,ignore,crawlLinks}`.
   // `/versions` is added to `routes` in T-43, when the page exists.
   prerender: { crawlLinks: true, routes: ['/'] },
+  // The same preset Netlify picks on its own, fixed here so a local `npm run generate` emits the same
+  // _redirects and _headers as the deploy and verify:redirects can test them before pushing.
+  nitro: { preset: 'netlify-static' },
+  // The old CV URL still works. It is declared here and not in netlify.toml: Nitro writes a catch-all
+  // `/* /404.html 404` to _redirects, and Netlify applies _redirects before netlify.toml, so a rule in the
+  // toml never gets a turn. Nitro puts routeRules redirects ahead of the catch-all.
+  routeRules: {
+    '/files/cv-en.pdf': { redirect: { to: '/files/Ilmar-Lopez-CV.pdf', statusCode: 301 }, prerender: false },
+  },
 
   // `NUXT_PUBLIC_WEB3FORMS_KEY` fills this at build time. The key never lives in the code.
   runtimeConfig: { public: { web3formsKey: '' } },

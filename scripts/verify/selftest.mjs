@@ -57,8 +57,11 @@ try {
           assertOk((await response.text()).includes('<html'), 'the body of /nope should be the prerendered 404.html')
         })
         await t.check('a path that climbs out of dist/ is refused', async () => {
-          assertEqual(await rawGet(base, '/../package.json'), 404, 'status of /../package.json')
-          assertEqual(await rawGet(base, '/%2e%2e/package.json'), 404, 'status of /%2e%2e/package.json')
+          // The local server answers 404; Netlify's edge answers 400. Both refuse; what must never happen is a 200.
+          for (const rawPath of ['/../package.json', '/%2e%2e/package.json']) {
+            const status = await rawGet(base, rawPath)
+            assertOk(status === 400 || status === 404, `status of ${rawPath}: expected 400 or 404, received ${status}`)
+          }
         })
       },
       { quiet: true },
