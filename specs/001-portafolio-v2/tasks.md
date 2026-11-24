@@ -54,9 +54,10 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: en Playwright no hay peticiones a `fonts.googleapis.com` ni `fonts.gstatic.com`; los `@font-face` salen de `/_nuxt/fonts/` (la ruta de `@nuxt/fonts` 1.2) y hay un solo preload, el de Rethink Sans 700; el peso 500 se resuelve sin sintetizar.
   Depende de: T-07.
 
-- [ ] **T-09 · App shell y `<head>`** · 60 min · [A] · RF-12, AC-06
+- [x] **T-09 · App shell y `<head>`** · 60 min · [A] · RF-12, AC-06
   `app.vue`, `layouts/default.vue`, `<html lang="en">`, script inline en `<head>` que aplica `data-theme` y la clase `js` antes del primer render, `color-scheme` y `theme-color` por esquema, `<link rel="icon" href="/favicon.ico">` (asset protegido), `<NuxtRouteAnnouncer />` y `<main id="main">`.
   Verifica: en `view-source` el script aparece antes del CSS; no hay avisos de hidratación en consola; en `DOMContentLoaded` ya existe `data-theme` guardado (sin parpadeo).
+  Resultado: el orden del `<head>` es charset, viewport, importmap, metas, script, hoja de estilos (el script usa `tagPriority: 28`, peso absoluto). Verificado con 6 escenarios sobre el build y 3 en `nuxt dev` (0 avisos de hidratación). **Hallazgo:** Unhead es dueño de las metas `theme-color` y reescribe cualquier cambio externo al hidratar (medido: correctas hasta `load`, revertidas tras la hidratación), así que el script solo aplica `data-theme` y `js`, y la sincronía de `theme-color` con el tema guardado pasa a T-22.
   Depende de: T-08.
 
 - [ ] **T-10 · Capa de datos tipada** · 60 min · [A] · RF-05, RF-06, RF-07, RF-08, RF-09, RF-11, RV-05, AC-24
@@ -133,8 +134,8 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 ## M3 · Secciones estáticas, sin movimiento (PR `feat/sections` → `v2`)
 
 - [ ] **T-22 · SiteNav y ThemeSwitch** · 60 min · [A] · RF-02, RF-12, M-07, AC-06
-  Nav sticky; en ≤ 60 rem solo wordmark e interruptor; etiqueta del interruptor resuelta con CSS; persistencia en `localStorage`; el cambio de tema usa View Transitions (crossfade de 220 ms, M-07) con respaldo instantáneo.
-  Verifica: Playwright: sticky; sin enlaces en 768 px y menos; el tema alterna, persiste al recargar y no parpadea; con reduced-motion el cambio es instantáneo; capturas a 375 y 1440 px, claro y oscuro, contra `f/`.
+  Nav sticky; en ≤ 60 rem solo wordmark e interruptor; etiqueta del interruptor resuelta con CSS; persistencia en `localStorage`; el cambio de tema usa View Transitions (crossfade de 220 ms, M-07) con respaldo instantáneo. El estado del tema vive en un composable que mantiene `theme-color` en sincronía con un `useHead` reactivo (con tema guardado, una sola meta con el color de ese tema; sin tema guardado, las dos metas por esquema de T-09), porque Unhead revierte los cambios hechos desde fuera (hallazgo de T-09).
+  Verifica: Playwright: sticky; sin enlaces en 768 px y menos; el tema alterna, persiste al recargar y no parpadea; con reduced-motion el cambio es instantáneo; tras alternar y recargar, `theme-color` coincide con el tema guardado también después de hidratar; capturas a 375 y 1440 px, claro y oscuro, contra `f/`.
   Depende de: T-14.
 
 - [ ] **T-23 · SkipLink** · 20 min · [A] · RF-02, AC-04
