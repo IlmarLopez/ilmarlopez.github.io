@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { profile } from '~/data/profile'
+
 // Shell: language, color scheme, theme-color per scheme, favicon and the boot script that applies the saved theme.
 useHead({
   htmlAttrs: { lang: 'en' },
+  // Fallback so no page is ever untitled (WCAG 2.4.2, found by verify:a11y). T-45 sets the title per route.
+  title: `${profile.name}, ${profile.jobTitle}`,
   meta: [
     { name: 'color-scheme', content: 'light dark' },
     { name: 'theme-color', media: '(prefers-color-scheme: light)', content: THEME_COLOR.light },
