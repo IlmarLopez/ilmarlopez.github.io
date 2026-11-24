@@ -245,7 +245,7 @@ La coreografía la deciden las skills de Emil Kowalski (`emil-design-eng`). CSS 
 | **RNF-08** | Navegadores evergreen (últimas 2 versiones de Chrome, Safari, Firefox y Edge). View Transitions, `@starting-style` y `light-dark()` degradan a «sin animación» o a un valor equivalente sin errores. | AC-20 |
 | **RNF-09** | Privacidad: sin cookies ni analítica; fuentes autoalojadas; la única petición de terceros en runtime es el envío a Web3Forms. | AC-24 |
 | **RNF-10** | Cabeceras en `public/_headers`: caché inmutable en `/_nuxt/*`, `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy`. CSP estricta es opcional: el script inline del tema exige un hash calculado en build. | AC-25 |
-| **RNF-11** | Tooling: Node ≥ 22.22.3 (`.nvmrc` y `engines`, alineado con Nuxt 4.7 y Netlify), TypeScript estricto con script de *typecheck*, y la versión de TypeScript fijada a la que soporte `vue-tsc`. `typescript` 7.0.2 es el «latest» de npm y no se adopta sin comprobar `vue-tsc`. | Plan |
+| **RNF-11** | Tooling: Node ≥ 22.22.3 (`.nvmrc` y `engines`, alineado con Nuxt 4.7 y Netlify), TypeScript estricto con script de *typecheck*, y la versión de TypeScript fijada a la que soporte `vue-tsc`. `typescript` 7.0.2 es el «latest» de npm y **no se adopta**: ya no trae `lib/typescript.js` (solo `lib/version.cjs` y APIs «unstable»), que `vue-tsc` necesita (comprobado en T-04). Se usa `~5.9.3`. | Plan |
 | **RNF-12** | `ssr: true` siempre (nunca `false`) y `nuxt generate`. | AC-01 |
 
 ---

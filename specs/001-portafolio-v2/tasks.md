@@ -29,8 +29,8 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: el commit principal no incluye el PDF; el segundo commit borra `cv-en.pdf` y añade `Ilmar-Lopez-CV.pdf` (contenido distinto, por eso Git no lo marca como renombrado) y trae el redirect; el árbol queda sin archivos del diseño sin trackear.
   Depende de: T-01.
 
-- [ ] **T-04 · Dependencias** · 40 min · [A] · RNF-11, spec §8.1
-  Instalar `tailwindcss`, `@tailwindcss/vite`, `@nuxt/fonts` y `@nuxt/image`; en desarrollo `typescript` (la versión que soporte `vue-tsc`; no 7.x sin comprobarlo), `vue-tsc`, `playwright` y `@axe-core/playwright`; `npx playwright install chromium`. **No se instalan `gsap` ni `lenis`** (Q11 y Q5, decididos por Ilmar el 2026-11-24). No se instalan `motion-v`, `@nuxtjs/seo` ni `@nuxt/content`.
+- [x] **T-04 · Dependencias** · 40 min · [A] · RNF-11, spec §8.1
+  Instalar `tailwindcss`, `@tailwindcss/vite`, `@nuxt/fonts` y `@nuxt/image`; en desarrollo `typescript` (`~5.9.3`: la 7.x ya no trae `lib/typescript.js` y `vue-tsc` no la soporta, comprobado), `vue-tsc`, `playwright` y `@axe-core/playwright`; `npx playwright install chromium`. **No se instalan `gsap` ni `lenis`** (Q11 y Q5, decididos por Ilmar el 2026-11-24). No se instalan `motion-v`, `@nuxtjs/seo` ni `@nuxt/content`.
   Verifica: `npm ls --depth=0` sin errores ni *peer* sin resolver; `npm run postinstall` pasa; las versiones quedan en el lockfile.
   Depende de: T-02.
 

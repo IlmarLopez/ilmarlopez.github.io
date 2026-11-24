@@ -141,7 +141,7 @@ Reglas:
 - **Las pasadas de Hallmark (T-18 a T-20)** cuentan solo la primera propuesta. Si hay iteraciones, el tiempo extra es de esa tarea y no mueve el resto del plan.
 - **Herramientas.** Están instaladas `hallmark`, `emil-design-eng`, `review-animations`, `gsap-*` y `netlify-*`. **No están** `choreograph` ni `animation-performance`: la coreografía se decide con `emil-design-eng` y el rendimiento se revisa con `gsap-performance` más trazas de Chrome.
 - **Netlify y DNS.** No he verificado si ya existen los sitios de Netlify ni el estado exacto de los registros DNS. T-13, T-15 y T-16 empiezan por lectura (MCP de Netlify y `dig`) antes de cambiar nada.
-- **Dependencias.** Las versiones se fijan en el lockfile en T-04. `typescript` se ata a la versión que soporte `vue-tsc` (el «latest» de npm es 7.0.2 y no se adopta sin comprobar).
+- **Dependencias.** Las versiones se fijan en el lockfile en T-04. `typescript` se ata a `~5.9.3`: el «latest» de npm (7.0.2) ya no trae `lib/typescript.js`, que `vue-tsc` necesita (comprobado en T-04).
 - **Cambios de spec.** Cualquier ajuste a la spec que surja durante la implementación se propone a Ilmar y no se aplica por cuenta propia.
 
 ## 9. Trazabilidad: requisito → tareas
