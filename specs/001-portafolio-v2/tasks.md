@@ -49,9 +49,9 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: la primera línea no vacía de `main.css` es el sello; `node .agents/skills/hallmark/scripts/sloplint.mjs app/assets/css/main.css` sin FAIL; `rg "\.container" app` no devuelve nada.
   Depende de: T-06.
 
-- [ ] **T-08 · Fuentes autoalojadas** · 30 min · [A] · RNF-09, RNF-02, B5
+- [x] **T-08 · Fuentes autoalojadas** · 30 min · [A] · RNF-09, RNF-02, B5
   `@nuxt/fonts` con Rethink Sans (600 y 700) y Hanken Grotesk variable (400 a 600), `font-display: swap` y precarga solo de la fuente del hero.
-  Verifica: en Playwright no hay peticiones a `fonts.googleapis.com` ni `fonts.gstatic.com`; los `@font-face` salen de `/_fonts/`; el peso 500 se resuelve sin sintetizar.
+  Verifica: en Playwright no hay peticiones a `fonts.googleapis.com` ni `fonts.gstatic.com`; los `@font-face` salen de `/_nuxt/fonts/` (la ruta de `@nuxt/fonts` 1.2) y hay un solo preload, el de Rethink Sans 700; el peso 500 se resuelve sin sintetizar.
   Depende de: T-07.
 
 - [ ] **T-09 · App shell y `<head>`** · 60 min · [A] · RF-12, AC-06

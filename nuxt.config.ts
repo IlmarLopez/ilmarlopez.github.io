@@ -10,6 +10,24 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/fonts', '@nuxt/image'],
 
+  // Self-hosted fonts: @nuxt/fonts downloads them at build time and serves them from /_nuxt/fonts/.
+  // Fontsource keeps the files versioned, so builds are reproducible. `latin` covers all the visible text.
+  fonts: {
+    // font-display: swap is already the module's default.
+    defaults: { subsets: ['latin'], styles: ['normal'] },
+    families: [
+      // Display. Only the hero heading (700) is preloaded: it is the LCP text.
+      {
+        name: 'Rethink Sans',
+        provider: 'fontsource',
+        weights: [600, 700],
+        preload: { subsets: ['latin'], styles: ['normal'], weights: [700] },
+      },
+      // Body. Variable range, so 500 resolves without synthesizing. Not preloaded.
+      { name: 'Hanken Grotesk', provider: 'fontsource', weights: ['400 600'], preload: false },
+    ],
+  },
+
   // main.css starts with the Hallmark stamp, then imports Tailwind, the tokens and the base styles.
   css: ['~/assets/css/main.css'],
 
