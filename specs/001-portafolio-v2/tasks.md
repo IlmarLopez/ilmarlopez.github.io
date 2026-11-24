@@ -72,9 +72,10 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Resultado: `lib/{serve,browser,check,routes}.mjs` y las suites `theme`, `layout`, `nojs`, `reduced`, `a11y` y `selftest`, con `npm run verify` para correrlas todas contra `dist/` (o contra `VERIFY_BASE`, para un servidor de desarrollo o un Deploy Preview). Códigos de salida: 0 todo verde, 1 falla un check, 2 no pudo correr (sin `dist/` o sin Chromium). `verify:selftest` prueba el arnés (una aserción incorrecta falla con *expected* y *received*; el servidor responde 200, 404 con `404.html` y rechaza `/../`). Cada suite es la primera rebanada de la tarea que la completa: T-63 (`layout`), T-64 (`nojs`, `reduced`, `theme` y `verify:keyboard`), T-65 (`a11y`) y T-83 (`flight`, `cards`, `stack`). **Hallazgo:** `verify:a11y` detectó que la home no tenía `<title>` (`document-title`, WCAG 2.4.2); el shell ahora trae un título de respaldo y T-45 lo fija por ruta. Chromium debe estar instalado con `npx playwright install chromium`.
   Depende de: T-05.
 
-- [ ] **T-12 · Evidencia y línea base de JS** · 30 min · [A] · RNF-03, AC-13
+- [x] **T-12 · Evidencia y línea base de JS** · 30 min · [A] · RNF-03, AC-13
   Crear `specs/001-portafolio-v2/evidence/summary.md` con la plantilla de resultados (los JSON crudos van a `.tmp/`) y medir los KB gzip de JS de la app vacía en `/`.
   Verifica: `summary.md` registra la línea base con la fecha y el comando usado.
+  Resultado: la app vacía pide **73,4 KB gzip** de JS (casi todo la entrada de Nuxt), así que el margen hasta los 120 KB es de **46,6 KB** para todo el sitio. Medido con el nuevo `npm run verify:js` y contrastado con `gzip -9`. T-33 y T-68 reutilizan esa suite (`--budget=<KB>`, `VERIFY_BASE`).
   Depende de: T-11.
 
 - [ ] **T-13 · Sitio de Netlify para v2** · 60 min · [A+I] · RV-03, RV-08, RNF-12
