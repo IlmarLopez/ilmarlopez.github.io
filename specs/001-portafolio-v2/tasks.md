@@ -60,9 +60,10 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Resultado: el orden del `<head>` es charset, viewport, importmap, metas, script, hoja de estilos (el script usa `tagPriority: 28`, peso absoluto). Verificado con 6 escenarios sobre el build y 3 en `nuxt dev` (0 avisos de hidratación). **Hallazgo:** Unhead es dueño de las metas `theme-color` y reescribe cualquier cambio externo al hidratar (medido: correctas hasta `load`, revertidas tras la hidratación), así que el script solo aplica `data-theme` y `js`, y la sincronía de `theme-color` con el tema guardado pasa a T-22.
   Depende de: T-08.
 
-- [ ] **T-10 · Capa de datos tipada** · 60 min · [A] · RF-05, RF-06, RF-07, RF-08, RF-09, RF-11, RV-05, AC-24
+- [x] **T-10 · Capa de datos tipada** · 60 min · [A] · RF-05, RF-06, RF-07, RF-08, RF-09, RF-11, RV-05, AC-24
   `app/data/*.ts` y sus tipos: `profile`, `experience` (tipo `Role` de RF-06), `projects`, `tools`, `socials`, `cv` (`/files/Ilmar-Lopez-CV.pdf`) y un `versions` con `TODO(ilmar)` en las fechas. Contenido exacto de `design/hallmark/f/`; solo los 4 repos públicos ya verificados; 4 redes más el email; solo Stori lleva `url`.
   Verifica: `npm run typecheck` pasa; `rg -i "whatsapp|facebook|twitch|countly|axios" app` no devuelve nada; las URL de los 4 proyectos coinciden con las verificadas en la spec; `experience.ts` tiene un solo `url` (`https://www.storicard.com/`).
+  Resultado: `app/data/{profile,experience,projects,tools,socials,cv,versions}.ts`. `Role` es una unión discriminada (`education` no admite `from`/`to`). `versions.ts` deja `date: null` con `TODO(ilmar)` (Q9) en vez de un texto que se vería en la página. `short` sigue la regla de profundidad de RF-04 («California Web»), así que la gráfica de T-79 pasa de «California» a «California Web» y T-79 comprueba que cabe. `cv.ts` lleva un `detail` por entrada («PDF, 1 page»). Verificado con `.tmp/verify-data.mjs` (duraciones 5 yrs 2 mos, 4 yrs 2 mos y 4 mos; 5 enlaces de repos del conjunto verificado) y `typecheck`.
   Depende de: T-05.
 
 - [ ] **T-11 · Arnés de verificación** · 60 min · [A] · AC-01, AC-02, AC-03, AC-04, AC-05, AC-15
