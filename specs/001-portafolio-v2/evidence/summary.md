@@ -40,16 +40,18 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | `verify:reduced` | AC-05 | sin animaciones en curso ni clase `flight` | T-64 |
 | `verify:a11y` | AC-15 | axe en `/`, claro y oscuro: 0 violaciones serias o críticas | T-65 |
 | `verify:js` | AC-13 | presupuesto de 120 KB gzip (sección 1) | T-68 |
+| `verify:redirects` | AC-08 | `/files/cv-en.pdf` responde 301 hacia `/files/Ilmar-Lopez-CV.pdf`, el PDF nuevo responde 200 `application/pdf` y una URL desconocida responde 404 con HTML; lee `dist/_redirects` con la precedencia de Netlify | T-47 |
 | `verify:keyboard` | AC-04 | no existe aún | T-64 |
 | `verify:flight`, `verify:cards`, `verify:stack` | AC-26 a AC-28 | no existen aún | T-83 |
 
-Última corrida completa: 2026-11-24, `npm run verify`, 7 suites en verde.
+Última corrida completa: 2026-11-24, `npm run verify` sobre un `dist/` limpio, 8 suites en verde. Contra el *branch deploy* en vivo (`v2` en `34bd37f`), `theme`, `layout`, `nojs`, `reduced`, `a11y` y `js` pasaron; `redirects` falló (301 esperado, 404 recibido), hallazgo de la sección 8.
 
 ## 3. Presupuesto de JS por hito
 
 | Hito | Fecha | gzip KB | Margen | Comando |
 |---|---|---:|---:|---|
 | App vacía (T-12) | 2026-11-24 | 73,4 | 46,6 | `npm run verify:js` |
+| App vacía con la redirección en `routeRules` | 2026-11-24 | 74,0 | 46,0 | `npm run verify:js` |
 | Home ensamblada (T-33) | Pendiente | | | `npm run verify:js` |
 | Deploy Preview (T-68) | Pendiente | | | `VERIFY_BASE=<url> npm run verify:js` |
 
@@ -92,3 +94,6 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | 2026-11-24 | T-09 | Unhead es dueño de las metas `theme-color` y las reescribe al hidratar: correctas hasta `load`, revertidas después | El script inline solo aplica `data-theme` y `js`; la sincronía de `theme-color` con el tema guardado pasa a T-22 |
 | 2026-11-24 | T-11 | `verify:a11y` detectó que la home no tenía `<title>` (`document-title`, WCAG 2.4.2) | Título de respaldo en `app.vue`; T-45 lo fija por ruta |
 | 2026-11-24 | T-12 | El runtime de Nuxt ocupa 73,4 de los 120 KB | El margen es de 46,6 KB; se vigila en T-33 y T-68 |
+| 2026-11-24 | T-13 | En el Deploy Preview del PR #9, `/files/cv-en.pdf` devolvía 404 en vez de 301. Nitro escribe `dist/_redirects` con un comodín `/* /404.html 404` y Netlify aplica `_redirects` antes que `netlify.toml`, así que la regla del toml nunca se ejecutaba. `verify:redirects` lo reprodujo en vivo | La redirección pasa a `routeRules` (Nitro la escribe antes del comodín) con `prerender: false`, y `nitro.preset: 'netlify-static'` se fija para que el `_redirects` local sea el del despliegue. Spec §8.2 y RF-11 actualizados |
+| 2026-11-24 | T-13 | Con `routeRules` no vacío, Nuxt incluye en el cliente el emparejador de reglas de ruta: +0,6 KB gzip (74,0 KB en total) | Se acepta: el margen sigue en 46,0 KB y la alternativa exige código a medida sobre Nitro |
+| 2026-11-24 | T-13 | Un `dist/` generado sobre un `.nuxt` y `.output` de una configuración anterior mezcló un `index.html` nuevo con assets de otra compilación (404 en el CSS y el JS de entrada) | Al cambiar `nuxt.config.ts`, borrar `.nuxt`, `.output` y `dist` antes de `npm run generate`; Netlify construye siempre desde cero |
