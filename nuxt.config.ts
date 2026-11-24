@@ -10,10 +10,13 @@ export default defineNuxtConfig({
 
   modules: ['@nuxt/fonts', '@nuxt/image'],
 
+  // main.css starts with the Hallmark stamp, then imports Tailwind, the tokens and the base styles.
+  css: ['~/assets/css/main.css'],
+
   // Components are auto-imported by file name, without the folder as a prefix.
   components: [{ path: '~/components', pathPrefix: false }],
 
-  // Tailwind v4 runs as a Vite plugin. The CSS entry point (`css: ['~/assets/css/main.css']`) is added in T-07.
+  // Tailwind v4 runs as a Vite plugin.
   vite: { plugins: [tailwindcss()] },
 
   experimental: {

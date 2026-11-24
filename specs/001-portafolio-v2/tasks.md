@@ -44,7 +44,7 @@ Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
   Verifica: en Playwright los colores calculados coinciden con la tabla de spec §4.1 en claro y en oscuro; con el sistema en oscuro y sin `data-theme`, `--scene-soft-top` es el oscuro (defecto B1); `--color-error-text` oscuro es oklch(76% 0.15 27); `--color-red-500` ya no existe.
   Depende de: T-05.
 
-- [ ] **T-07 · `base.css` y `main.css` con el sello de Hallmark** · 45 min · [A] · Floor 15, B4
+- [x] **T-07 · `base.css` y `main.css` con el sello de Hallmark** · 45 min · [A] · Floor 15, B4
   Portar `base.css` de la referencia en `@layer base`; renombrar `.container` a `.site-container`. `main.css` empieza por el sello de Hallmark y la línea de crítica, y después `@import "tailwindcss"` y los dos CSS.
   Verifica: la primera línea no vacía de `main.css` es el sello; `node .agents/skills/hallmark/scripts/sloplint.mjs app/assets/css/main.css` sin FAIL; `rg "\.container" app` no devuelve nada.
   Depende de: T-06.
