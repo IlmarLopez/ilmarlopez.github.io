@@ -3,7 +3,7 @@
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 
-const SUITES = ['selftest', 'theme', 'layout', 'nojs', 'reduced', 'a11y', 'js', 'redirects']
+const SUITES = ['selftest', 'theme', 'nav', 'layout', 'nojs', 'reduced', 'a11y', 'js', 'redirects']
 
 const outcomes = SUITES.map((name) => {
   const file = fileURLToPath(new URL(`./${name}.mjs`, import.meta.url))

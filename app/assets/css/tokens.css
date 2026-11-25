@@ -88,7 +88,9 @@
   --dur-long: 420ms;
   --dur-stack: 700ms;
 
-  /* Layout. The responsive overrides of gutter and section gaps live in base.css. */
+  /* Layout. The responsive overrides of gutter and section gaps follow this block. They live here and not in
+     base.css: that file sits in `@layer base`, and unlayered rules (this file) always beat layered ones, so an
+     override there would never apply. */
   --container: 1440px;
   --gutter: 64px;
   --gap-columns: 32px;
@@ -112,6 +114,9 @@
   --z-toast: 500;
   --z-tooltip: 600;
 }
+
+@media (max-width: 60rem) { :root { --gutter: 24px; --section-gap-s: 80px; --section-gap: 96px; --section-gap-l: 120px; } }
+@media (max-width: 40rem) { :root { --gutter: 16px; --section-gap-s: 56px; --section-gap: 72px; --section-gap-l: 96px; --gap-columns: 16px; } }
 
 :root[data-theme="light"] {
   color-scheme: light;

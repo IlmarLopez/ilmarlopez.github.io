@@ -1,12 +1,16 @@
 // AC-06 and defect B1: the saved theme and the `js` class are in place before the first paint,
-// and with nothing saved the page follows the system. T-64 extends this with the ThemeSwitch itself.
-import { main, paintedColor } from './lib/browser.mjs'
+// and with nothing saved the page follows the system. The ThemeSwitch itself is covered by verify:nav (T-22).
+import { eventually, main, paintedColor } from './lib/browser.mjs'
 import { soft } from './lib/check.mjs'
 
 // --color-paper per scheme (same values as THEME_COLOR in app/utils/theme.ts).
 const PAPER = { light: [0xf4, 0xf7, 0xfb], dark: [0x09, 0x0d, 0x14] }
-// Unhead owns the theme-color metas and keeps them per scheme (see tasks.md, T-09).
-const THEME_COLOR_METAS = '#f4f7fb,#090d14'
+// theme-color per theme (same values as THEME_COLOR in app/utils/theme.ts). Unhead owns these tags and reverts outside
+// changes (tasks.md, T-09), so useThemeHead sets them. There is always one per scheme: with nothing saved each carries
+// its own color, and once hydrated with a saved theme both carry that theme's color (T-22).
+const THEME_COLOR = { light: '#f4f7fb', dark: '#090d14' }
+const BOTH_COLORS = `${THEME_COLOR.light},${THEME_COLOR.dark}`
+const SAVED_COLORS = (theme) => `${THEME_COLOR[theme]},${THEME_COLOR[theme]}`
 
 const near = (a, b) => a.every((value, i) => Math.abs(value - b[i]) <= 2)
 
@@ -54,6 +58,10 @@ await main('theme', async (t, { open }) => {
       })
       try {
         await site.goto('/')
+        const readColors = () => site.page.evaluate(() => [...document.querySelectorAll('meta[name="theme-color"]')].map((meta) => meta.content).join())
+        const expectedColors = scenario.theme ? SAVED_COLORS(scenario.theme) : BOTH_COLORS
+        // Settles after hydration, so wait for it and keep what was read.
+        const themeColors = await eventually(readColors, expectedColors)
         const found = await site.page.evaluate(() => ({
           atStylesheet: window.__atStylesheet,
           theme: document.documentElement.getAttribute('data-theme'),
@@ -61,7 +69,6 @@ await main('theme', async (t, { open }) => {
           main: Boolean(document.querySelector('main#main')),
           icon: document.querySelector('link[rel=icon]')?.getAttribute('href'),
           colorScheme: document.querySelector('meta[name=color-scheme]')?.content,
-          themeColors: [...document.querySelectorAll('meta[name="theme-color"]')].map((meta) => meta.content).join(),
         }))
         const painted = await paintedColor(site.page, 'body', 'background-color')
         const expectedPaper = PAPER[scenario.theme ?? scenario.system]
@@ -72,7 +79,7 @@ await main('theme', async (t, { open }) => {
         s.equal(found.atStylesheet?.js, true, 'the js class when the stylesheet is inserted')
         s.equal(found.theme, scenario.theme, 'data-theme after load')
         s.ok(painted && near(painted, expectedPaper), `body background: expected rgb(${expectedPaper}), received rgb(${painted})`)
-        s.equal(found.themeColors, THEME_COLOR_METAS, 'theme-color metas')
+        s.equal(themeColors, expectedColors, 'theme-color metas once hydrated')
         s.equal([found.lang, found.main, found.icon, found.colorScheme], ['en', true, '/favicon.ico', 'light dark'], 'shell: lang, main#main, icon, color-scheme meta')
         s.equal(site.problems, [], 'console problems')
         s.done()
