@@ -29,11 +29,20 @@ export function themeColorMetas(saved: ThemeName | null) {
 }
 
 /**
- * Inline script for `<head>`. It runs before the first paint so the saved theme and the `js` class are
- * in place with no flash. Plain ES5 inside try/catch: storage can throw (private mode, blocked cookies),
- * and in that case the system preference decides, as the CSS expects.
+ * Inline script for `<head>`. It runs before the first paint so the saved theme, the `js` class and the
+ * `flight` class are in place with no flash or layout jump. Plain ES5 inside try/catch: storage can throw
+ * (private mode, blocked cookies), and in that case the system preference decides, as the CSS expects.
+ *
+ * `flight` means "the page is a camera flight through the roles". It is only set when the visitor has not
+ * asked for reduced motion; without it the roles are an ordinary list, which is also what no-JS visitors get.
+ * The camera lives in the app bundle, so if the bundle has not started after FLIGHT_BOOT_TIMEOUT_MS (a dead
+ * connection, a blocked script) `flight` is taken off again and the visitor gets the list instead of an empty
+ * hero. The bundle marks itself with `app-ready` (plugins/journey.client.ts).
  */
-export function buildThemeBootScript(): string {
+export const FLIGHT_BOOT_TIMEOUT_MS = 8000
+
+export function buildBootScript(): string {
   const key = JSON.stringify(THEME_STORAGE_KEY)
-  return `(function(){var d=document.documentElement;d.classList.add("js");try{var t=localStorage.getItem(${key});if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}})()`
+  const flight = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches){d.classList.add("flight");setTimeout(function(){if(!d.classList.contains("app-ready"))d.classList.remove("flight")},${FLIGHT_BOOT_TIMEOUT_MS})}}catch(e){}`
+  return `(function(){var d=document.documentElement;d.classList.add("js");${flight}try{var t=localStorage.getItem(${key});if(t==="light"||t==="dark")d.setAttribute("data-theme",t)}catch(e){}})()`
 }

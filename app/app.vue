@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { profile } from '~/data/profile'
 
-// Shell: language, color scheme, favicon and the boot script that applies the saved theme.
+// Shell: language, color scheme, favicon and the boot script that applies the saved theme and the `flight` class.
 // The theme-color metas are not here: `useThemeHead` keeps them in step with the saved theme.
 useThemeHead()
 useHead({
@@ -12,7 +12,7 @@ useHead({
   link: [{ rel: 'icon', href: '/favicon.ico' }],
   // Unhead sorts tags by a fixed weight (charset -20, viewport -15, importmap 25, stylesheet 60) and a numeric
   // tagPriority is an absolute weight, so 28 puts the script before the stylesheet: it runs before the first paint.
-  script: [{ key: 'theme-boot', innerHTML: buildThemeBootScript(), tagPosition: 'head', tagPriority: 28 }],
+  script: [{ key: 'boot', innerHTML: buildBootScript(), tagPosition: 'head', tagPriority: 28 }],
 })
 </script>
 
