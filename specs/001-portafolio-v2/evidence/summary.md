@@ -35,6 +35,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 |---|---|---|---|
 | `verify:selftest` | arnés | una aserción incorrecta falla con *expected* y *received*; el servidor responde 200, 404 con `404.html` y rechaza `/../` | |
 | `verify:theme` | AC-06, B1 | 6 escenarios de tema guardado y sistema, estado de `<html>` al insertar la hoja de estilos, fondo pintado | T-64 |
+| `verify:nav` | RF-02, RF-12, M-07 | sticky; 4 enlaces a 1280 px; solo wordmark e interruptor a 768 y 360 px; ciclo del tema con recarga en sistema claro y oscuro; crossfade con respaldo; reduced-motion instantáneo; `theme-color` tras hidratar; sin JS | T-64 |
 | `verify:layout` | AC-03 | 360, 768, 1280 y 1920 px: carga limpia y sin scroll horizontal | T-63 |
 | `verify:nojs` | AC-02 | JS apagado: HTML servido, sin `js` ni `data-theme`, sigue al sistema | T-64 |
 | `verify:reduced` | AC-05 | sin animaciones en curso ni clase `flight` | T-64 |
@@ -44,7 +45,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | `verify:keyboard` | AC-04 | no existe aún | T-64 |
 | `verify:flight`, `verify:cards`, `verify:stack` | AC-26 a AC-28 | no existen aún | T-83 |
 
-Última corrida completa: 2026-11-24, `npm run verify` sobre un `dist/` limpio, 8 suites en verde. Contra el *branch deploy* en vivo (`v2` en `34bd37f`), `theme`, `layout`, `nojs`, `reduced`, `a11y` y `js` pasaron; `redirects` falló (301 esperado, 404 recibido), hallazgo de la sección 8.
+Última corrida completa: 2026-11-24, `npm run verify` sobre un `dist/` limpio (rama `feat/sections`, T-22), 9 suites en verde. Contra el *branch deploy* en vivo (`v2` en `34bd37f`), `theme`, `layout`, `nojs`, `reduced`, `a11y` y `js` pasaron; `redirects` falló (301 esperado, 404 recibido), hallazgo de la sección 8.
 
 ## 3. Presupuesto de JS por hito
 
@@ -52,6 +53,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 |---|---|---:|---:|---|
 | App vacía (T-12) | 2026-11-24 | 73,4 | 46,6 | `npm run verify:js` |
 | App vacía con la redirección en `routeRules` | 2026-11-24 | 74,0 | 46,0 | `npm run verify:js` |
+| Con SiteNav y ThemeSwitch (T-22) | 2026-11-24 | 75,5 | 44,5 | `npm run verify:js` |
 | Home ensamblada (T-33) | Pendiente | | | `npm run verify:js` |
 | Deploy Preview (T-68) | Pendiente | | | `VERIFY_BASE=<url> npm run verify:js` |
 
@@ -97,3 +99,6 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | 2026-11-24 | T-13 | En el Deploy Preview del PR #9, `/files/cv-en.pdf` devolvía 404 en vez de 301. Nitro escribe `dist/_redirects` con un comodín `/* /404.html 404` y Netlify aplica `_redirects` antes que `netlify.toml`, así que la regla del toml nunca se ejecutaba. `verify:redirects` lo reprodujo en vivo | La redirección pasa a `routeRules` (Nitro la escribe antes del comodín) con `prerender: false`, y `nitro.preset: 'netlify-static'` se fija para que el `_redirects` local sea el del despliegue. Spec §8.2 y RF-11 actualizados |
 | 2026-11-24 | T-13 | Con `routeRules` no vacío, Nuxt incluye en el cliente el emparejador de reglas de ruta: +0,6 KB gzip (74,0 KB en total) | Se acepta: el margen sigue en 46,0 KB y la alternativa exige código a medida sobre Nitro |
 | 2026-11-24 | T-13 | Un `dist/` generado sobre un `.nuxt` y `.output` de una configuración anterior mezcló un `index.html` nuevo con assets de otra compilación (404 en el CSS y el JS de entrada) | Al cambiar `nuxt.config.ts`, borrar `.nuxt`, `.output` y `dist` antes de `npm run generate`; Netlify construye siempre desde cero |
+| 2026-11-24 | T-22 | Los `@media` que reducen `--gutter` y los espacios de sección estaban en `base.css`, dentro de `@layer base`; `tokens.css` va sin capa y gana siempre, así que a 375 px el gutter seguía en 64 px. Lo destapó la nav, el primer uso de `--gutter` | Los dos `@media` pasan a `tokens.css`, con un comentario que explica la precedencia de capas |
+| 2026-11-24 | T-22 | En un `<style scoped>` de Vue, lo que sigue a `:global(...)` se pierde: `html:not(.js) .theme-switch` salió como `html:not(.js){display:none}`, que sin JS ocultaría la página entera | Los selectores que arrancan en `<html>` van en un `<style>` sin `scoped` y acotados por `.theme-switch`; `verify:nav` comprueba que sin JS la página se ve |
+| 2026-11-24 | T-22 | Unhead: con `key` explícita el cliente crea metas nuevas junto a las del servidor (4 `theme-color` tras hidratar); y al pasar de 2 metas a 1 quedaban 2 con el `media` viejo | `theme-color` mantiene siempre las dos metas y solo cambia su `content`; spec RF-12 y T-22 actualizados |
