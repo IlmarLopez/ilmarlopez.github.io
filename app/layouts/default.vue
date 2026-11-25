@@ -1,8 +1,10 @@
 <template>
   <div>
-    <!-- SkipLink (T-23) and SiteNav (T-22) go above main; SiteFooter (T-32) goes below it. -->
+    <!-- SkipLink (T-23) goes above the nav. -->
+    <SiteNav />
     <main id="main">
       <slot />
     </main>
+    <SiteFooter />
   </div>
 </template>

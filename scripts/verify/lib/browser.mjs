@@ -106,6 +106,23 @@ export async function main(name, body) {
   }
 }
 
+/**
+ * Reads `read()` until it equals `expected` or the timeout passes, and returns the last value read, so a
+ * check can still report what it received. For state that settles after hydration (the theme-color metas).
+ * @param {() => Promise<unknown>} read
+ * @param {unknown} expected Compared with JSON.stringify.
+ */
+export async function eventually(read, expected, { timeout = 2000, step = 50 } = {}) {
+  const wanted = JSON.stringify(expected)
+  const deadline = Date.now() + timeout
+  let value = await read()
+  while (JSON.stringify(value) !== wanted && Date.now() < deadline) {
+    await new Promise((resolve) => setTimeout(resolve, step))
+    value = await read()
+  }
+  return value
+}
+
 /** The RGB of a CSS color as the browser paints it (a canvas converts `oklch()` and friends). */
 export function paintedColor(page, selector, property) {
   return page.evaluate(

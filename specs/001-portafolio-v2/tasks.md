@@ -1,6 +1,6 @@
 # Tasks 001 — ilmarlopez.com v2
 
-Estado: **aprobado por Ilmar el 2026-11-24 (Fase 2).** Fase 3 en curso desde T-01. **Actualizado el 2026-11-24 tras aprobar el prototipo `design/hallmark/f/`:** T-79 a T-83 son nuevas y viven en el hito que indica su título; T-25, T-27, T-52, T-53, T-55 y T-58 cambiaron de contenido sin cambiar de número.
+Estado: **aprobado por Ilmar el 2026-11-24 (Fase 2).** Fase 3 en curso desde T-01. **Actualizado el 2026-11-24 tras aprobar el prototipo `design/hallmark/f/`:** T-79 a T-84 son nuevas y viven en el hito que indica su título; T-25, T-27, T-52, T-53, T-55 y T-58 cambiaron de contenido sin cambiar de número.
 Spec: [`spec.md`](./spec.md) · Plan: [`plan.md`](./plan.md)
 
 **Cómo se usa**
@@ -138,9 +138,10 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 
 ## M3 · Secciones estáticas, sin movimiento (PR `feat/sections` → `v2`)
 
-- [ ] **T-22 · SiteNav y ThemeSwitch** · 60 min · [A] · RF-02, RF-12, M-07, AC-06
-  Nav sticky; en ≤ 60 rem solo wordmark e interruptor; etiqueta del interruptor resuelta con CSS; persistencia en `localStorage`; el cambio de tema usa View Transitions (crossfade de 220 ms, M-07) con respaldo instantáneo. El estado del tema vive en un composable que mantiene `theme-color` en sincronía con un `useHead` reactivo (con tema guardado, una sola meta con el color de ese tema; sin tema guardado, las dos metas por esquema de T-09), porque Unhead revierte los cambios hechos desde fuera (hallazgo de T-09).
+- [x] **T-22 · SiteNav y ThemeSwitch** · 60 min · [A] · RF-02, RF-12, M-07, AC-06
+  Nav sticky; en ≤ 60 rem solo wordmark e interruptor; etiqueta del interruptor resuelta con CSS; persistencia en `localStorage`; el cambio de tema usa View Transitions (crossfade de 220 ms, M-07) con respaldo instantáneo. El estado del tema vive en un composable que mantiene `theme-color` en sincronía con un `useHead` reactivo (con tema guardado, las dos metas con el color de ese tema; sin tema guardado, cada una con el de su esquema, como en T-09), porque Unhead revierte los cambios hechos desde fuera (hallazgo de T-09).
   Verifica: Playwright: sticky; sin enlaces en 768 px y menos; el tema alterna, persiste al recargar y no parpadea; con reduced-motion el cambio es instantáneo; tras alternar y recargar, `theme-color` coincide con el tema guardado también después de hidratar; capturas a 375 y 1440 px, claro y oscuro, contra `f/`.
+  Resultado (2026-11-24): `app/components/layout/{SiteNav,ThemeSwitch}.vue`, `app/composables/useTheme.ts` (`useThemeHead` registra la cabecera una sola vez en `app.vue` y `useTheme` alterna con View Transitions) y `themeColorMetas` en `app/utils/theme.ts`. La nav mide 65 px, con márgenes de 64 px (16 px en teléfono) y un interruptor de 64×40, igual que la referencia `f/` medida con Playwright. La suite nueva `verify:nav` tiene 10 comprobaciones (sticky, enlaces a 1280, solo wordmark e interruptor a 768 y 360, ciclo del tema en sistema claro y oscuro con recarga, crossfade y respaldo sin `startViewTransition`, reduced-motion instantáneo, `theme-color` tras hidratar y sin JS) y `verify:theme` espera ahora las metas del tema guardado. **Hallazgos:** (1) los `@media` del `--gutter` estaban en `base.css`, dentro de `@layer base`, y `tokens.css` va sin capa, así que su `--gutter: 64px` ganaba siempre; nadie lo usaba hasta ahora. Se movieron a `tokens.css`. (2) Vue descarta lo que sigue a `:global()` en un `<style scoped>`: `html:not(.js) .theme-switch` se compilaba a `html:not(.js){display:none}`, que sin JS habría ocultado toda la página; los selectores que arrancan en `<html>` van en un `<style>` sin `scoped`. (3) Unhead: con `key` explícita el cliente crea metas nuevas junto a las del servidor (4 tras hidratar), y pasar de dos metas a una deja dos con el `media` viejo; por eso `theme-color` mantiene siempre las dos metas y solo cambia su `content`. JS de `/`: 75,5 KB gzip (+1,5 KB). Falta lo de T-67: la comparación visual completa contra `f/` a 375 y 1440 px en claro y oscuro.
   Depende de: T-14.
 
 - [ ] **T-23 · SkipLink** · 20 min · [A] · RF-02, AC-04
@@ -148,69 +149,88 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
   Verifica: es el primer destino de Tab, solo se ve con foco y tiene el anillo de foco.
   Depende de: T-20, T-22.
 
-- [ ] **T-24 · HeroCopy y CvLink** · 60 min · [A] · RF-03, RF-11, RNF-07, AC-02, AC-03
+- [x] **T-24 · HeroCopy y CvLink** · 60 min · [A] · RF-03, RF-11, RNF-07, AC-02, AC-03
   `h1` en dos líneas con máscara (`.ln > span`), frase y acciones (copy exacto de `f/`). «Say hi» como `mailto:`; «View CV» desde `cv.ts`, con una entrada es un enlace a pestaña nueva y sin `download`.
   Verifica: a 1280×800 titular, frase y acción primaria quedan dentro del viewport; con JS apagado «Say hi» abre el cliente de correo; el enlace del CV apunta a `/files/Ilmar-Lopez-CV.pdf` con `target="_blank"` y `rel="noopener"`.
+  Resultado (2026-11-24): `app/components/journey/HeroCopy.vue`, `app/components/ui/{BaseButton,CvLink}.vue` y la home (`pages/index.vue`) ya muestra el hero con `<LazyHeroCopy hydrate-never />`, así que no suma JS. `BaseButton` es un enlace si recibe `href` y un botón si no, con las variantes `solid` y `quiet`; «Say hi» es un `mailto:` con `data-action="say-hi"` para T-36. El `h1` lleva la máscara `.ln > span` sin animar: el asentamiento es M-01 (T-51). Se añadió el token `--tracking-h1` (−0,04 em, spec §4) en lugar de un valor literal. La suite `verify:hero` (5 comprobaciones) incluye el ancho de los botones en teléfono, completo en pantalla alta y en una fila en pantalla corta, y se comprobó que falla si se quitan `target` o el `mailto:`. A 1280×800 el `h1` mide 76,8 px y los botones terminan en el píxel 459 de 800. JS de `/`: 76,0 KB gzip. `sloplint` sobre `app/` (incluye los `.vue`) da 0 FAIL: el REFLEX 26b pasa de `:active` a `:disabled`, que el linter no detecta porque `BaseButton` guarda sus clases en el `<script>`; se cierra cuando el diálogo estilice su botón deshabilitado (T-37). Queda un WARN de `ThemeSwitch` (etiqueta larga sin `nowrap`) que es un falso positivo: el linter suma el texto de las dos etiquetas alternas, de las que solo se ve una, y el botón ya lleva `whitespace-nowrap`.
   Depende de: T-22.
 
-- [ ] **T-25 · JourneyFlight y DepthRuler estáticos** · 60 min · [A] · RF-04, AC-17
+- [x] **T-25 · JourneyFlight y DepthRuler estáticos** · 60 min · [A] · RF-04, AC-17
   `JourneyFlight` agrupa `HeroCopy`, el `h2` «Experience» (visible en estático, solo para lectores en vuelo), los 4 `RoleCard` y la `DepthRuler` (`aria-hidden`). El CSS del vuelo (recorrido de 480 svh, visor *sticky*, perspectiva, planos, regla de profundidad) se escribe detrás de la clase `flight`, que todavía nadie añade. En estático, el hero y los roles son una lista legible.
   Verifica: sin la clase, la lista se lee a 375 y 1440 px; con la clase puesta a mano en Playwright, el hero y los planos se colocan como en `f/`; la diferencia contra `f/` queda bajo el umbral provisional del 2 % por sección, claro y oscuro.
+  Resultado (2026-11-24): se hizo junto con T-27, T-79 y T-52, fuera del orden del plan, porque Ilmar rechazó la página sin el vuelo («yo no pedí ese diseño»). `JourneyFlight` y `DepthRuler`, con el CSS del vuelo repartido en los estilos *scoped* de cada componente (lo que construye JS usa `:deep()`); `pages/index.vue` es ahora `<LazyJourneyFlight hydrate-never />`. Diferencia de píxeles contra `f/` en el primer encuadre: 0,01 % a 1280×800 y 0,02 % a 375×700, claro y oscuro (canal > 24/255; un desplazamiento de 1 px da 2,16 %, así que la medición sí distingue). La clase `flight` no la pone el plugin sino el script de arranque del `<head>` (`buildBootScript`, antes `buildThemeBootScript`): si la pusiera el plugin, el hero saltaría de sitio al cargar. Hasta que la cámara existe (`flight-ready`) los planos de rol y la regla quedan ocultos en lugar de apilados en el centro. Respaldo: si el paquete no arranca en 8 s (`app-ready` ausente), se quita `flight` y queda la lista; el plugin hace lo mismo si el montaje lanza un error. Sin JS, o con reduced-motion, la página es la lista (`verify:journey`).
   Depende de: T-24, T-27.
 
 - [ ] **T-26 · About con foto** · 45 min · [A] · RF-05, RNF-04, AC-14
   Según el diseño aprobado en T-18, con `<NuxtImg>` (AVIF/WebP, `width` y `height`, `lazy`) y `alt` descriptivo.
   Verifica: en la red se pide una variante AVIF o WebP redimensionada, nunca el `me.jpg` de 5.3 MB; CLS 0.
+  Estado (2026-11-24): **reabierta; solo falta la foto.** About está hecho y es idéntico al de `f/`, que no tiene foto: `AboutSection.vue` sobre `PageSection.vue` (filete, `h2` a la izquierda, los dos párrafos de `profile.about` a la derecha). Medido contra `f/`: misma altura de sección y 0,16 % de píxeles distintos a 1280 px y 0,25 % a 375 px (antialiasing). Había probado una composición con foto (retrato de 360×480 bajo el encabezado) y Ilmar la rechazó («el about no es como esta aquí»), así que salió de la home ese mismo día, junto con lo que existía solo para ella: la ranura `aside` de `PageSection`, `profile.photo` y el bloque `image` de `nuxt.config.ts` (el módulo `@nuxt/image` sigue en `modules`). `verify:sections` ahora comprueba que About tiene el titular a la izquierda, los dos párrafos a la derecha (apilados en 360 px) y ninguna imagen. **Para cuando vuelva la foto** (la pasada de Hallmark de T-18 decide dónde): `<NuxtPicture>` ignora `densities` si no recibe `sizes` (usa todos los `screens` hasta 3072 px: 29 variantes y un `src` de 3072×4096), así que lleva un `sizes` con clave numérica (`{ 1536: '360px' }`; la clave `xxl` daba un `srcset` vacío) y `densities="x1 x2"`; `image.provider: 'ipx'` explícito para que lo medido en local sea lo publicado (la autodetección usaría el CDN de Netlify); salen 6 archivos de 16 a 66 KB y ninguno conserva el EXIF del original, que trae GPS (comprobado con `sharp`).
   Depende de: T-18, T-25.
 
-- [ ] **T-27 · RoleCard y datos de Experience** · 45 min · [A] · RF-06
+- [x] **T-27 · RoleCard y datos de Experience** · 45 min · [A] · RF-06
   `RoleCard` desde `experience.ts`: monograma, nombre (con enlace solo en el rol activo), rol, estado, resumen y lectura estática con periodo y duración en texto. UTT sin lectura.
   Verifica: 4 tarjetas con los textos de `f/`; solo el título de Stori es un enlace (`https://www.storicard.com/`, `target="_blank"`, `rel="noopener"`); una columna en ≤ 60 rem; capturas contra `f/`.
+  Resultado (2026-11-24): `RoleCard.vue` desde `experience.ts`. `verify:journey` comprueba nombre, rol, estado, resumen, monograma y enlaces de las 4 tarjetas contra los textos de `f/`: solo el título de Stori es un enlace (`https://www.storicard.com/`, `target="_blank"`, `rel="noopener"`), solo el rol activo lleva el monograma lleno y el punto coral, y UTT no tiene lectura. Las tarjetas son una sola columna a cualquier ancho. Tokens nuevos en `tokens.css`: `--tracking-h2` (−0,035 em) y `--tracking-title` (−0,03 em), en lugar de valores literales.
   Depende de: T-22.
 
-- [ ] **T-79 · RoleTimeline y cifras** · 60 min · [A] · RF-06, AC-27
+- [x] **T-79 · RoleTimeline y cifras** · 60 min · [A] · RF-06, AC-27
   `RoleTimeline` (contenedor `aria-hidden` con `data-from`, `data-to` y `data-label`) y la parte 1 de `journey.client.ts`: con JS construye en cada tarjeta la gráfica de tiempo (una fila por rol, escala común de enero de 2017 a hoy, una línea por enero, años cada 2 o cada 3 en teléfono, línea de hoy) y calcula la duración contando el primer y el último mes, que reemplaza al texto estático.
   Verifica: con la fecha fijada en la prueba, 5 años 2 meses, 4 años 2 meses y 4 meses; la gráfica muestra 3 filas con el rol de la tarjeta en tinta; sin JS no hay gráfica y el texto estático se lee; sin desbordes a 360 px.
+  Resultado (2026-11-24): `RoleTimeline.vue`, `utils/tenure.ts` (fechas y duraciones, puras) y `utils/journey/chart.ts` (la gráfica y las cifras, con la fecha como parámetro). `verify:journey` fija la fecha con `page.clock.setFixedTime` al 10 de marzo de 2027 y comprueba 5 años 6 meses, 4 años 2 meses y 4 meses (a noviembre de 2026, Stori da 5 años 2 meses); 3 filas por tarjeta con la fila propia en tinta; el inicio y el largo de dos barras; una línea por enero (`--yr` 9,756 %); años cada 2 (cada 3 a 360 px); ningún nombre de fila recortado y ningún desborde a 360 px; sin JS no hay gráfica y el texto estático se lee. La tira reserva su alto con `--rows` desde el HTML, porque sin eso dibujar la gráfica empujaba la página (con reduced-motion la suite exige un desplazamiento de diseño < 0,02). La fila de Stori usa `short` («California Web» en vez de «California» del prototipo: un solo texto para la regla y las filas, y cabe).
   Depende de: T-27.
 
-- [ ] **T-28 · Tools** · 30 min · [A] · RF-08
+- [x] **T-28 · Tools** · 30 min · [A] · RF-08
   `ToolsSection` desde `tools.ts` y la línea de idiomas.
   Verifica: 4, 2 y 1 columnas a 1440, 768 y 375 px.
+  Resultado (2026-11-24): `ToolsSection.vue` desde `tools.ts`, con la línea de idiomas. `verify:sections` comprueba los 4 grupos y sus elementos, y 4, 2 y 1 columnas a 1280, 768 y 360 px (los tramos de la hoja de `f/`: 4 columnas por encima de 70 rem, 2 hasta 40 rem y 1 por debajo). Misma geometría que `f/`: las cajas de la sección miden igual.
   Depende de: T-22.
 
-- [ ] **T-29 · Work sin JS** · 60 min · [A] · RF-07, RNF-07, B2, B7, AC-02
+- [x] **T-29 · Work sin JS** · 60 min · [A] · RF-07, RNF-07, B2, B7, AC-02
   SSR de los 4 proyectos como lista legible, con la pila decorativa en estado abierto. Corrige B7: cada etiqueta de capa anclada a su vértice derecho.
   Verifica: con JS apagado se leen los 4 proyectos (título, texto y enlace) y no hay texto encimado (captura). En cada proyecto, el centro de cada etiqueta coincide en vertical con el vértice derecho de su capa (medido con `getBoundingClientRect`, tolerancia 1 px) y ninguna etiqueta se sale de su columna a 1440, 1280, 1024, 768 y 375 px.
+  Resultado (2026-11-24): `WorkInspector.vue` y `WorkStack.vue`. Sin JS (y si el paquete nunca arranca, ver T-30) se ven los 4 proyectos uno bajo otro con nombre, resumen, enlaces y pila abierta; la lista de pestañas se oculta porque sus botones no harían nada. **B7 corregido** con el anclaje del vértice derecho (`left: 100%; top: 100%; transform-origin: 0 0`). Se mide con sondas de 0×0 en las cuatro esquinas de cada capa, que caen donde la transformación 3D las pone en pantalla: en los 4 proyectos y 12 anchos, la esquina más a la derecha es siempre la (100 %, 100 %) y el centro de cada etiqueta queda a ≤ 1 px de ella. Control negativo: con `top: 50%` inyectado la misma medición da 40 px de desvío. Sin JS, ninguna etiqueta se encima con otra.
   Depende de: T-27.
 
-- [ ] **T-30 · Work con tabs** · 60 min · [A] · RF-07, AC-04, AC-13
+- [x] **T-30 · Work con tabs** · 60 min · [A] · RF-07, AC-04, AC-13
   Tabs ARIA (flechas, Home, End, `tabindex` itinerante), cambio de panel instantáneo, `hydrate-on-visible`. Sin animación todavía (M-09 llega en T-54).
   Verifica: Playwright con teclado cambia `aria-selected` y `tabindex`; el JS del inspector no se pide antes de ver la sección.
+  Resultado (2026-11-24): pestañas ARIA en `WorkInspector.vue` (flechas, Home, End, `tabindex` itinerante; Tab sale de la lista y cae en el panel), cambio de panel instantáneo y `hydrate-on-visible` con `rootMargin: 200px` en `pages/index.vue`. `verify:sections`: el JS de Work no se pide al cargar ni al llegar a Contact de un salto, y sí al acercarse a Work. Los 4 paneles comparten una celda de la rejilla (como `f/`), así que la sección conserva la altura del más alto y nada de lo que sigue salta al cambiar de pestaña; los inactivos usan `visibility: hidden` y no `display: none`. La mejora se activa con la clase `js`, que el script de arranque ya pone antes del primer pintado: así no hay salto de diseño al cargar en `/#work`. Para que un paquete caído no deje los proyectos 2 a 4 inalcanzables, el script de arranque quita `js` y `flight` si en 8 s no aparece `app-ready` (antes solo quitaba `flight`, y solo sin reduced-motion), y el plugin devuelve `js` si el paquete llega tarde; `verify:sections` lo prueba retrasando los scripts 8,6 s. El script de `<head>` renombró `FLIGHT_BOOT_TIMEOUT_MS` a `BOOT_TIMEOUT_MS`.
   Depende de: T-29.
 
-- [ ] **T-81 · Dimensionado de la pila de Work** · 45 min · [A] · RF-07, B9, AC-28
+- [x] **T-81 · Dimensionado de la pila de Work** · 45 min · [A] · RF-07, B9, AC-28
   Portar de `f/` el dimensionado con unidades de contenedor: `container-type: inline-size` en el escenario, `--pu` con `clamp` según `100cqw`, `--lead` y `--tag`, el desplazamiento (`min(0, …)` en escritorio, centrado en una columna), etiquetas de 14 px y guía más corta en ≤ 60 rem, y el respaldo `@supports`. `--tag` se mide con la etiqueta más larga de `projects.ts`.
   Verifica: AC-28 con `verify:stack`: 12 anchos (320, 344, 390, 414, 600, 768, 961, 1000, 1100, 1280, 1440, 1920) y los 4 proyectos, con margen ≥ 0 px entre la etiqueta más larga y el diamante, y el escenario y el viewport; a 1440 y 1920 px el resultado es idéntico al de `f/`.
+  Resultado (2026-11-24): el dimensionado de `f/` está en `WorkStack.vue` tal cual (`container-type`, `--pu` con `clamp` según `100cqw`, `--lead`, `--tag`, desplazamiento `min(0, …)`, ≤ 60 rem con etiquetas de 14 px y guía corta, respaldo `@supports`). `verify:sections` mide los 12 anchos de AC-28 y los 4 proyectos: ninguna etiqueta ni el diamante pasan del escenario ni del viewport; el margen más justo es de 11 px («Python functions» a 320 px). Control negativo: con `--pu: 13rem` fijo (el defecto B9) las etiquetas se pasan de 87 a 170 px a 320 px. **No se hizo la comparación de píxeles con `f/` a 1440 y 1920 px** (el criterio decía «idéntico»); queda para T-67. Todavía no existe `verify:stack` como suite aparte: lo cubre `verify:sections` y T-83 decide si se separa.
   Depende de: T-29.
 
-- [ ] **T-31 · Contact y redes** · 30 min · [A] · RF-09, RF-11, AC-24
+- [x] **T-31 · Contact y redes** · 30 min · [A] · RF-09, RF-11, AC-24
   `ContactSection` con el texto, el `mailto:`, el botón «Say hi» y la lista de enlaces que empieza con «CV» y «PDF, 1 page», seguida de las 4 redes.
   Verifica: URL exactas de GitHub, LinkedIn (`www.linkedin.com/in/ilmarlopez`), DEV y CodePen; sin WhatsApp, Facebook ni Twitch; el enlace del CV apunta a `/files/Ilmar-Lopez-CV.pdf` con `target="_blank"`, y «1 page» coincide con el PDF.
+  Resultado (2026-11-24): `ContactSection.vue` y `ui/TextLink.vue` (el enlace con la línea coral). `verify:sections` comprueba el texto, el `mailto:` (`me@ilmarlopez.com`), «Say hi» como enlace `mailto:` con `data-action="say-hi"` (T-36 lo tomará), las URL exactas de GitHub, LinkedIn (`www.linkedin.com/in/ilmarlopez`), DEV y CodePen en ese orden, y que no hay ningún enlace a WhatsApp, Facebook, Twitch ni Twitter en toda la página. El CV apunta a `/files/Ilmar-Lopez-CV.pdf` con `target="_blank"` y `rel="noopener"`, responde 200 `application/pdf`, y «1 page» es cierto: el PDF tiene una página (se cuentan sus objetos `/Type /Page`). Misma geometría que `f/` (las cajas miden igual); 0,78 % de píxeles distintos a 1280 px y 1,07 % a 375 px, concentrados en los glifos del titular (antialiasing).
   Depende de: T-22.
 
-- [ ] **T-32 · Footer** · 30 min · [A] · RF-14, Q6
+- [x] **T-32 · Footer** · 30 min · [A] · RF-14, Q6
   Campo grafito, wordmark, «All versions», «Version 1, archived», «Version 2, 2026» y la pista de ⌘K aprobada en T-18.
   Verifica: enlaces correctos; la pista solo aparece con `(hover: hover) and (pointer: fine)`.
+  Resultado (2026-11-24): `SiteFooter.vue` en `layouts/default.vue`: campo grafito, wordmark (`#top`), «Version 1, archived» y «Version 2, 2026». **Faltan dos piezas, a propósito:** «All versions» no está porque `/versions` no existe hasta T-43 y Nuxt rastrea cada enlace al generar (la compilación falló con `/versions (404)`); la pista de ⌘K (Q6) espera a la paleta (T-41) y a la pasada de Hallmark de T-18. Ambas quedan anotadas en T-41 y T-43. Sin esas dos piezas el pie tiene 3 elementos en lugar de 4; el centro queda ocupado por «Version 1, archived».
   Depende de: T-18, T-22.
 
-- [ ] **T-33 · Ensamblado de la home e hidratación** · 60 min · [A] · RF-01, RNF-03, AC-01, AC-13
+- [x] **T-33 · Ensamblado de la home e hidratación** · 60 min · [A] · RF-01, RNF-03, AC-01, AC-13
   `pages/index.vue` con la estrategia de spec §8.4 (`Lazy*` con `hydrate-never` y `hydrate-on-visible`; `JourneyFlight` y sus tarjetas son `hydrate-never`).
   Verifica: `dist/index.html` contiene el contenido completo; se registra el JS inicial en gzip. **Puerta:** si supera 120 KB gzip se corrige antes de seguir con M4.
+  Resultado (2026-11-24): `pages/index.vue` ensambla `LazyJourneyFlight`, `LazyAboutSection`, `LazyToolsSection` y `LazyContactSection` con `hydrate-never` y `LazyWorkSection` con `hydrate-on-visible`; el pie va en el layout. `verify:sections` lee el HTML servido sin JS y encuentra el texto de las 5 secciones, y el pie. **Puerta de JS: 80,0 KB gzip** (78,7 antes; margen de 40,0 KB), sin contar el chunk de Work, que se pide al acercarse a la sección; con el indicador de la nav (T-84) son 80,7 KB y el margen 39,3 KB. `verify` completo: 12 suites verdes (13 con `verify:anchors`, de T-84); `typecheck` 0; sloplint 0 FAIL.
   Depende de: T-24 a T-32.
+
+- [x] **T-84 · Nav: anclas suaves e indicador de la sección en pantalla** · 60 min · [A] · RF-02, RF-20, M-16, M-17, AC-21
+  Ilmar probó la home y dijo que «el navbar da la impresión que no funciona»: en una ventana alta casi toda la página cabe a la vez, un clic en la nav apenas mueve el scroll y no había nada que dijera qué sección estaba activa. Se adelantan de T-54 y T-58 el indicador (M-17) y las anclas suaves (M-16), que `f/` ya traía.
+  Verifica: `verify:anchors`. Con no-preference las anclas se deslizan y con reduced-motion saltan; cada clic marca su enlace con `aria-current="location"` y la línea coral queda bajo él, del ancho del enlace; Enter con el foco en el enlace hace lo mismo; en ventanas de 2000 y 3000 px, donde la página no puede subir la sección hasta arriba, el clic se refleja y sigue marcado cuando el scroll se detiene; una vuelta de rueda devuelve el mando a la página; durante el vuelo «Experience» se marca desde p > 0,12 y se suelta al volver al hero; leer la página hacia abajo marca Work, Tools y Contact y About no marca nada; al final de la página queda Contact; abrir en `/#work` o en `/#tools` marca ese enlace; a 768 px y menos la línea no existe; sin JS no hay marca y las anclas siguen aterrizando.
+  Resultado (2026-11-24): `utils/nav/spy.ts` (`mountNavSpy`) y `plugins/nav.client.ts`, DOM plano como el vuelo; `SiteNav.vue` lleva el `<span class="nav-ind">`; `scroll-behavior: smooth` solo bajo `prefers-reduced-motion: no-preference` en `base.css`. La sección en pantalla es la última cuya parte alta pasó el 45 % del alto de la ventana (como `f/`). Tres reglas que `f/` no tiene y que hacen falta: (1) **el clic manda hasta que el visitante hace scroll por su cuenta** (rueda, tacto, teclas o un desplazamiento mayor de 12 px una vez parado el movimiento); (2) al final de la página se marca el último enlace; (3) «Experience» depende del progreso del vuelo y no de la posición, porque la sección del vuelo mide 480 svh. Dos defectos propios, hallados con la suite: el espía leía el progreso del vuelo antes de que la cámara lo actualizara (la cámara se acerca al scroll con inercia, después del evento), así que ahora observa el atributo `style` de `#journey`; y la primera versión soltaba la intención en cuanto la página «coincidía» un instante, y en una ventana de 2000 px, donde Tools y Contact caben a la vez al final, el desplazamiento pasaba por «Tools» y el fin de la página lo cambiaba a «Contact» en el último fotograma. Control negativo de ambos: con la lógica antigua `verify:anchors` falla en 2000 y 3000 px («expected Tools, received Contact»). `scroll-behavior: smooth` convirtió en animados los `scrollTo` de `verify:nav`: ahora usan `behavior: 'instant'`. JS inicial: 80,7 KB gzip. `verify` completo: 13 suites, 89 checks verdes; `typecheck` 0.
+  Depende de: T-22, T-33.
 
 - [ ] **T-34 · Barrido de la home** · 60 min · [A] · AC-03, AC-17, RNF-01
   Capturas de toda la home a 375 y 1440 px, claro y oscuro; Lighthouse local contra `npm run preview`; `sloplint --render --url http://localhost:3000/`.
   Verifica: 0 FAIL; Lighthouse local sin caer bajo el presupuesto (los problemas se corrigen aquí).
+  Avance (2026-11-24): capturas de las 5 secciones nuevas contra `f/` a 1280 (claro) y 375 (oscuro) y sloplint sin FAIL. Faltan el barrido de toda la home a 1440 y 375 en claro y oscuro, el Lighthouse local y `sloplint --render`.
   Depende de: T-33.
 
 - [ ] **T-35 · PR `feat/sections` → `v2`** · 30 min · [A] · AC-17
@@ -255,6 +275,7 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 - [ ] **T-41 · Atajo ⌘K / Ctrl+K con carga diferida** · 30 min · [A] · RF-13, AC-04, AC-13
   Plugin del atajo que importa la paleta en el primer uso.
   Verifica: el chunk de la paleta no se pide hasta el atajo; el foco vuelve al cerrar.
+  Al terminar: añadir la pista de ⌘K al `SiteFooter.vue` (Q6), solo con `(hover: hover) and (pointer: fine)`; hoy el pie no la tiene (T-32).
   Depende de: T-40.
 
 - [ ] **T-42 · PR `feat/interactions` → `v2`** · 30 min · [A] · AC-04
@@ -269,6 +290,7 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 - [ ] **T-43 · `/versions`** · 60 min · [A] · RF-15, AC-11, AC-01
   Página y `VersionEntry` según el diseño de T-19, con v2 (current) y v1 (archived) desde `versions.ts`.
   Verifica: orden inverso, un solo `h1`, el enlace de v1 apunta a `https://v1.ilmarlopez.com`, `dist/versions/index.html` tiene contenido. Añade `/versions` a `scripts/verify/lib/routes.mjs` para que `verify:a11y` la audite.
+  Al terminar: devolver «All versions» (`/versions`) al `SiteFooter.vue`; el comentario del archivo lo dice. Hoy no está porque Nuxt falla al generar si enlaza a una página que no existe (T-32).
   Depende de: T-19, T-42.
 
 - [ ] **T-44 · Página 404** · 45 min · [A] · RF-16, AC-10, AC-01
@@ -317,9 +339,10 @@ Se decide con `emil-design-eng` y se implementa con CSS y el script de DOM plano
   Verifica: Lighthouse ×5 con y sin; si cuesta más de 100 ms, el `h1` aparece sin la máscara y solo animan la frase y las acciones; con reduced-motion no hay animación.
   Depende de: T-50.
 
-- [ ] **T-52 · M-02 vuelo de la cámara** · 60 min · [A] · M-02, RF-04, AC-05, AC-26
+- [x] **T-52 · M-02 vuelo de la cámara** · 60 min · [A] · M-02, RF-04, AC-05, AC-26
   Parte 2 de `journey.client.ts`: la clase `flight` solo sin reduced-motion; rAF con amortiguamiento exponencial (≈ 90 ms) y parada por plano; `--x --y --z --o --po` en cada plano; `data-reached`, `data-passed` y `data-on`/`data-past` de la regla; el desplazamiento de las tarjetas de fondo en teléfono calculado a partir de la perspectiva; puntero y foco solo en el plano frontal; y el enlace «Experience» que lleva al primer rol.
   Verifica: AC-26 con `verify:flight`: en p = 0, 0.25, 0.5, 0.75 y 1 exactamente un plano con puntero y `tabIndex` 0, la regla marca el rol correcto, y el rAF se detiene al llegar (sin trabajo en reposo); con reduced-motion no existe `flight`; a 375×812, 360×800 y 390×844 la tarjeta de fondo no solapa el texto del hero.
+  Resultado (2026-11-24): `utils/journey/flight.ts` (cámara, con función de desmontaje) y `plugins/journey.client.ts` (monta y desmonta en `onNuxtReady` y `page:finish`). La suite es `verify:journey`, no `verify:flight`: en p = 0, 0,25, 0,5, 0,75 y 1 exactamente un plano recibe puntero, solo el hero y Stori tienen algo en el orden de tabulación (los demás no tienen controles), la regla marca el rol correcto, `data-reached` y `data-passed` son los esperados; la cifra de Stori vale 0 antes de que la cámara llegue y su valor final después; en 500 ms de reposo se piden 0 fotogramas; con reduced-motion no existe `flight`; a 375×812, 360×800, 390×844 y 375×700 ningún plano de fondo cubre el texto ni los botones del hero, y a 360 px la tarjeta frontal cabe entre la nav y el borde inferior en cada parada. Hallazgos al construirlo: (1) mientras hidrata, el router reescribe la URL sin el hash un instante, así que `/#experience` se lee al arrancar el plugin y no al montar la cámara; (2) el `scroll-padding-top` de `html` (96 px) se suma al `scroll-margin-top` del destino, tanto en Nuxt como en CSS nativo, así que el `h2` «Experience.» lleva `-32px` en vuelo para que el scroll del router hacia él no mueva nada (en la lista el margen es 0); (3) el enlace «Experience» y `/#experience` llevan a p = 0,25, y en la lista el título queda justo bajo la nav; (4) respaldo si el paquete no arranca (ver T-25); (5) contraste de los planos por delante: R12. Fuera de esta tarea, a propósito: M-01 (T-51), M-03 (T-53), el indicador de la nav (`navSync` de la referencia) y la revisión de la tabla de motion (T-50). JS de `/`: 78,7 KB gzip (+2,7 KB).
   Depende de: T-50, T-25, T-79.
 
 - [ ] **T-53 · M-03 llegada de los planos** · 45 min · [A] · M-03, AC-05
@@ -330,6 +353,7 @@ Se decide con `emil-design-eng` y se implementa con CSS y el script de DOM plano
 - [ ] **T-54 · M-04, M-05, M-06, M-08, M-09 y M-17 microinteracciones** · 60 min · [A] · M-04, M-05, M-06, M-08, M-09, M-17, AC-18
   Subrayado, color de botones, pulsación, interruptor y color de tabs; el cambio de panel de Work (salida de 120 ms, entrada de 220 ms y texto que sube línea a línea); y el indicador de la nav (translate y `scaleX`, sin deslizarse en su primera colocación). Con tokens y reduced-motion.
   Verifica: `rg "transition: *all" app` vacío; las duraciones calculadas coinciden con los tokens; el panel saliente no se solapa con el entrante (captura intermedia); el indicador se desliza entre secciones; con reduced-motion los cambios son instantáneos.
+  Adelantado (2026-11-24): el indicador de la nav (M-17) ya está hecho, en T-84. Aquí quedan los demás.
   Depende de: T-50, T-30.
 
 - [ ] **T-55 · M-10 y M-11 pila de Work con CSS** · 45 min · [A] · M-10, M-11, AC-05, AC-13
@@ -349,6 +373,7 @@ Se decide con `emil-design-eng` y se implementa con CSS y el script de DOM plano
 
 - [ ] **T-58 · M-15 reveal y M-16 anclas** · 45 min · [A] · RF-20, M-15, M-16, AC-21
   `page.client.ts`: reveal con `IntersectionObserver` (una sola vez, 420 ms, 60 ms por bloque) y `scroll-behavior: smooth` solo con no-preference; `scroll-padding-top` de 96 px. Sin Lenis.
+  Adelantado (2026-11-24): el `scroll-behavior: smooth` y el `scroll-padding-top` de 96 px ya están, en T-84. Aquí queda el reveal.
   Verifica: AC-21: scroll nativo con rueda; los encabezados de sección quedan visibles bajo la nav; con reduced-motion no hay reveal ni scroll animado; todos los `data-reveal` terminan visibles sin JS.
   Depende de: T-50.
 
