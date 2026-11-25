@@ -149,9 +149,10 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
   Verifica: es el primer destino de Tab, solo se ve con foco y tiene el anillo de foco.
   Depende de: T-20, T-22.
 
-- [ ] **T-24 · HeroCopy y CvLink** · 60 min · [A] · RF-03, RF-11, RNF-07, AC-02, AC-03
+- [x] **T-24 · HeroCopy y CvLink** · 60 min · [A] · RF-03, RF-11, RNF-07, AC-02, AC-03
   `h1` en dos líneas con máscara (`.ln > span`), frase y acciones (copy exacto de `f/`). «Say hi» como `mailto:`; «View CV» desde `cv.ts`, con una entrada es un enlace a pestaña nueva y sin `download`.
   Verifica: a 1280×800 titular, frase y acción primaria quedan dentro del viewport; con JS apagado «Say hi» abre el cliente de correo; el enlace del CV apunta a `/files/Ilmar-Lopez-CV.pdf` con `target="_blank"` y `rel="noopener"`.
+  Resultado (2026-11-24): `app/components/journey/HeroCopy.vue`, `app/components/ui/{BaseButton,CvLink}.vue` y la home (`pages/index.vue`) ya muestra el hero con `<LazyHeroCopy hydrate-never />`, así que no suma JS. `BaseButton` es un enlace si recibe `href` y un botón si no, con las variantes `solid` y `quiet`; «Say hi» es un `mailto:` con `data-action="say-hi"` para T-36. El `h1` lleva la máscara `.ln > span` sin animar: el asentamiento es M-01 (T-51). Se añadió el token `--tracking-h1` (−0,04 em, spec §4) en lugar de un valor literal. La suite `verify:hero` (5 comprobaciones) incluye el ancho de los botones en teléfono, completo en pantalla alta y en una fila en pantalla corta, y se comprobó que falla si se quitan `target` o el `mailto:`. A 1280×800 el `h1` mide 76,8 px y los botones terminan en el píxel 459 de 800. JS de `/`: 76,0 KB gzip. `sloplint` sobre `app/` (incluye los `.vue`) da 0 FAIL: el REFLEX 26b pasa de `:active` a `:disabled`, que el linter no detecta porque `BaseButton` guarda sus clases en el `<script>`; se cierra cuando el diálogo estilice su botón deshabilitado (T-37). Queda un WARN de `ThemeSwitch` (etiqueta larga sin `nowrap`) que es un falso positivo: el linter suma el texto de las dos etiquetas alternas, de las que solo se ve una, y el botón ya lleva `whitespace-nowrap`.
   Depende de: T-22.
 
 - [ ] **T-25 · JourneyFlight y DepthRuler estáticos** · 60 min · [A] · RF-04, AC-17

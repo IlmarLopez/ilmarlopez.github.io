@@ -127,7 +127,7 @@ Fuente: `design/hallmark/f/tokens.css`, `base.css`, `styles.css` y `design.md`. 
 - Display: **Rethink Sans** (600, 700). Cuerpo: **Hanken Grotesk** (400, 600). Dos familias, autoalojadas con `@nuxt/fonts` desde `/_nuxt/fonts/` (proveedor Fontsource, subset `latin`, `font-display: swap`). Fontsource sirve el eje completo de Hanken Grotesk (100 a 900) y no se puede recortar a 400–600; no cambia nada visible.
 - Escala fija: `xs` 0.8125rem · `sm` 0.875 · `md` 1 · `lg` 1.25 · `xl` 1.5625 · `2xl` 1.953 · `3xl` 2.441.
 - Escala fluida: `display` `clamp(2.75rem, 6vw, 5.5rem)` · `display-s` `clamp(2.25rem, 4vw + 0.5rem, 3.75rem)` · `section` `clamp(2rem, 2.5vw + 1rem, 3.5rem)` · `title` `clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem)` · `lead` `clamp(1.125rem, 0.35vw + 1rem, 1.375rem)`.
-- Cuerpo: `line-height` 1.55. `h1`: peso 700, `line-height` 1, tracking −0.04em, máx. 12ch. `h2`: 700, 1.02, −0.035em, máx. 12ch. Títulos de fila y de proyecto: −0.02em. El CSS de la referencia es más específico que el «−0.02em» de `design.md` y manda.
+- Cuerpo: `line-height` 1.55. `h1`: peso 700, `line-height` 1, tracking −0.04em (token `--tracking-h1`), máx. 12ch. `h2`: 700, 1.02, −0.035em, máx. 12ch. Títulos de fila y de proyecto: −0.02em. El CSS de la referencia es más específico que el «−0.02em» de `design.md` y manda.
 - Etiquetas, pies y cabeceras de tabla: cuerpo, una talla menor, sin mayúsculas ni tracking (Floor 9).
 
 ### 4.3 Espaciado, layout y forma

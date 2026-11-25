@@ -36,6 +36,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | `verify:selftest` | arnés | una aserción incorrecta falla con *expected* y *received*; el servidor responde 200, 404 con `404.html` y rechaza `/../` | |
 | `verify:theme` | AC-06, B1 | 6 escenarios de tema guardado y sistema, estado de `<html>` al insertar la hoja de estilos, fondo pintado | T-64 |
 | `verify:nav` | RF-02, RF-12, M-07 | sticky; 4 enlaces a 1280 px; solo wordmark e interruptor a 768 y 360 px; ciclo del tema con recarga en sistema claro y oscuro; crossfade con respaldo; reduced-motion instantáneo; `theme-color` tras hidratar; sin JS | T-64 |
+| `verify:hero` | RF-03, RF-11, RNF-07 | titular, frase y acción primaria dentro de 1280×800; `mailto:` y CV sin JS; el CV abre en pestaña nueva con `noopener`; ancho de los botones en teléfono alto y corto | T-51, T-64 |
 | `verify:layout` | AC-03 | 360, 768, 1280 y 1920 px: carga limpia y sin scroll horizontal | T-63 |
 | `verify:nojs` | AC-02 | JS apagado: HTML servido, sin `js` ni `data-theme`, sigue al sistema | T-64 |
 | `verify:reduced` | AC-05 | sin animaciones en curso ni clase `flight` | T-64 |
@@ -45,7 +46,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | `verify:keyboard` | AC-04 | no existe aún | T-64 |
 | `verify:flight`, `verify:cards`, `verify:stack` | AC-26 a AC-28 | no existen aún | T-83 |
 
-Última corrida completa: 2026-11-24, `npm run verify` sobre un `dist/` limpio (rama `feat/sections`, T-22), 9 suites en verde. Contra el *branch deploy* en vivo (`v2` en `34bd37f`), `theme`, `layout`, `nojs`, `reduced`, `a11y` y `js` pasaron; `redirects` falló (301 esperado, 404 recibido), hallazgo de la sección 8.
+Última corrida completa: 2026-11-24, `npm run verify` sobre un `dist/` limpio (rama `feat/sections`, T-24), 10 suites en verde. Contra el *branch deploy* en vivo (`v2` en `34bd37f`), `theme`, `layout`, `nojs`, `reduced`, `a11y` y `js` pasaron; `redirects` falló (301 esperado, 404 recibido), hallazgo de la sección 8.
 
 ## 3. Presupuesto de JS por hito
 
@@ -54,6 +55,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | App vacía (T-12) | 2026-11-24 | 73,4 | 46,6 | `npm run verify:js` |
 | App vacía con la redirección en `routeRules` | 2026-11-24 | 74,0 | 46,0 | `npm run verify:js` |
 | Con SiteNav y ThemeSwitch (T-22) | 2026-11-24 | 75,5 | 44,5 | `npm run verify:js` |
+| Con HeroCopy, BaseButton y CvLink (T-24) | 2026-11-24 | 76,0 | 44,0 | `npm run verify:js` |
 | Home ensamblada (T-33) | Pendiente | | | `npm run verify:js` |
 | Deploy Preview (T-68) | Pendiente | | | `VERIFY_BASE=<url> npm run verify:js` |
 
