@@ -16,6 +16,7 @@
     "verify:journey": "node scripts/verify/journey.mjs",
     "verify:sections": "node scripts/verify/sections.mjs",
     "verify:anchors": "node scripts/verify/anchors.mjs",
+    "verify:dialog": "node scripts/verify/dialog.mjs",
     "verify:layout": "node scripts/verify/layout.mjs",
     "verify:nojs": "node scripts/verify/nojs.mjs",
     "verify:reduced": "node scripts/verify/reduced.mjs",
