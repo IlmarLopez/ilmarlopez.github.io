@@ -38,6 +38,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | `verify:nav` | RF-02, RF-12, M-07 | sticky; 4 enlaces a 1280 px; solo wordmark e interruptor a 768 y 360 px; ciclo del tema con recarga en sistema claro y oscuro; crossfade con respaldo; reduced-motion instantáneo; `theme-color` tras hidratar; sin JS | T-64 |
 | `verify:hero` | RF-03, RF-11, RNF-07 | titular, frase y acción primaria dentro de 1280×800; `mailto:` y CV sin JS; el CV abre en pestaña nueva con `noopener`; ancho de los botones en teléfono alto y corto | T-51, T-64 |
 | `verify:journey` | RF-04, RF-06, RNF-07, AC-05, AC-17 | las 4 tarjetas con los textos de `f/` y solo Stori enlazada; periodos y duraciones con la fecha fijada; gráfica (3 filas, escala común, años cada 2 o 3); lista sin JS y con reduced-motion; un solo plano frontal en cada parada, cifras que cuentan y rAF en reposo; enlace «Experience» y `/#experience`; teléfonos sin planos sobre el hero; respaldo si el paquete no arranca | T-83 (`verify:flight`, `verify:cards`) |
+| `verify:sections` | RF-05, RF-07 a RF-09, RF-11, AC-02, AC-14, AC-28, B2, B7, B9 | orden y anclas de las secciones; la foto (perezosa, solo variantes `/_ipx/`, nunca el original, CLS < 0,001); pestañas ARIA con teclado; el JS de Work se pide al acercarse; etiquetas de la pila en el vértice y dentro del escenario y del viewport en 12 anchos y 4 proyectos; el HTML sin JS lee toda la home; el paquete que llega tarde; Tools en 4, 2 y 1 columnas; enlaces de Contact y pie, PDF de una página y sin redes no permitidas | T-83 (`verify:stack`) |
 | `verify:layout` | AC-03 | 360, 768, 1280 y 1920 px: carga limpia y sin scroll horizontal | T-63 |
 | `verify:nojs` | AC-02 | JS apagado: HTML servido, sin `js` ni `data-theme`, sigue al sistema | T-64 |
 | `verify:reduced` | AC-05 | sin animaciones en curso ni clase `flight` | T-64 |
@@ -58,7 +59,7 @@ Más 388 bytes de código inline en 3 scripts (el import map, el script del tema
 | Con SiteNav y ThemeSwitch (T-22) | 2026-11-24 | 75,5 | 44,5 | `npm run verify:js` |
 | Con HeroCopy, BaseButton y CvLink (T-24) | 2026-11-24 | 76,0 | 44,0 | `npm run verify:js` |
 | Con el vuelo: tarjetas, gráfica y cámara (T-25, T-27, T-79, T-52) | 2026-11-24 | 78,7 | 41,3 | `npm run verify:js` |
-| Home ensamblada (T-33) | Pendiente | | | `npm run verify:js` |
+| Home ensamblada (T-33) | 2026-11-24 | 80,0 | 40,0 | `npm run verify:js` |
 | Deploy Preview (T-68) | Pendiente | | | `VERIFY_BASE=<url> npm run verify:js` |
 
 ## 4. Lighthouse (T-68)
@@ -89,6 +90,15 @@ Primer encuadre con la cámara en 0 (hero y plano de Stori), medido con diferenc
 | 1280×800 | 0,01 % | 0,01 % |
 | 1440 px | Pendiente | Pendiente |
 
+Secciones nuevas, mismo método (2026-11-24, `f/` con reduced-motion y la nav oculta en ambos lados). Las cajas (posición y alto de sección, encabezado, listas, titular, correo, acciones y redes) miden igual que en `f/` a 1280 px en Tools y Contact; las capturas difieren en 1 px de alto por redondeo.
+
+| Sección | 1280 claro | 375 oscuro | Nota |
+|---|---|---|---|
+| Contact | 0,78 % | 1,07 % | Antialiasing de los glifos del titular |
+| Tools, Work | Sin medir en píxeles | Sin medir en píxeles | Cajas iguales; la 4.ª pestaña dice «CSS motion» y no «GSAP» (Q11) |
+| About | No comparable | No comparable | `f/` no tiene foto |
+| Footer | No comparable | No comparable | Sin «All versions» hasta T-43 |
+
 ## 7. Dispositivos reales (T-71, Ilmar)
 
 | Dispositivo | Resultado |
@@ -113,5 +123,9 @@ Primer encuadre con la cámara en 0 (hero y plano de Stori), medido con diferenc
 | 2026-11-24 | T-52 | Al abrir `/#experience` la cámara quedaba en p = 0,07: durante la hidratación el router reescribe la URL sin el hash (se midió `hash=""` 60 ms después de que el plugin lo veía) y luego hace su propio scroll hacia el destino | El hash se lee al arrancar el plugin y se pasa a la cámara como opción |
 | 2026-11-24 | T-52 | Aun así quedaba en p = 0,22: `html { scroll-padding-top: 96px }` se suma al `scroll-margin-top` del destino (Nuxt lo suma a mano; el CSS nativo igual), y el router llevaba el scroll 96 px más arriba que la cámara | El destino es el `h2` «Experience.», fijo en el visor *sticky*; en vuelo lleva `scroll-margin-top: calc(var(--space-2xl) - var(--space-3xl))` para que el scroll del router no mueva nada, y en la lista el margen es 0. `verify:journey` cubre ambos modos |
 | 2026-11-24 | T-52 | La clase `flight` va puesta antes del primer pintado: si el paquete de JS no cargaba, quedaban el hero y 480 svh vacíos | Si en 8 s no aparece `app-ready`, el `<head>` quita `flight`; el plugin lo quita si el montaje falla. `verify:journey` lo prueba bloqueando los scripts |
+| 2026-11-24 | T-26 | `<NuxtPicture>` ignora `densities` si no recibe `sizes`: usa todos los `screens` hasta 3072 px. La primera compilación generó 29 variantes (4,6 MB) y un `<img src>` de respaldo de 3072×4096 | `sizes` fijo con `densities="x1 x2"`: 6 archivos de 16 a 66 KB. `image.provider: 'ipx'` explícito |
+| 2026-11-24 | T-32 | `nuxt generate` falló con `/versions (404)`: el pie enlazaba a una página que no existe hasta T-43 y `crawlLinks` la rastrea | «All versions» sale del pie hasta T-43; anotado en T-43 y en el comentario de `SiteFooter.vue` |
+| 2026-11-24 | T-30 | Si el paquete de JS no cargaba, con `js` puesto antes del primer pintado los proyectos 2 a 4 quedaban ocultos y las pestañas muertas | El script de arranque quita `js` y `flight` a los 8 s sin `app-ready` (antes solo `flight`, y solo sin reduced-motion); el plugin devuelve `js` si el paquete llega tarde. `verify:sections` retrasa los scripts 8,6 s |
+| 2026-11-24 | T-30 | La comparación con `f/` midió el Work móvil 26 px más bajo: `f/` pone los 4 paneles en una celda y la sección conserva la altura del más alto, y yo ocultaba los inactivos con `display: none` (la página habría saltado al cambiar de pestaña) | Los paneles comparten celda y los inactivos usan `visibility: hidden`; ahora la diferencia es de 1 px de redondeo |
 | 2026-11-24 | T-79 | Dibujar la gráfica al cargar con JS empujaba la página hacia abajo (la tira estaba vacía) | El HTML da a la tira su alto con `--rows`; la suite exige desplazamiento de diseño < 0,02 con reduced-motion |
 | 2026-11-24 | T-52 | `verify:a11y` falló en `/`: 28 nodos de contraste en los planos por delante de la cámara (`--o` 0,7 / 0,4 / 0,1, de 3,41:1 a 1,14:1). El hero, el plano frontal y la lista estática pasan sin excepción | Se conserva el diseño aprobado. La suite audita la lista completa y la cámara en cada plano excluyendo solo los planos por delante. **Pendiente de decisión de Ilmar en T-65** (R12 en la spec) |
