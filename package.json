@@ -13,6 +13,7 @@
     "verify:theme": "node scripts/verify/theme.mjs",
     "verify:nav": "node scripts/verify/nav.mjs",
     "verify:hero": "node scripts/verify/hero.mjs",
+    "verify:journey": "node scripts/verify/journey.mjs",
     "verify:layout": "node scripts/verify/layout.mjs",
     "verify:nojs": "node scripts/verify/nojs.mjs",
     "verify:reduced": "node scripts/verify/reduced.mjs",
