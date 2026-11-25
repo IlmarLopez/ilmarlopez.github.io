@@ -14,7 +14,7 @@ export const profile: Profile = {
   jobTitle: 'Senior Software Engineer',
   lead: 'Senior engineer at Stori, building serverless APIs in Go and Python.',
   about: [
-    'I’m a Senior Software Engineer at Stori, a Mexican fintech, where I’ve worked across product and platform teams, from customer-facing features to architecture and finance integrations. I design APIs and serverless services with Clean Architecture in Go and Python on AWS.',
+    'I’m a Senior Software Engineer at Stori, a Mexican fintech, where I’ve worked across product and platform teams, from customer-facing features to architecture and finance integrations. I design and build APIs and serverless services in Go and Python on AWS.',
     'Before Stori I was a full stack developer and technical lead building educational platforms. I aspire to create impactful contributions.',
   ],
   email: 'me@ilmarlopez.com',
