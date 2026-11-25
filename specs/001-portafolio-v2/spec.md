@@ -24,7 +24,7 @@
 - **Node.** Nuxt 4.7 declara `engines.node: ^22.22.3 || ^24.15.0 || >=26.0.0` y Vite 8.3.8 pide `^20.19.0 || >=22.12.0`. El Node local es **v20.16.0**, que no cumple. Netlify usa `NODE_VERSION = "22"`.
 - **Assets protegidos** presentes: `public/img/hero/me.jpg` (5.3 MB, 4896×6528), `me_v1.jpg`, `public/files/Ilmar-Lopez-CV.pdf` (antes `cv-en.pdf`; lo renombró Ilmar), `public/favicon.ico`. `public/robots.txt` existe (`Disallow:` vacío, sin línea `Sitemap`).
 - **Repos de «Selected work»:** los 5 existen, son públicos y no están archivados (`umami-cloud-go`, `serverless-transaction-notifications`, `utt-access-control-client`, `utt-access-control-server`, `ilmarlopez.github.io`).
-- **Skills.** Instaladas: `hallmark`, `emil-design-eng`, `review-animations`, `gsap-*`, `netlify-*`. **No instaladas:** `choreograph` y `animation-performance` (el prompt las pide «solo si están instaladas»). La coreografía se decide con `emil-design-eng` y el rendimiento con `gsap-performance` más trazas de Chrome DevTools.
+- **Skills.** Instaladas: `hallmark`, `emil-design-eng`, `review-animations`, `netlify-*` (las `gsap-*` se quitaron el 2026-11-24 porque GSAP no se instala, Q11). **No instaladas:** `choreograph` y `animation-performance` (el prompt las pide «solo si están instaladas»). La coreografía se decide con `emil-design-eng` y el rendimiento con trazas de Chrome DevTools.
 - **Por verificar:** si ya existen sitios de Netlify para v2 o v1, y el estado exacto de los registros DNS.
 
 ---
