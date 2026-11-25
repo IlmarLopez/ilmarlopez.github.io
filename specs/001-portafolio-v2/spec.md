@@ -4,7 +4,7 @@
 |---|---|
 | Estado | **Fase 1 aprobada por Ilmar (2026-11-24)** con las decisiones Q1 a Q4 de la sección 10.5. **Actualizada el mismo día** tras aprobar el prototipo `design/hallmark/f/` (hero «Depth is time», tarjetas con gráfica de tiempo, «Say hi» rediseñado, nueva coreografía y CV renombrado); los cambios se resumen en 10.7. Siguiente: re-aprobación de `plan.md` y `tasks.md`. |
 | Rama | `v2` (trabajo en `feat/*` desde `v2`, PR hacia `v2`) |
-| Fuente de verdad visual | [`design.md`](../../design.md) y [`design/hallmark/f/`](../../design/hallmark/f/) (dirección «Depth Is Time»; `design/hallmark/d/`, «Live System», queda como historial) |
+| Fuente de verdad visual | [`design.md`](../../design.md) y [`design/hallmark/f/`](../../design/hallmark/f/) (dirección «Depth Is Time»; «Live System» y las demás exploraciones se quitaron del árbol el 2026-11-24 y quedan en el historial de git, en `faf6eca`) |
 | Fecha | 2026-11-24 |
 | Idioma del sitio | Inglés. Esta spec está en español. |
 

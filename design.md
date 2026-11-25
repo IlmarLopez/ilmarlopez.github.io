@@ -1,6 +1,6 @@
 # design.md — ilmarlopez.com v2 (locked)
 
-Source of truth: `design/hallmark/f/` (shape "Depth Is Time", genre modern-minimal). Approved by Ilmar on 2026-11-24. It replaces the earlier direction "Live System" (`design/hallmark/d/`), which stays in the repo only as history. Change this file only with explicit approval.
+Source of truth: `design/hallmark/f/` (shape "Depth Is Time", genre modern-minimal). Approved by Ilmar on 2026-11-24. It replaces the earlier direction "Live System" and the other explorations (a–e), which were removed from the tree on 2026-11-24; they stay recoverable from git history at `faf6eca`. Change this file only with explicit approval.
 
 ## Concept
 An engineer's portfolio where depth is time: the newest role stands in front, and scrolling flies the camera back through the roles that built it. Light, restrained, one accent. Not decorative, no serif, no metaphor objects.
