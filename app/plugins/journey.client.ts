@@ -11,8 +11,9 @@ import { mountFlight } from '~/utils/journey/flight'
  */
 export default defineNuxtPlugin((nuxtApp) => {
   const root = document.documentElement
-  // Tells the boot script's timeout that the bundle did start.
-  root.classList.add('app-ready')
+  // Tells the boot script's timeout that the bundle did start. `js` goes back on in case that timeout already
+  // took it off because the bundle was only late.
+  root.classList.add('js', 'app-ready')
 
   // Read now: while the app hydrates the router rewrites the address without its hash for a moment, so the
   // hash is already gone by the time the camera is set up. Only the first mount is a page opened at the hash.

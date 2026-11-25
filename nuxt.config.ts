@@ -31,6 +31,11 @@ export default defineNuxtConfig({
   // main.css starts with the Hallmark stamp, then imports Tailwind, the tokens and the base styles.
   css: ['~/assets/css/main.css'],
 
+  // Images are resized at build time by IPX and shipped as static files. The provider is fixed (and not left to
+  // auto-detection, which would pick Netlify's image CDN on the deploy) so that what verify:* measures locally
+  // is exactly what is published. sharp drops the EXIF block, GPS included, from every variant.
+  image: { provider: 'ipx', format: ['avif', 'webp'], quality: 70 },
+
   // Components are auto-imported by file name, without the folder as a prefix.
   components: [{ path: '~/components', pathPrefix: false }],
 
