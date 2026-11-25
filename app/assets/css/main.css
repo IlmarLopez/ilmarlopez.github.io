@@ -1,0 +1,10 @@
+/* Hallmark · shape: Depth Is Time · genre: modern-minimal · theme: custom · job: hire · idea: "Depth is time: the newest work stands in front, and scrolling flies the camera back through the roles that built it." · vibe: "precise, quiet, dimensional, alive, patient"
+ * paper: oklch(97.5% 0.006 250) · accent: oklch(66% 0.19 33) · display: Rethink Sans · body: Hanken Grotesk · hero: the name, one sentence and two actions on the left, and behind them the next roles receding as framed planes toward a vanishing point, which scroll brings forward one by one · nav: wordmark left, links and theme switch right · footer: graphite field, wordmark, edition note, links, year · imagery: none yet, the owner's photograph arrives with the About design pass · signature: planes of real roles receding in depth, a coral line marking how far back you have flown
+ * axes: light/grotesk-sans/warm · posture: Restrained · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: R, the flight needs a tall scroll runway and a static fallback that shows the same roles as a plain list, and the cards behind the hero fade low so they read as depth first and content second; near Bloom on hue only, graphite ink and planes in depth separate them */
+/* Hallmark · answered F4 · .btn and .btn[aria-busy="true"], plus the two hero anchors · the sending state only repeats the coral fill of the hover state on the same button, and in the hero Say hi is the one filled action while View CV is the outlined btn--quiet variant */
+
+/* Tailwind v4 first, then the tokens, then the base styles inside Tailwind's base layer. */
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./base.css" layer(base);

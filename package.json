@@ -1,27 +1,47 @@
 {
-  "name": "ilmarlopez.com",
-  "version": "1.0.0",
-  "description": "Ilmar Lopez's official website",
-  "private": true,
+  "name": "ilmarlopez-portfolio",
   "type": "module",
+  "private": true,
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck",
+    "verify": "node scripts/verify/all.mjs",
+    "verify:selftest": "node scripts/verify/selftest.mjs",
+    "verify:theme": "node scripts/verify/theme.mjs",
+    "verify:nav": "node scripts/verify/nav.mjs",
+    "verify:hero": "node scripts/verify/hero.mjs",
+    "verify:journey": "node scripts/verify/journey.mjs",
+    "verify:sections": "node scripts/verify/sections.mjs",
+    "verify:anchors": "node scripts/verify/anchors.mjs",
+    "verify:dialog": "node scripts/verify/dialog.mjs",
+    "verify:layout": "node scripts/verify/layout.mjs",
+    "verify:nojs": "node scripts/verify/nojs.mjs",
+    "verify:reduced": "node scripts/verify/reduced.mjs",
+    "verify:a11y": "node scripts/verify/a11y.mjs",
+    "verify:js": "node scripts/verify/js.mjs",
+    "verify:redirects": "node scripts/verify/redirects.mjs",
     "postinstall": "nuxt prepare"
   },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@nuxtjs/tailwindcss": "^6.8.0",
-    "nuxt": "^3.7.4",
-    "nuxt-icon": "^0.5.0",
-    "sass": "^1.69.3",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.5"
-  },
   "dependencies": {
-    "axios": "^1.5.1",
-    "vue-toast-notification": "^3.1.1"
+    "@nuxt/fonts": "^1.2.0",
+    "@nuxt/image": "^2.2.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "nuxt": "^4.4.2",
+    "tailwindcss": "^4.3.5",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4"
+  },
+  "version": "2.0.0-dev",
+  "engines": {
+    "node": "^22.22.3 || ^24.15.0 || >=26.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.1",
+    "playwright": "^1.65.1",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.3.14"
   }
 }

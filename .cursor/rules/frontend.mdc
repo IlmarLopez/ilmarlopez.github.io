@@ -1,0 +1,69 @@
+---
+description: Reglas de frontend para ilmarlopez.com (Nuxt 4 con prerender + Tailwind v4 + CSS motion; diseño Hallmark, motion Emil Kowalski; hosting en Netlify). Aplica a componentes, estilos y animaciones.
+globs: ["app/**/*.{vue,ts,css}", "nuxt.config.ts", "app.config.ts", "netlify.toml", "design.md"]
+alwaysApply: false
+---
+
+# Frontend – ilmarlopez.com
+
+## Flujo (SDD)
+- Nunca implementes sin una spec aprobada en `specs/`. Si falta, escríbela primero y detente.
+- Cada cambio debe referenciar un criterio de aceptación de la spec (ej. `AC-07`).
+
+## Diseño: Hallmark es la fuente de verdad
+- `design.md` (raíz), con `app/assets/css/tokens.css` y `base.css`, es la fuente de verdad visual (el prototipo `f/` salió del árbol; está en git `faf6eca`). No inventes tokens, tipografías, colores ni layouts fuera de ellos. Un cambio de sistema se hace a propósito con Hallmark, no en el código.
+- El Floor de Hallmark no es negociable: contraste AA, `:focus-visible` inmediato, `prefers-reduced-motion` con contenido visible sin JS, ningún dato inventado (métricas, testimonios, logos), layout correcto en teléfono, `overflow-x: clip` (nunca `hidden` ni `100vw`), sin eyebrows ni etiquetas en mayúsculas espaciadas, sin `transition: all`.
+- Antes de cada merge: `/hallmark audit app/` y/o `node .agents/skills/hallmark/scripts/sloplint.mjs app --render --url http://localhost:3000/`. Cero `FAIL`; cada `REFLEX` se corrige o se justifica en el PR.
+- Nunca correr `/hallmark redesign` sobre `release/v*` (v1 archivada).
+- Opcional, como segunda revisión: `npx impeccable detect dist` o contra `http://localhost:3000` (solo el CLI). No instalar la skill ni los hooks de Impeccable (crean su propio `DESIGN.md` y chocan con Hallmark).
+
+## Rendimiento (presupuesto obligatorio)
+- Lighthouse móvil ≥ 95 en Performance, Accessibility, Best Practices y SEO.
+- LCP < 1.5 s, CLS < 0.05, INP < 200 ms. JS inicial de la home ≤ 120 KB gzip (objetivo a validar en la primera build; Nuxt hidrata).
+- `ssr: true` siempre (nunca `false`) y build con `nuxt generate`: cada ruta debe salir como HTML con contenido real.
+- Hidratación mínima: componentes `Lazy*` con `hydrate-on-visible` / `hydrate-on-idle` / `hydrate-on-interaction`, y `hydrate-never` para lo puramente estático (solo en SFC y con la prop en el template). `<NuxtIsland>` / `.server.vue` para bloques estáticos grandes (experimental: justificar).
+- Código solo de cliente en plugins `*.client.ts`, `onMounted` o `<ClientOnly>`; nunca acceder a `window`/`document` durante el SSR.
+- Imágenes con `<NuxtImg>`/`<NuxtPicture>` de `@nuxt/image` (AVIF/WebP, width/height explícitos). La foto del hero lleva `loading="eager"` y `fetchpriority="high"`.
+- Fuentes con `@nuxt/fonts`: máximo 2 familias, variables, servidas desde tu dominio, `font-display: swap`, precarga solo la del hero.
+- Nada de librerías pesadas para cosas que CSS ya hace (scroll-driven animations, `:has()`, container queries, View Transitions).
+
+## Movimiento (Emil Kowalski + Floor de Hallmark)
+- Roles: Hallmark decide layout, tokens y tipografía; las skills de Emil Kowalski deciden easing, duración, coreografía y cuándo no animar; CSS y un script de DOM plano solo implementan (sin GSAP, Q11; sin Lenis, Q5). Si chocan, gana el Floor de Hallmark.
+- Antes de animar algo, pregúntate si debe animarse. Nada de fade-in en cada sección ni hover-lift en cada tarjeta; el movimiento tiene un propósito (orientar, dar feedback o mostrar relación).
+- Easing: `ease-out` para entradas y respuestas a la acción del usuario; nunca `ease-in` en una entrada. Usa los easings y duraciones de los tokens (`tokens.css`); no inventes curvas sueltas.
+- Duraciones cortas: micro-interacciones de 150 a 250 ms, entradas de 400 a 700 ms como máximo. La UI que se usa seguido debe sentirse inmediata.
+- Coreografía: en grupos (hero, listas), un orden claro con stagger corto y lo demás quieto. Usa `/choreograph` para decidirlo.
+- Interrumpible: toda animación se puede cancelar con input del usuario y no bloquea la interacción.
+- Solo `transform`, `opacity`, `filter` y `clip-path`. Nunca `width/height/top/left`. Nunca `transition: all` (Floor de Hallmark). `will-change` solo de forma puntual (`/animation-performance`).
+- `prefers-reduced-motion: reduce`: sin parallax, sin smooth scroll, transiciones solo de opacidad. El contenido se ve sin JS (Floor).
+- No se instalan GSAP, Lenis ni `motion-v` (Q11, Q5): el movimiento es CSS y los scripts de DOM plano de `app/plugins/*.client.ts`. Si una pieza no se puede resolver así, se propone la librería en la spec antes de instalarla.
+- Transiciones de página con `experimental.viewTransition: true` (Nuxt la omite con reduced-motion) y `view-transition-name` en los elementos compartidos.
+- WebGL/shader: opcional, carga diferida, pausa fuera del viewport, fallback estático y apagado con reduced-motion.
+- Antes de cada merge: `/review-animations` sobre los cambios, sin hallazgos pendientes.
+
+## Diseño
+- Usa solo tokens de `app/assets/css/tokens.css` (los de Hallmark mapeados a `@theme` de Tailwind v4, sin `--spacing-<nombre>`). Prohibido color o espaciado “mágico” en línea (`bg-[#hex]` incluido).
+- Tema claro/oscuro con `color-scheme` y `prefers-color-scheme`; toggle persistente sin parpadeo (script inline en `<head>`).
+- Minimalismo según la referencia: unas 80 palabras por pantalla; el hero (titular, una frase, acción principal) visible a 1280×800; máximo un efecto “wow” por sección.
+
+## Accesibilidad
+- HTML semántico, un `<h1>` por página, foco visible (`:focus-visible`), contraste AA, navegable por teclado.
+- `alt` descriptivo en imágenes; iconos decorativos con `aria-hidden="true"`; links externos con texto accesible.
+
+## Versionado del sitio y git
+- Repo existente `IlmarLopez/ilmarlopez.github.io`. Trabajo solo en `v2` o en `feat/*` desde `v2`, con PR hacia `v2`. Nunca commits directos a `main`.
+- `release/v*` y los tags (`v1.0.0`, `v2.0.0`, …) son de solo lectura. Nunca force-push ni reescribir historial publicado.
+- Assets que se conservan: `public/img/hero/me.jpg`, `public/img/hero/me_v1.jpg`, `public/files/Ilmar-Lopez-CV.pdf` (ruta pública `/files/Ilmar-Lopez-CV.pdf`) y `public/favicon.ico`.
+- No reintroducir `.github/workflows/cd.yml` (GitHub Pages). El hosting es Netlify.
+- Toda versión nueva se registra en `app/data/versions.ts` (id, fecha, stack, url, captura).
+
+## Hosting (Netlify)
+- Sitio 100 % estático, sin funciones de Netlify.
+- `netlify.toml` es la fuente de verdad: `command = "npm run generate"`, `publish = "dist"` (en Netlify, Nuxt genera el sitio estático en `dist`, no en `.output/public`), `NODE_VERSION` en `[build.environment]`. No dejar que la autodetección de Netlify cambie el comando a `npm run build`.
+- Redirects y headers en `netlify.toml` o en `public/_redirects` y `public/_headers`. Cachea de forma inmutable los assets con hash.
+- Todo cambio pasa por PR con Deploy Preview revisado antes de mergear a `main` (producción).
+- Cada versión archivada es un sitio de Netlify propio vinculado a `release/vN`, con dominio `vN.ilmarlopez.com`.
+
+## Código
+- TypeScript estricto. Componentes pequeños, `<script setup lang="ts">`, sin lógica de negocio en las páginas (`app/pages/`); datos en `app/data/`.
+- Antes de usar una API de Nuxt o Tailwind, consulta la doc actual (Context7 MCP) en lugar de suponer.
