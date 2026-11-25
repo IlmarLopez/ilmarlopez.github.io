@@ -242,24 +242,28 @@ Alcance de componente bajo el `design.md` bloqueado. Cada tarea es una propuesta
 
 ## M4 · Interacciones (PR `feat/interactions` → `v2`)
 
-- [ ] **T-36 · Acciones delegadas y montaje diferido del diálogo** · 45 min · [A] · RF-10, AC-13
+- [x] **T-36 · Acciones delegadas y montaje diferido del diálogo** · 45 min · [A] · RF-10, AC-13
   `actions.client.ts` (listener con `data-action`), `useHiDialog` y `HiDialog` que se monta al primer pedido, con precarga en `pointerenter`.
   Verifica: el chunk del diálogo no se pide hasta el primer hover o clic; «Say hi» del hero y el de Contact abren el mismo diálogo.
+  Resultado (2026-11-24): `plugins/actions.client.ts` (un solo listener en el documento para `[data-action]`, con `never` en el `switch`), `composables/useHiDialog.ts` y `<LazyHiDialog v-if>` en el layout. El código del diálogo (8,9 KB, 3,8 KB gzip) queda en su propio chunk: no se pide al cargar y llega con el primer `pointerover` o `focusin` (no `pointerenter`: no burbujea y los botones viven en secciones que no se hidratan). Si el chunk no llega, el clic se devuelve al navegador y «Say hi» abre el cliente de correo. JS inicial: 81,4 KB gzip. `verify:dialog` lo comprueba, y se confirmó en negativo (con el diálogo importado de forma estática la comprobación falla).
   Depende de: T-35.
 
-- [ ] **T-37 · `HiDialog`: UI, foco y validación** · 60 min · [A] · RF-10, AC-04
+- [x] **T-37 · `HiDialog`: UI, foco y validación** · 60 min · [A] · RF-10, AC-04
   `<dialog>` nativo con los estados de `design/hallmark/f/` (reposo, enviando, éxito y error), trampa de foco, Esc, retorno de foco y `aria-invalid` con `aria-describedby`. Sin botón Cancelar; el texto de error usa `--color-error-text`.
   Verifica: Playwright con teclado: foco atrapado, Esc cierra, el foco vuelve al disparador; los campos inválidos se anuncian; no hay botón Cancelar.
+  Resultado (2026-11-24): `HiDialog.vue` y `HiField.vue`: `<dialog>` nativo con `showModal()` y los estados de `f/` (0,00 a 0,19 % de píxeles distintos a 1280 y 375 px, reposo, errores, relleno, enviando, enviado y fallo). Validación al salir del campo y al enviar, con `aria-invalid` y `aria-describedby` (textos en `utils/hi/validate.ts`); el foco va al primer campo que falla; Tab y Shift+Tab dan la vuelta sin salir; Esc, Close y el fondo cierran (un arrastre que empieza dentro y acaba en el fondo no cierra); el foco vuelve al botón que abrió el diálogo, sea el del héroe o el de Contact; sin Cancelar. `verify:dialog` incluye axe en claro y oscuro sobre reposo, errores y confirmación: 0 violaciones.
   Depende de: T-36.
 
-- [ ] **T-82 · HiDialog en teléfono: hoja sobre el teclado** · 45 min · [A] · RF-10, AC-04
+- [x] **T-82 · HiDialog en teléfono: hoja sobre el teclado** · 45 min · [A] · RF-10, AC-04
   En ≤ 40 rem el diálogo es una hoja desde el borde inferior que sube con el teclado (`--kb` y `--vvh` de `visualViewport`), con acciones *sticky*; mientras está abierto la página no se desplaza (`html:has(dialog[open])`).
   Verifica: Playwright móvil: con el diálogo abierto la página no se desplaza y las acciones quedan visibles; con `visualViewport` simulado a la mitad de la altura, el botón Enviar sigue visible. La prueba con teclado real va en T-71.
+  Resultado (2026-11-24): en ≤ 40 rem la hoja sale del borde inferior y sube con `--kb` y `--vvh`; la suite sustituye `visualViewport` por uno controlable (360×800, teclado a 480 px): la hoja se apoya sobre el teclado, Enviar queda a la vista y vuelve a bajar. Sin desbordes a 320 px con un nombre y un correo muy largos. Pendiente: el teclado real, en T-71 (iPhone de Ilmar).
   Depende de: T-37.
 
-- [ ] **T-38 · Integración con Web3Forms** · 60 min · [A] · RF-10, AC-07, RV-08
+- [x] **T-38 · Integración con Web3Forms** · 60 min · [A] · RF-10, AC-07, RV-08
   Revisar la documentación vigente (campos `subject` y `botcheck`). `POST` JSON con `runtimeConfig.public.web3formsKey`, honeypot, estados enviando, éxito y error. Sin clave: botón deshabilitado y `mailto:`.
   Verifica: Playwright con la ruta simulada (ningún correo real): cuerpo correcto, éxito, error que conserva los datos, honeypot y caso sin clave.
+  Resultado (2026-11-24): `utils/hi/deliver.ts` hace `POST` JSON a `https://api.web3forms.com/submit` con `access_key`, `subject`, `name`, `email`, `message` (recortados) y `botcheck` (honeypot: casilla fuera de pantalla, `aria-hidden`, `tabindex=-1`); solo un 200 con `success: true` cuenta como enviado. Los fallos (500, 429, 200 sin `success`, 200 sin JSON y sin conexión) conservan lo escrito, se anuncian con `role="alert"` y permiten reintentar; cerrar durante el envío lo cancela sin error. Sin clave: Enviar apagado, nunca se envía y se ofrece el `mailto:`. Las pruebas reescriben la clave del HTML y simulan Web3Forms: no se envía ningún correo real. Nueve roturas deliberadas del producto pusieron en rojo la comprobación esperada. Falta que Ilmar ponga `NUXT_PUBLIC_WEB3FORMS_KEY` en un `.env` local y en Netlify; T-47 debe permitir `connect-src https://api.web3forms.com` en la CSP.
   Depende de: T-37.
 
 - [ ] **T-39 · Menú de CV con varios idiomas** · 30 min · [A] · RF-11, AC-08
@@ -364,6 +368,7 @@ Se decide con `emil-design-eng` y se implementa con CSS y el script de DOM plano
 - [ ] **T-56 · M-12 y M-13 diálogo y paleta** · 60 min · [A] · M-12, M-13, AC-05
   Apertura de «Say hi» desde atrás con `@starting-style` (entrada de 220 ms, salida de 120 ms; `::backdrop` solo con `opacity`) y respaldo instantáneo; línea de progreso coral; éxito con los planos del formulario retrocediendo (40 ms de desfase) y la confirmación avanzando (420 ms), y cierre posterior que retrocede; la paleta sin animación.
   Verifica: Esc a mitad de animación cierra sin esperar; con reduced-motion solo cambia la opacidad; tras el éxito el foco queda en la confirmación; la paleta abre sin animación.
+  Parcial (2026-11-24): M-12 (llegada desde atrás, el formulario que retrocede con 40 ms de desfase, la confirmación que avanza, el progreso coral y el respaldo con reduced-motion) llegó con T-37 y T-38 al portar `f/`. Falta M-13 (la paleta) y comprobar que Esc a mitad de animación cierra sin esperar.
   Depende de: T-50, T-38.
 
 - [ ] **T-57 · M-14 View Transitions** · 45 min · [A] · RF-17, RNF-08, M-14, AC-20
