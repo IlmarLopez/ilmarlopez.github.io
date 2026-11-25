@@ -1,5 +1,5 @@
-// The home after the journey (T-26 to T-32): About with the photo, Work, Tools, Contact and the footer.
-// AC-02 (plain list without JS), AC-14 (the photo), RF-05, RF-07, RF-08, RF-09 and RF-11.
+// The home after the journey (T-26 to T-32): About, Work, Tools, Contact and the footer.
+// AC-02 (plain list without JS), RF-05, RF-07, RF-08, RF-09 and RF-11.
 import fs from 'node:fs'
 import { main, VIEWPORTS } from './lib/browser.mjs'
 import { assertEqual, soft } from './lib/check.mjs'
@@ -83,60 +83,45 @@ await main('sections', async (t, { open, base }) => {
     }
   })
 
-  await t.check('About: the photo is lazy, resized, never the 5 MB original, and does not shift the page', async () => {
-    const site = await open({
-      viewport: VIEWPORTS.desktop,
-      initScripts: [
-        {
-          fn: () => {
-            window.__cls = 0
-            new PerformanceObserver((list) => {
-              for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__cls += entry.value
-            }).observe({ type: 'layout-shift', buffered: true })
-          },
-        },
-      ],
-    })
-    const photos = []
-    site.page.on('response', async (response) => {
-      if (response.url().includes('/hero/me')) photos.push({ url: new URL(response.url()).pathname, bytes: (await response.body().catch(() => Buffer.alloc(0))).length })
-    })
-    try {
-      await site.goto('/')
-      const atLoad = photos.length
-      await site.page.evaluate(() => {
-        window.__cls = 0
-      })
-      const img = site.page.locator('#about img')
-      await img.scrollIntoViewIfNeeded()
-      await img.evaluate((el) => (el.complete && el.naturalWidth ? true : new Promise((resolve) => el.addEventListener('load', () => resolve(true), { once: true }))))
-      await sleep(300)
-      const found = await img.evaluate((el) => ({
-        alt: el.alt,
-        loading: el.loading,
-        width: el.getAttribute('width'),
-        height: el.getAttribute('height'),
-        natural: [el.naturalWidth, el.naturalHeight],
-        shown: [Math.round(el.getBoundingClientRect().width), Math.round(el.getBoundingClientRect().height)],
-        current: new URL(el.currentSrc).pathname,
-        cls: window.__cls,
-      }))
-      const total = photos.reduce((sum, p) => sum + p.bytes, 0)
-      const s = soft()
-      s.equal(atLoad, 0, 'photo requests before About is near the viewport (loading="lazy")')
-      s.ok(photos.length > 0 && photos.every((p) => p.url.startsWith('/_ipx/')), `every photo request is a resized variant: ${photos.map((p) => p.url).join(', ')}`)
-      s.ok(!photos.some((p) => p.url === '/img/hero/me.jpg' || p.url === '/img/hero/me_v1.jpg'), 'the original files are never requested')
-      s.ok(total > 0 && total < 100_000, `photo bytes on the wire: ${total} (limit 100000)`)
-      s.ok(/f_(avif|webp)/.test(found.current), `the browser picked a modern format: ${found.current}`)
-      s.equal([found.loading, found.width, found.height], ['lazy', '360', '480'], 'loading, width and height attributes')
-      s.ok(found.alt.length >= 20, `descriptive alt text: "${found.alt}"`)
-      s.equal(found.natural, [360, 480], 'natural size at 1x')
-      s.equal(found.shown, [360, 480], 'rendered size')
-      s.ok(found.cls < 0.001, `layout shift while the photo arrives: ${found.cls}`)
-      s.equal(site.problems, [], 'console problems')
-      s.done()
-    } finally {
-      await site.close()
+  await t.check('About is as in design/hallmark/f/: the heading on the left, the two paragraphs on the right, no image', async () => {
+    for (const [label, viewport, columns] of [['desktop', VIEWPORTS.desktop, true], ['phone', VIEWPORTS.phone, false]]) {
+      const site = await open({ viewport })
+      try {
+        await site.goto('/')
+        const found = await site.page.evaluate(() => {
+          const box = (el) => {
+            const r = el.getBoundingClientRect()
+            return { left: Math.round(r.left), top: Math.round(r.top + scrollY), bottom: Math.round(r.bottom + scrollY) }
+          }
+          const about = document.getElementById('about')
+          const heading = document.getElementById('about-h')
+          const paragraphs = [...about.querySelectorAll('p')]
+          return {
+            heading: heading.textContent?.trim(),
+            paragraphs: paragraphs.map((p) => p.textContent?.trim().slice(0, 40)),
+            images: about.querySelectorAll('img, picture, svg, video').length,
+            headingBox: box(heading),
+            firstBox: box(paragraphs[0]),
+          }
+        })
+        const s = soft()
+        s.equal(found.heading, 'About.', `${label}: heading`)
+        s.equal(found.paragraphs.length, 2, `${label}: paragraph count`)
+        s.ok(found.paragraphs[0]?.startsWith('I’m a Senior Software Engineer'), `${label}: the first paragraph is the statement ("${found.paragraphs[0]}")`)
+        s.ok(found.paragraphs[1]?.startsWith('Before Stori'), `${label}: the second paragraph follows ("${found.paragraphs[1]}")`)
+        s.equal(found.images, 0, `${label}: the section holds no image`)
+        if (columns) {
+          s.ok(found.firstBox.left > found.headingBox.left + 200, `${label}: the text sits in the right column (heading x ${found.headingBox.left}, text x ${found.firstBox.left})`)
+          s.ok(Math.abs(found.firstBox.top - found.headingBox.top) < 12, `${label}: heading and text start on the same line`)
+        } else {
+          s.equal(found.firstBox.left, found.headingBox.left, `${label}: stacked, same left edge`)
+          s.ok(found.firstBox.top >= found.headingBox.bottom, `${label}: the text is under the heading`)
+        }
+        s.equal(site.problems, [], `${label}: console problems`)
+        s.done()
+      } finally {
+        await site.close()
+      }
     }
   })
 
@@ -282,14 +267,12 @@ await main('sections', async (t, { open, base }) => {
       await site.goto('/')
       const found = await site.page.evaluate(() => ({
         text: document.body.innerText.replace(/\s+/g, ' '),
-        picture: document.querySelectorAll('#about picture source[srcset]').length,
         footer: document.querySelector('footer')?.getClientRects().length > 0,
       }))
       const s = soft()
       for (const text of ['I’m a Senior Software Engineer at Stori', 'Before Stori I was a full stack developer', 'Selected work.', 'Observability and metrics', 'Have something to build?', 'Version 2, 2026']) {
         s.ok(found.text.includes(text), `the text "${text}" is on the page`)
       }
-      s.equal(found.picture, 2, 'the photo ships its AVIF and WebP sources in the HTML')
       s.equal(found.footer, true, 'the footer is shown')
       s.done()
     } finally {

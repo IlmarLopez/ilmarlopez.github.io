@@ -1,7 +1,6 @@
 <script setup lang="ts">
 // The shell every home section shares: a hairline above, a heading in the left column and the content in the
-// right one. `stacked` puts the content under the heading instead (Work needs the full width). The optional
-// `aside` slot sits under the heading in the left column and drops below the content on narrow screens.
+// right one. `stacked` puts the content under the heading instead (Work needs the full width).
 withDefaults(defineProps<{ id: string; headingId: string; title: string; layout?: 'split' | 'stacked' }>(), {
   layout: 'split',
 })
@@ -11,7 +10,6 @@ withDefaults(defineProps<{ id: string; headingId: string; title: string; layout?
   <section :id="id" :aria-labelledby="headingId" class="section">
     <div class="site-container layout" :class="layout">
       <h2 :id="headingId" class="heading">{{ title }}</h2>
-      <div v-if="$slots.aside" class="aside"><slot name="aside" /></div>
       <div class="body"><slot /></div>
     </div>
   </section>
@@ -44,16 +42,6 @@ withDefaults(defineProps<{ id: string; headingId: string; title: string; layout?
   align-content: start;
 }
 
-/* With an aside the heading and the aside share the left column and the content spans both rows. */
-.aside {
-  grid-column: 1;
-}
-
-.split:has(.aside) .body {
-  grid-column: 2;
-  grid-row: 1 / span 2;
-}
-
 .stacked {
   grid-template-columns: minmax(0, 1fr);
 }
@@ -65,15 +53,6 @@ withDefaults(defineProps<{ id: string; headingId: string; title: string; layout?
 @media (max-width: 60rem) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .split:has(.aside) .body {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .aside {
-    order: 3;
   }
 }
 </style>
