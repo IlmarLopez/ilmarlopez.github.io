@@ -19,14 +19,14 @@ Spec: [`spec.md`](./spec.md) (actualizada con `f/`) · Tareas: [`tasks.md`](./ta
   | Q11 GSAP | **No se instala** (decidido por Ilmar el 2026-11-24): el vuelo y la pila de Work van con CSS y un script de DOM plano, y la tarjeta «This portfolio» deja de decir «GSAP motion» (T-04, T-55, T-59). |
   | Q12 Título del PDF | Los metadatos del PDF no tienen título; lo re-exporta Ilmar con «Ilmar Lopez, Senior Software Engineer, CV». No bloquea nada. |
 
-- **Tamaño.** 84 tareas en 9 hitos, **≈ 65 h de trabajo del agente** (suma de las estimaciones de `tasks.md`; no incluye esperas de aprobación de Ilmar). 72 tareas son del agente, 2 de Ilmar y 10 de los dos. T-79 a T-83 se añadieron tras aprobar `f/`, y T-84 tras probar Ilmar la home.
+- **Tamaño.** 85 tareas en 9 hitos, **≈ 66 h de trabajo del agente** (suma de las estimaciones de `tasks.md`; no incluye esperas de aprobación de Ilmar). 73 tareas son del agente, 2 de Ilmar y 10 de los dos. T-79 a T-83 se añadieron tras aprobar `f/`, y T-84 y T-85 tras probar Ilmar la home.
 
 | Hito | Contenido | Tareas | Estimación |
 |---|---|---|---|
 | M0 | Preparación y cimientos | T-01 a T-14 | 9.8 h |
 | M1 | v1 en Netlify | T-15 a T-17 | 2.3 h |
 | M2 | Pasada de Hallmark | T-18 a T-21 | 3.5 h |
-| M3 | Secciones estáticas | T-22 a T-35, T-79, T-81 y T-84 | 13.6 h |
+| M3 | Secciones estáticas | T-22 a T-35, T-79, T-81, T-84 y T-85 | 14.6 h |
 | M4 | Interacciones | T-36 a T-42 y T-82 | 6.0 h |
 | M5 | Páginas, SEO y operaciones | T-43 a T-49 | 5.0 h |
 | M6 | Motion | T-50 a T-62 y T-80 | 11.3 h |
@@ -42,7 +42,7 @@ Todas las ramas salen de `v2` y los PRs apuntan a `v2`. **Nunca se toca `main`, 
 | M0 | `feat/foundation` | T-01 a T-14 | Deploy Preview verde; línea base de JS registrada |
 | M1 | *(sin rama: operaciones en Netlify)* | T-15 a T-17 | `v1.ilmarlopez.com` sirve v1 y `dig` de MX y TXT no cambia |
 | M2 | `feat/design-extension` | T-18 a T-21 | Aprobación de Ilmar de cada pieza y de `design.md` |
-| M3 | `feat/sections` | T-22 a T-35, T-79, T-81 y T-84 | JS inicial ≤ 120 KB gzip (T-33); `hallmark audit` sin FAIL |
+| M3 | `feat/sections` | T-22 a T-35, T-79, T-81, T-84 y T-85 | JS inicial ≤ 120 KB gzip (T-33); `hallmark audit` sin FAIL |
 | M4 | `feat/interactions` | T-36 a T-42 y T-82 | Suite de teclado en verde |
 | M5 | `feat/pages-seo` | T-43 a T-49 | Las 3 rutas con contenido real |
 | M6 | `feat/motion` | T-50 a T-62 y T-80 | `/review-animations` sin hallazgos pendientes |
@@ -152,7 +152,7 @@ Cada requisito, fila de motion y criterio de aceptación de la spec tiene al men
 
 ```text
 RF-01  T-33
-RF-02  T-20 T-22 T-23 T-84
+RF-02  T-20 T-22 T-23 T-84 T-85
 RF-03  T-24
 RF-04  T-25 T-52 T-71
 RF-05  T-10 T-18 T-26
@@ -170,7 +170,7 @@ RF-16  T-19 T-44
 RF-17  T-57
 RF-18  T-45 T-46
 RF-19  T-70
-RF-20  T-58 T-59 T-84
+RF-20  T-58 T-59 T-84 T-85
 ```
 
 **Requisitos no funcionales**
@@ -222,9 +222,10 @@ M-13  T-56
 M-14  T-57
 M-15  T-58
 M-16  T-58 T-84
-M-17  T-54 T-84
+M-17  T-54 T-84 T-85
 M-18  T-80
 M-19  T-80
+M-20  T-85
 ```
 
 **Criterios de aceptación**
@@ -250,7 +251,7 @@ AC-17  T-25 T-34 T-35 T-66 T-67 T-72
 AC-18  T-50 T-54 T-61 T-62
 AC-19  T-69
 AC-20  T-57 T-71
-AC-21  T-58 T-59 T-84
+AC-21  T-58 T-59 T-84 T-85
 AC-22  T-15 T-16 T-74 T-77
 AC-23  T-03 T-14 T-77
 AC-24  T-10 T-31 T-70

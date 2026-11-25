@@ -40,6 +40,8 @@ const FLIGHT_OPENS_AT = 0.12
 const SETTLE_MS = 250
 /** Once settled, a page that moves further than this was moved by the visitor (smaller shifts are layout drift). */
 const MOVED_PX = 12
+/** How long the arrival mark stays on a heading (M-20): it draws, holds and fades. The stylesheet's animation lasts as long. */
+const ARRIVAL_MS = 1900
 const SCROLL_KEYS: ReadonlySet<string> = new Set(['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '])
 
 export interface NavSpy {
@@ -155,6 +157,29 @@ export function mountNavSpy(nav: HTMLElement, startHash: string): NavSpy {
     flightWatcher.observe(journey, { attributes: true, attributeFilter: ['style'] })
   }
 
+  // M-20. The nav says where you are; this says that you have arrived. Once the glide to a section has stopped,
+  // its heading gets a coral underline (drawn by PageSection's stylesheet from `data-arrived`) that fades by itself.
+  // It plays also when the section was already on screen, so a click that moves nothing still answers.
+  let marked: HTMLElement | null = null
+  let markTimer = 0
+  function clearMark() {
+    window.clearTimeout(markTimer)
+    marked?.removeAttribute('data-arrived')
+    marked = null
+  }
+  function arrive(key: NavKey) {
+    // Experience has no heading to mark: the camera flying is its answer.
+    if (key === 'experience') return
+    const heading = document.getElementById(key)?.querySelector<HTMLElement>('h2')
+    if (!heading) return
+    clearMark()
+    // Taking the attribute off and putting it back only restarts the animation if the page notices the gap.
+    void heading.offsetWidth
+    heading.setAttribute('data-arrived', '')
+    marked = heading
+    markTimer = window.setTimeout(clearMark, ARRIVAL_MS)
+  }
+
   // After a click the page scrolls by itself; scrolling that happens once it has stopped is the visitor's.
   let settling = false
   let settleTimer = 0
@@ -165,6 +190,8 @@ export function mountNavSpy(nav: HTMLElement, startHash: string): NavSpy {
     settleTimer = window.setTimeout(() => {
       settling = false
       settledAt = scrollY
+      // The intent is still there only if the visitor did not take over the scroll on the way.
+      if (intent !== null) arrive(intent)
     }, SETTLE_MS)
   }
 
@@ -225,6 +252,7 @@ export function mountNavSpy(nav: HTMLElement, startHash: string): NavSpy {
       removeEventListener('keydown', onKeydown)
       nav.removeEventListener('click', onClick)
       window.clearTimeout(settleTimer)
+      clearMark()
       cancelAnimationFrame(queued)
       light(null)
     },

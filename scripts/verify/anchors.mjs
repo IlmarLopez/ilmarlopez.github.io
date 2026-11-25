@@ -55,6 +55,32 @@ async function scrollSettles(page) {
 
 const top = (page, id) => page.evaluate((target) => Math.round(document.getElementById(target).getBoundingClientRect().top), id)
 
+/** How long the arrival mark lasts (ARRIVAL_MS in utils/nav/spy.ts), and a little over, for "it has gone". */
+const ARRIVAL_GONE_MS = 2300
+
+/** The sections whose heading carries the arrival mark now. At most one is expected. */
+const arrivedIn = (page) => page.evaluate(() => [...document.querySelectorAll('[data-arrived]')].map((heading) => heading.closest('section')?.id ?? heading.id))
+
+/** The arrival line as the browser paints it, and the box of the heading it hangs from. */
+const arrivalLine = (page, section) =>
+  page.evaluate((id) => {
+    const heading = document.querySelector(`#${id} h2`)
+    const line = getComputedStyle(heading, '::after')
+    const box = heading.getBoundingClientRect()
+    return {
+      width: Math.round(Number.parseFloat(line.width)),
+      height: Number.parseFloat(line.height),
+      background: line.backgroundColor,
+      accent: getComputedStyle(document.querySelector('.nav-ind')).backgroundColor,
+      transform: line.transform,
+      opacity: line.opacity,
+      animation: line.animationName,
+      transition: line.transitionProperty,
+      box: { width: Math.round(box.width), height: Math.round(box.height), top: Math.round(box.top + scrollY) },
+      pageHeight: document.documentElement.scrollHeight,
+    }
+  }, section)
+
 /** Puts a section at the anchor offset without gliding, as a visitor who scrolled there would. */
 const scrollToSection = (page, id) =>
   page.evaluate(
@@ -266,6 +292,183 @@ await main('anchors', async (t, { open }) => {
       s.equal(found.marked, 0, 'links marked')
       s.equal(found.lineOn, false, 'line shown')
       s.ok(Math.abs(found.toolsTop - ANCHOR_OFFSET) <= 2, `the anchor still lands: Tools is ${found.toolsTop}px from the top`)
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('when the glide stops, the heading of the section gets a coral line as wide as the word, which takes no room and goes by itself', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    try {
+      await site.goto('/')
+      const s = soft()
+      for (const [label, id] of [['Work', 'work'], ['Tools', 'tools'], ['Contact', 'contact']]) {
+        const before = await arrivalLine(site.page, id)
+        await site.page.click(LINK(label))
+        await scrollSettles(site.page)
+        s.equal(await eventually(() => arrivedIn(site.page), [id], { timeout: 3000 }), [id], `${label}: the heading that has the mark`)
+        // Past the stroke (about 400 ms), the line is whole.
+        await sleep(600)
+        const shown = await arrivalLine(site.page, id)
+        s.equal([shown.transform, shown.opacity], ['matrix(1, 0, 0, 1, 0, 0)', '1'], `${label}: the line is whole and opaque while it holds [transform, opacity]`)
+        s.equal(shown.width, shown.box.width, `${label}: the line is as wide as the heading`)
+        s.ok(shown.height >= 3 && shown.height <= 6, `${label}: the line is ${shown.height}px thick`)
+        s.equal(shown.background, shown.accent, `${label}: it is the coral of the nav line`)
+        s.equal([shown.box.width, shown.box.height, shown.pageHeight], [before.box.width, before.box.height, before.pageHeight], `${label}: heading and page size do not change [width, height, page height]`)
+        await sleep(ARRIVAL_GONE_MS)
+        s.equal(await arrivedIn(site.page), [], `${label}: nothing is marked once it has faded`)
+      }
+      s.equal(site.problems, [], 'console problems')
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('pressing the link of the section already on screen plays it again, though the page does not move', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    try {
+      await site.goto('/')
+      await site.page.click(LINK('Tools'))
+      await scrollSettles(site.page)
+      await eventually(() => arrivedIn(site.page), ['tools'], { timeout: 3000 })
+      await sleep(ARRIVAL_GONE_MS)
+      assertEqual(await arrivedIn(site.page), [], 'it had gone before pressing again')
+      const y = await site.page.evaluate(() => Math.round(scrollY))
+      await site.page.click(LINK('Tools'))
+      const again = await eventually(() => arrivedIn(site.page), ['tools'], { timeout: 3000 })
+      const s = soft()
+      s.equal(again, ['tools'], 'marked again')
+      s.ok(Math.abs((await site.page.evaluate(() => Math.round(scrollY))) - y) <= 2, 'the page did not move')
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('pressing the same link while the line is still playing starts it over from the beginning', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    // How far along the line's animation is, in ms (null when it is not running).
+    const playedMs = () =>
+      site.page.evaluate(() => {
+        const a = document
+          .getAnimations()
+          .find((x) => x.effect && x.effect.pseudoElement === '::after' && x.effect.target?.closest('#tools'))
+        return a ? Number(a.currentTime) : null
+      })
+    try {
+      await site.goto('/')
+      await site.page.click(LINK('Tools'))
+      await scrollSettles(site.page)
+      await eventually(() => arrivedIn(site.page), ['tools'], { timeout: 3000 })
+      await sleep(900)
+      const before = await playedMs()
+      const s = soft()
+      s.ok(before !== null && before >= 800, `the first run is well along (${before} ms)`)
+      await site.page.click(LINK('Tools'))
+      // The mark waits for the settle (250 ms) and is then set again: a restart puts the animation back near 0,
+      // while an attribute set without a reflow in between leaves it running where it was, until it ends.
+      const started = await eventually(async () => {
+        const now = await playedMs()
+        return now !== null && now < before - 300
+      }, true, { timeout: 3000, step: 40 })
+      s.equal(started, true, `the animation started over (it was at ${Math.round(before)} ms)`)
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('moving to another link while it plays takes the mark to the new heading, and a wheel turn on the way means no mark at all', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    try {
+      await site.goto('/')
+      const s = soft()
+      await site.page.click(LINK('Work'))
+      await scrollSettles(site.page)
+      await eventually(() => arrivedIn(site.page), ['work'], { timeout: 3000 })
+      await site.page.click(LINK('Tools'))
+      await scrollSettles(site.page)
+      s.equal(await eventually(() => arrivedIn(site.page), ['tools'], { timeout: 3000 }), ['tools'], 'after Work and then Tools, only Tools is marked')
+      await sleep(ARRIVAL_GONE_MS)
+      // The visitor takes over: a long glide, interrupted by the wheel before it lands.
+      await site.page.click(LINK('Experience'))
+      await scrollSettles(site.page)
+      await sleep(ARRIVAL_GONE_MS)
+      await site.page.click(LINK('Contact'))
+      await sleep(150)
+      await site.page.mouse.wheel(0, -400)
+      await scrollSettles(site.page)
+      await sleep(ARRIVAL_GONE_MS)
+      s.equal(await arrivedIn(site.page), [], 'a wheel turn during the glide: nothing is marked')
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('with reduced motion the line is simply there while it lasts, with no animation, and then it is gone', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop, reducedMotion: 'reduce' })
+    try {
+      await site.goto('/')
+      await site.page.click(LINK('Work'))
+      await eventually(() => arrivedIn(site.page), ['work'], { timeout: 3000 })
+      const shown = await arrivalLine(site.page, 'work')
+      const s = soft()
+      // `transform: none` is the whole line (not scaleX(0)); the identity matrix only shows up while an animation interpolates.
+      s.equal([shown.animation, shown.transform, shown.opacity], ['none', 'none', '1'], 'while it lasts [animation, transform, opacity]')
+      s.equal(shown.width, shown.box.width, 'as wide as the heading')
+      // base.css gives every element a 0.01 ms transition on `all` under reduced motion; on this line it would land the state a frame late.
+      s.equal(shown.transition, 'none', 'no transition on the line, so it is there from the first frame')
+      await sleep(ARRIVAL_GONE_MS)
+      s.equal(await arrivedIn(site.page), [], 'gone after the same 1.9 s')
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('a page opened at a hash plays it too', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    try {
+      await site.goto('/#work')
+      assertEqual(await eventually(() => arrivedIn(site.page), ['work'], { timeout: 5000 }), ['work'], 'the heading of Work, after the page opened there')
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('Experience, which has the camera for an answer, gets no mark and no error', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop })
+    try {
+      await site.goto('/')
+      await site.page.click(LINK('Work'))
+      await scrollSettles(site.page)
+      await sleep(ARRIVAL_GONE_MS)
+      await site.page.click(LINK('Experience'))
+      await scrollSettles(site.page)
+      await sleep(600)
+      const s = soft()
+      s.equal(await arrivedIn(site.page), [], 'marked headings')
+      s.equal(await markedBecomes(site.page, ['Experience']), ['Experience'], 'the nav still says Experience')
+      s.equal(site.problems, [], 'console problems')
+      s.done()
+    } finally {
+      await site.close()
+    }
+  })
+
+  await t.check('without JS the heading has no line: the page is as before', async () => {
+    const site = await open({ viewport: VIEWPORTS.desktop, javaScriptEnabled: false })
+    try {
+      await site.goto('/')
+      await site.page.click(LINK('Tools'))
+      await sleep(1800)
+      const shown = await arrivalLine(site.page, 'tools')
+      const s = soft()
+      s.equal(await arrivedIn(site.page), [], 'marked headings')
+      s.equal(shown.transform, 'matrix(0, 0, 0, 1, 0, 0)', 'the line has no width (scaleX(0))')
       s.done()
     } finally {
       await site.close()
