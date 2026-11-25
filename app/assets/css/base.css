@@ -27,6 +27,11 @@ button, input, select, textarea { font: inherit; }
 /* M-16: anchor links glide. The rule at the bottom of this file turns it off for reduced motion. */
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
+/* The "Say hi" dialog is modal: the page behind it does not scroll. The gutter is always reserved, so nothing
+   shifts sideways when the scrollbar goes (the same two rules as design/hallmark/f/). */
+html { scrollbar-gutter: stable; }
+html:has(dialog[open]) { overflow: hidden; }
+
 /* Theme change (M-07): the page crossfades. useTheme skips the transition under reduced motion. */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--dur-short); animation-timing-function: var(--ease-out); }
 
