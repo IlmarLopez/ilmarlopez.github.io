@@ -1,6 +1,6 @@
 ---
-description: Reglas de frontend para ilmarlopez.com (Nuxt 4 con prerender + Tailwind v4 + GSAP/Lenis; diseño Hallmark, motion Emil Kowalski; hosting en Netlify). Aplica a componentes, estilos y animaciones.
-globs: ["app/**/*.{vue,ts,css}", "nuxt.config.ts", "app.config.ts", "netlify.toml", "design.md", "design/**"]
+description: Reglas de frontend para ilmarlopez.com (Nuxt 4 con prerender + Tailwind v4 + CSS motion; diseño Hallmark, motion Emil Kowalski; hosting en Netlify). Aplica a componentes, estilos y animaciones.
+globs: ["app/**/*.{vue,ts,css}", "nuxt.config.ts", "app.config.ts", "netlify.toml", "design.md"]
 alwaysApply: false
 ---
 
@@ -11,7 +11,7 @@ alwaysApply: false
 - Cada cambio debe referenciar un criterio de aceptación de la spec (ej. `AC-07`).
 
 ## Diseño: Hallmark es la fuente de verdad
-- `design.md` (raíz) y la referencia en `design/hallmark/` son la fuente de verdad visual. No inventes tokens, tipografías, colores ni layouts fuera de ellos. Un cambio de sistema se hace a propósito con Hallmark, no en el código.
+- `design.md` (raíz), con `app/assets/css/tokens.css` y `base.css`, es la fuente de verdad visual (el prototipo `f/` salió del árbol; está en git `faf6eca`). No inventes tokens, tipografías, colores ni layouts fuera de ellos. Un cambio de sistema se hace a propósito con Hallmark, no en el código.
 - El Floor de Hallmark no es negociable: contraste AA, `:focus-visible` inmediato, `prefers-reduced-motion` con contenido visible sin JS, ningún dato inventado (métricas, testimonios, logos), layout correcto en teléfono, `overflow-x: clip` (nunca `hidden` ni `100vw`), sin eyebrows ni etiquetas en mayúsculas espaciadas, sin `transition: all`.
 - Antes de cada merge: `/hallmark audit app/` y/o `node .agents/skills/hallmark/scripts/sloplint.mjs app --render --url http://localhost:3000/`. Cero `FAIL`; cada `REFLEX` se corrige o se justifica en el PR.
 - Nunca correr `/hallmark redesign` sobre `release/v*` (v1 archivada).
@@ -28,17 +28,15 @@ alwaysApply: false
 - Nada de librerías pesadas para cosas que CSS ya hace (scroll-driven animations, `:has()`, container queries, View Transitions).
 
 ## Movimiento (Emil Kowalski + Floor de Hallmark)
-- Roles: Hallmark decide layout, tokens y tipografía; las skills de Emil Kowalski deciden easing, duración, coreografía y cuándo no animar; GSAP/Lenis/CSS solo implementan. Si chocan, gana el Floor de Hallmark.
+- Roles: Hallmark decide layout, tokens y tipografía; las skills de Emil Kowalski deciden easing, duración, coreografía y cuándo no animar; CSS y un script de DOM plano solo implementan (sin GSAP, Q11; sin Lenis, Q5). Si chocan, gana el Floor de Hallmark.
 - Antes de animar algo, pregúntate si debe animarse. Nada de fade-in en cada sección ni hover-lift en cada tarjeta; el movimiento tiene un propósito (orientar, dar feedback o mostrar relación).
 - Easing: `ease-out` para entradas y respuestas a la acción del usuario; nunca `ease-in` en una entrada. Usa los easings y duraciones de los tokens (`tokens.css`); no inventes curvas sueltas.
 - Duraciones cortas: micro-interacciones de 150 a 250 ms, entradas de 400 a 700 ms como máximo. La UI que se usa seguido debe sentirse inmediata.
 - Coreografía: en grupos (hero, listas), un orden claro con stagger corto y lo demás quieto. Usa `/choreograph` para decidirlo.
 - Interrumpible: toda animación se puede cancelar con input del usuario y no bloquea la interacción.
 - Solo `transform`, `opacity`, `filter` y `clip-path`. Nunca `width/height/top/left`. Nunca `transition: all` (Floor de Hallmark). `will-change` solo de forma puntual (`/animation-performance`).
-- `prefers-reduced-motion: reduce`: sin parallax, sin smooth scroll (Lenis desactivado), transiciones solo de opacidad. El contenido se ve sin JS (Floor).
-- GSAP: registra plugins una vez en `app/plugins/gsap.client.ts`. En cada componente, crea las animaciones en `onMounted` dentro de `gsap.context(() => {...}, rootRef.value)` y llama `ctx.revert()` en `onUnmounted`. Reduced-motion y breakpoints con `gsap.matchMedia()`.
-- Lenis en un plugin `.client.ts`; no se inicia con reduced-motion y se destruye al desmontar.
-- `motion-v` solo para micro-interacciones puntuales; nunca en el mismo elemento que GSAP.
+- `prefers-reduced-motion: reduce`: sin parallax, sin smooth scroll, transiciones solo de opacidad. El contenido se ve sin JS (Floor).
+- No se instalan GSAP, Lenis ni `motion-v` (Q11, Q5): el movimiento es CSS y los scripts de DOM plano de `app/plugins/*.client.ts`. Si una pieza no se puede resolver así, se propone la librería en la spec antes de instalarla.
 - Transiciones de página con `experimental.viewTransition: true` (Nuxt la omite con reduced-motion) y `view-transition-name` en los elementos compartidos.
 - WebGL/shader: opcional, carga diferida, pausa fuera del viewport, fallback estático y apagado con reduced-motion.
 - Antes de cada merge: `/review-animations` sobre los cambios, sin hallazgos pendientes.
@@ -55,7 +53,7 @@ alwaysApply: false
 ## Versionado del sitio y git
 - Repo existente `IlmarLopez/ilmarlopez.github.io`. Trabajo solo en `v2` o en `feat/*` desde `v2`, con PR hacia `v2`. Nunca commits directos a `main`.
 - `release/v*` y los tags (`v1.0.0`, `v2.0.0`, …) son de solo lectura. Nunca force-push ni reescribir historial publicado.
-- Assets que se conservan: `public/img/hero/me.jpg`, `public/img/hero/me_v1.jpg`, `public/files/cv-en.pdf` (ruta pública `/files/cv-en.pdf`) y `public/favicon.ico`.
+- Assets que se conservan: `public/img/hero/me.jpg`, `public/img/hero/me_v1.jpg`, `public/files/Ilmar-Lopez-CV.pdf` (ruta pública `/files/Ilmar-Lopez-CV.pdf`) y `public/favicon.ico`.
 - No reintroducir `.github/workflows/cd.yml` (GitHub Pages). El hosting es Netlify.
 - Toda versión nueva se registra en `app/data/versions.ts` (id, fecha, stack, url, captura).
 
@@ -68,4 +66,4 @@ alwaysApply: false
 
 ## Código
 - TypeScript estricto. Componentes pequeños, `<script setup lang="ts">`, sin lógica de negocio en las páginas (`app/pages/`); datos en `app/data/`.
-- Antes de usar una API de Nuxt/GSAP/Motion/Tailwind, consulta la doc actual (Context7 MCP) en lugar de suponer.
+- Antes de usar una API de Nuxt o Tailwind, consulta la doc actual (Context7 MCP) en lugar de suponer.

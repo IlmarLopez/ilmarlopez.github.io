@@ -4,7 +4,7 @@
 |---|---|
 | Estado | **Fase 1 aprobada por Ilmar (2026-11-24)** con las decisiones Q1 a Q4 de la sección 10.5. **Actualizada el mismo día** tras aprobar el prototipo `design/hallmark/f/` (hero «Depth is time», tarjetas con gráfica de tiempo, «Say hi» rediseñado, nueva coreografía y CV renombrado); los cambios se resumen en 10.7. Siguiente: re-aprobación de `plan.md` y `tasks.md`. |
 | Rama | `v2` (trabajo en `feat/*` desde `v2`, PR hacia `v2`) |
-| Fuente de verdad visual | [`design.md`](../../design.md) y [`design/hallmark/f/`](../../design/hallmark/f/) (dirección «Depth Is Time»; `design/hallmark/d/`, «Live System», queda como historial) |
+| Fuente de verdad visual | [`design.md`](../../design.md), con `app/assets/css/tokens.css` y `base.css` (dirección «Depth Is Time»). La carpeta `design/` (prototipo `f/` y las demás exploraciones, «Live System» incluida) se quitó del árbol el 2026-11-24 y queda en el historial de git, en `faf6eca` |
 | Fecha | 2026-11-24 |
 | Idioma del sitio | Inglés. Esta spec está en español. |
 
@@ -24,7 +24,7 @@
 - **Node.** Nuxt 4.7 declara `engines.node: ^22.22.3 || ^24.15.0 || >=26.0.0` y Vite 8.3.8 pide `^20.19.0 || >=22.12.0`. El Node local es **v20.16.0**, que no cumple. Netlify usa `NODE_VERSION = "22"`.
 - **Assets protegidos** presentes: `public/img/hero/me.jpg` (5.3 MB, 4896×6528), `me_v1.jpg`, `public/files/Ilmar-Lopez-CV.pdf` (antes `cv-en.pdf`; lo renombró Ilmar), `public/favicon.ico`. `public/robots.txt` existe (`Disallow:` vacío, sin línea `Sitemap`).
 - **Repos de «Selected work»:** los 5 existen, son públicos y no están archivados (`umami-cloud-go`, `serverless-transaction-notifications`, `utt-access-control-client`, `utt-access-control-server`, `ilmarlopez.github.io`).
-- **Skills.** Instaladas: `hallmark`, `emil-design-eng`, `review-animations`, `gsap-*`, `netlify-*`. **No instaladas:** `choreograph` y `animation-performance` (el prompt las pide «solo si están instaladas»). La coreografía se decide con `emil-design-eng` y el rendimiento con `gsap-performance` más trazas de Chrome DevTools.
+- **Skills.** Instaladas: `hallmark`, `emil-design-eng`, `review-animations`, `netlify-*` (las `gsap-*` se quitaron el 2026-11-24 porque GSAP no se instala, Q11). **No instaladas:** `choreograph` y `animation-performance` (el prompt las pide «solo si están instaladas»). La coreografía se decide con `emil-design-eng` y el rendimiento con trazas de Chrome DevTools.
 - **Por verificar:** si ya existen sitios de Netlify para v2 o v1, y el estado exacto de los registros DNS.
 
 ---

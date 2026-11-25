@@ -1,6 +1,6 @@
 # design.md — ilmarlopez.com v2 (locked)
 
-Source of truth: `design/hallmark/f/` (shape "Depth Is Time", genre modern-minimal). Approved by Ilmar on 2026-11-24. It replaces the earlier direction "Live System" (`design/hallmark/d/`), which stays in the repo only as history. Change this file only with explicit approval.
+Source of truth: this file, implemented in `app/assets/css/tokens.css` and `base.css` (shape "Depth Is Time", genre modern-minimal). Approved by Ilmar on 2026-11-24 from the prototype `design/hallmark/f/`. The `design/` folder (that prototype and the earlier explorations a–e, "Live System" included) was removed from the tree on 2026-11-24 to keep v2 clean; it stays in git history at `faf6eca`. To compare against the prototype, restore it temporarily with `git restore --source=faf6eca -- design/hallmark/f` and do not commit it. Change this file only with explicit approval.
 
 ## Concept
 An engineer's portfolio where depth is time: the newest role stands in front, and scrolling flies the camera back through the roles that built it. Light, restrained, one accent. Not decorative, no serif, no metaphor objects.
@@ -68,5 +68,5 @@ Hero and Experience (the flight) · About · Selected work (4 public repos in th
 
 ## Guardrails
 - Run `node .agents/skills/hallmark/scripts/sloplint.mjs <files> --genre modern-minimal`; ship clean (0 FAIL, 0 REFLEX, 0 WARN; the one ANSWERED finding F4 keeps its stamp).
-- One scroll pattern per page (the flight). The page uses more motion primitives than Hallmark's recommended three; Ilmar accepted this when approving `design/hallmark/f/`.
+- One scroll pattern per page (the flight). The page uses more motion primitives than Hallmark's recommended three; Ilmar accepted this when approving the `f/` prototype (git `faf6eca`).
 - Tokens for all colours and fonts. Lighthouse ≥ 95 and JS budget per spec.

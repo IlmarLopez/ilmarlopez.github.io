@@ -139,7 +139,7 @@ Reglas:
 
 - **Las estimaciones son de ≤ 1 h por tarea.** Si una se pasa, se divide antes de seguir, no se estira.
 - **Las pasadas de Hallmark (T-18 a T-20)** cuentan solo la primera propuesta. Si hay iteraciones, el tiempo extra es de esa tarea y no mueve el resto del plan.
-- **Herramientas.** Están instaladas `hallmark`, `emil-design-eng`, `review-animations`, `gsap-*` y `netlify-*`. **No están** `choreograph` ni `animation-performance`: la coreografía se decide con `emil-design-eng` y el rendimiento se revisa con `gsap-performance` más trazas de Chrome.
+- **Herramientas.** Están instaladas `hallmark`, `emil-design-eng`, `review-animations` y `netlify-*` (las `gsap-*` se quitaron el 2026-11-24: GSAP no se instala, Q11). **No están** `choreograph` ni `animation-performance`: la coreografía se decide con `emil-design-eng` y el rendimiento se revisa con trazas de Chrome.
 - **Netlify y DNS.** No he verificado si ya existen los sitios de Netlify ni el estado exacto de los registros DNS. T-13, T-15 y T-16 empiezan por lectura (MCP de Netlify y `dig`) antes de cambiar nada.
 - **Dependencias.** Las versiones se fijan en el lockfile en T-04. `typescript` se ata a `~5.9.3`: el «latest» de npm (7.0.2) ya no trae `lib/typescript.js`, que `vue-tsc` necesita (comprobado en T-04).
 - **Cambios de spec.** Cualquier ajuste a la spec que surja durante la implementación se propone a Ilmar y no se aplica por cuenta propia.
