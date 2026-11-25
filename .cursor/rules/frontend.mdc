@@ -1,6 +1,6 @@
 ---
 description: Reglas de frontend para ilmarlopez.com (Nuxt 4 con prerender + Tailwind v4 + CSS motion; diseño Hallmark, motion Emil Kowalski; hosting en Netlify). Aplica a componentes, estilos y animaciones.
-globs: ["app/**/*.{vue,ts,css}", "nuxt.config.ts", "app.config.ts", "netlify.toml", "design.md", "design/**"]
+globs: ["app/**/*.{vue,ts,css}", "nuxt.config.ts", "app.config.ts", "netlify.toml", "design.md"]
 alwaysApply: false
 ---
 
@@ -11,7 +11,7 @@ alwaysApply: false
 - Cada cambio debe referenciar un criterio de aceptación de la spec (ej. `AC-07`).
 
 ## Diseño: Hallmark es la fuente de verdad
-- `design.md` (raíz) y la referencia en `design/hallmark/` son la fuente de verdad visual. No inventes tokens, tipografías, colores ni layouts fuera de ellos. Un cambio de sistema se hace a propósito con Hallmark, no en el código.
+- `design.md` (raíz), con `app/assets/css/tokens.css` y `base.css`, es la fuente de verdad visual (el prototipo `f/` salió del árbol; está en git `faf6eca`). No inventes tokens, tipografías, colores ni layouts fuera de ellos. Un cambio de sistema se hace a propósito con Hallmark, no en el código.
 - El Floor de Hallmark no es negociable: contraste AA, `:focus-visible` inmediato, `prefers-reduced-motion` con contenido visible sin JS, ningún dato inventado (métricas, testimonios, logos), layout correcto en teléfono, `overflow-x: clip` (nunca `hidden` ni `100vw`), sin eyebrows ni etiquetas en mayúsculas espaciadas, sin `transition: all`.
 - Antes de cada merge: `/hallmark audit app/` y/o `node .agents/skills/hallmark/scripts/sloplint.mjs app --render --url http://localhost:3000/`. Cero `FAIL`; cada `REFLEX` se corrige o se justifica en el PR.
 - Nunca correr `/hallmark redesign` sobre `release/v*` (v1 archivada).

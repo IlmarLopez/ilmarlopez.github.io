@@ -1,5 +1,5 @@
 /*
-  Design tokens for ilmarlopez.com v2. Source of truth: design/hallmark/f/tokens.css (spec 4.1 to 4.5).
+  Design tokens for ilmarlopez.com v2. Source of truth: design.md (spec 4.1 to 4.5); ported from the f/ prototype (git faf6eca).
 
   Roles that Tailwind turns into utilities (color, font, text, radius, ease, breakpoint) live in
   `@theme static`: `static` keeps the variables in the output because plain CSS uses them too.
