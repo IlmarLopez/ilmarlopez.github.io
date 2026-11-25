@@ -1,5 +1,5 @@
 // T-22: the sticky nav and the theme switch. Covers RF-02 (nav), RF-12 (theme) and M-07 (crossfade).
-// The home is empty until T-33, so the scroll checks add their own height to the page.
+// The marked link and the anchors' gliding are in anchors.mjs.
 import { eventually, main, paintedColor, VIEWPORTS } from './lib/browser.mjs'
 import { assertEqual, assertOk, soft } from './lib/check.mjs'
 
@@ -58,7 +58,8 @@ await main('nav', async (t, { open }) => {
         filler.style.height = '3000px'
         document.querySelector('main').append(filler)
       })
-      await site.page.evaluate(() => window.scrollTo(0, 1500))
+      // `behavior: 'instant'`: the page glides to anchors (M-16), and this reads the position right away.
+      await site.page.evaluate(() => window.scrollTo({ top: 1500, behavior: 'instant' }))
       const found = await site.page.evaluate(() => {
         const nav = document.querySelector('header')
         return { position: getComputedStyle(nav).position, top: Math.round(nav.getBoundingClientRect().top), scrolled: Math.round(window.scrollY) }

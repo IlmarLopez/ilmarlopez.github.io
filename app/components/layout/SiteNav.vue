@@ -15,7 +15,8 @@ const links = [
   <header class="sticky top-0 z-(--z-sticky-nav) border-b border-rule bg-paper">
     <div class="site-container flex min-h-(--space-2xl) items-center justify-between gap-(--space-lg)">
       <NuxtLink to="/" class="nav-link font-display text-lg font-bold tracking-(--tracking-display)">{{ profile.name }}</NuxtLink>
-      <nav aria-label="Primary">
+      <!-- `relative`: the line below is positioned against this element (plugins/nav.client.ts). -->
+      <nav aria-label="Primary" class="relative">
         <ul class="m-0 flex list-none items-center gap-(--space-lg) p-0">
           <!-- At 60rem and below only the wordmark and the switch remain. -->
           <li v-for="link in links" :key="link.href" class="max-md:hidden">
@@ -23,6 +24,8 @@ const links = [
           </li>
           <li><ThemeSwitch /></li>
         </ul>
+        <!-- The coral line under the link of the section on screen. The script gives it a place (--nx, --ny) and a width (--nw). -->
+        <span class="nav-ind max-md:hidden" aria-hidden="true"></span>
       </nav>
     </div>
   </header>
@@ -45,5 +48,35 @@ const links = [
   .nav-link:hover {
     background-size: 100% 2px;
   }
+}
+
+/* M-17. The line is one pixel wide and stretched with scaleX, so moving it only costs a transform. Without the
+   script it has no width (--nw is unset, so scaleX(0)) and is not there; `.js` only adds the fade. It does not
+   slide in from the corner on its first placement (no `data-ready` yet), only between links afterwards. */
+.nav-ind {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 2px;
+  background: var(--color-accent);
+  transform-origin: 0 0;
+  transform: translate(var(--nx, 0px), var(--ny, 0px)) scaleX(var(--nw, 0));
+  pointer-events: none;
+}
+
+.js .nav-ind {
+  opacity: 0;
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+
+.js .nav-ind[data-on] {
+  opacity: 1;
+}
+
+.js .nav-ind[data-ready] {
+  transition:
+    transform var(--dur-short) var(--ease-out),
+    opacity var(--dur-micro) var(--ease-out);
 }
 </style>
