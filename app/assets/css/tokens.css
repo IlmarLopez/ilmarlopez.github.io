@@ -100,6 +100,8 @@
 
   --rule-hair: 1px;
   --tracking-display: -0.02em;
+  /* The h1 tracks tighter than the display rows (spec 4.2: the reference CSS wins over design.md's -0.02em). */
+  --tracking-h1: -0.04em;
 
   /* Top layer of the Work stack. Defined once, so the system-dark case is not missed (B1). */
   --scene-soft-top: light-dark(oklch(88% 0.04 255), oklch(38% 0.06 255));

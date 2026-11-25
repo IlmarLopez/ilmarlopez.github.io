@@ -5,7 +5,7 @@ const { toggle } = useTheme()
 <template>
   <button
     type="button"
-    class="theme-switch cursor-pointer rounded-pill border border-rule bg-transparent px-(--space-md) py-(--space-xs) text-sm text-ink transition-[background-color,scale] duration-(--dur-micro) ease-out hover:bg-paper-2 active:scale-97"
+    class="theme-switch cursor-pointer rounded-pill whitespace-nowrap border border-rule bg-transparent px-(--space-md) py-(--space-xs) text-sm text-ink transition-[background-color,scale] duration-(--dur-micro) ease-out hover:bg-paper-2 active:scale-97"
     @click="toggle"
   >
     <!-- Two labels, one visible: CSS picks it from the theme in force, so the server's HTML and the client's agree. -->
